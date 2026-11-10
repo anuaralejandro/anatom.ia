@@ -1,5 +1,7 @@
 pub mod camera;
 pub mod glb;
+pub mod manifest;
+pub mod memory;
 pub mod picking;
 pub mod renderer;
 pub mod scene;

@@ -1,9 +1,10 @@
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::sync::atomic::{AtomicU32, Ordering};
 
 use atlas_core::camera::Camera;
 use atlas_core::glb::parse_glb;
+use atlas_core::manifest::{ManifestSnapshot, RegionLoadPlan};
+use atlas_core::memory::{MemoryTracker, QualityProfile, calculate_scene_cpu_bytes};
 use atlas_core::picking::pick_scene;
 use atlas_core::renderer::Renderer;
 use atlas_core::scene::Scene;
@@ -16,8 +17,6 @@ use wasm_bindgen::prelude::*;
 #[allow(unused_imports)]
 use web_sys::{HtmlCanvasElement, Window};
 
-static SCENE_GENERATION: AtomicU32 = AtomicU32::new(1);
-
 struct EngineInner {
     canvas: HtmlCanvasElement,
     surface: wgpu::Surface<'static>,
@@ -28,12 +27,16 @@ struct EngineInner {
     needs_render: bool,
     region: String,
     variant: String,
+    current_lod: Option<u32>,
     event_callback: Option<js_sys::Function>,
+    memory_tracker: MemoryTracker,
+    manifest: Option<ManifestSnapshot>,
 }
 
 #[wasm_bindgen]
 pub struct AtlasEngine {
     inner: Rc<RefCell<Option<EngineInner>>>,
+    instance_generation: Rc<RefCell<u32>>,
 }
 
 #[wasm_bindgen]
@@ -47,6 +50,7 @@ impl AtlasEngine {
 
         Self {
             inner: Rc::new(RefCell::new(None)),
+            instance_generation: Rc::new(RefCell::new(1)),
         }
     }
 
@@ -73,6 +77,11 @@ impl AtlasEngine {
                 &event,
                 &JsValue::from_str("sceneRevision"),
                 &JsValue::from_f64(inner.scene.revision as f64),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("sceneGeneration"),
+                &JsValue::from_f64(inner.memory_tracker.current_generation() as f64),
             );
             if let Err(error) = callback.call1(&JsValue::NULL, &event) {
                 log::warn!("Anatomy event callback failed: {:?}", error);
@@ -277,6 +286,10 @@ impl AtlasEngine {
             camera.aspect = (width as f32) / (height as f32).max(1.0);
             camera.fit_bounds(scene.bounds.min, scene.bounds.max);
 
+            let mut memory_tracker = MemoryTracker::new(QualityProfile::Medium);
+            memory_tracker.set_decoded_cpu_bytes(calculate_scene_cpu_bytes(&scene));
+            memory_tracker.set_resident_gpu_bytes(renderer.resident_gpu_bytes);
+
             Ok(EngineInner {
                 canvas,
                 surface,
@@ -287,9 +300,221 @@ impl AtlasEngine {
                 needs_render: true,
                 region: "synthetic-cube".to_string(),
                 variant: "test".to_string(),
+                current_lod: None,
                 event_callback: None,
+                memory_tracker,
+                manifest: None,
             })
         }
+    }
+
+    #[wasm_bindgen]
+    pub fn loadManifest(&self, manifest_json: &str) -> Result<JsValue, JsValue> {
+        let mut borrow = self.inner.borrow_mut();
+        let inner = borrow
+            .as_mut()
+            .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
+
+        let snapshot = ManifestSnapshot::parse_json(manifest_json).map_err(|e| {
+            Self::emit_event(inner, "engine.error", None);
+            serde_wasm_bindgen::to_value(&e).unwrap_or_else(|_| JsValue::from_str(&e.to_string()))
+        })?;
+
+        let summary = js_sys::Object::new();
+        let _ = js_sys::Reflect::set(
+            &summary,
+            &JsValue::from_str("atlasVersion"),
+            &JsValue::from_str(&snapshot.atlas_version),
+        );
+        let _ = js_sys::Reflect::set(
+            &summary,
+            &JsValue::from_str("regionsCount"),
+            &JsValue::from_f64(snapshot.regions.len() as f64),
+        );
+        let _ = js_sys::Reflect::set(
+            &summary,
+            &JsValue::from_str("packagesCount"),
+            &JsValue::from_f64(snapshot.packages.len() as f64),
+        );
+
+        inner.manifest = Some(snapshot);
+        Ok(summary.into())
+    }
+
+    #[wasm_bindgen]
+    pub fn createLoadPlan(
+        &self,
+        region_id: &str,
+        variant_id: &str,
+        preferred_lod: Option<u32>,
+    ) -> Result<JsValue, JsValue> {
+        let borrow = self.inner.borrow();
+        let inner = borrow
+            .as_ref()
+            .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
+
+        let manifest = inner
+            .manifest
+            .as_ref()
+            .ok_or_else(|| JsValue::from_str("Manifest has not been loaded"))?;
+
+        let plan = manifest
+            .create_load_plan(region_id, variant_id, preferred_lod)
+            .map_err(|e| {
+                serde_wasm_bindgen::to_value(&e)
+                    .unwrap_or_else(|_| JsValue::from_str(&e.to_string()))
+            })?;
+
+        serde_wasm_bindgen::to_value(&plan).map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    #[wasm_bindgen]
+    pub fn nextGeneration(&self, request_id: Option<u32>) -> u32 {
+        let mut g = self.instance_generation.borrow_mut();
+        *g = g.wrapping_add(1);
+        if *g == 0 {
+            *g = 1;
+        }
+        let gen_token = *g;
+        self.with_inner_mut(|inner| {
+            inner.memory_tracker.next_generation(request_id);
+        });
+        gen_token
+    }
+
+    #[wasm_bindgen]
+    pub fn currentGeneration(&self) -> u32 {
+        *self.instance_generation.borrow()
+    }
+
+    #[wasm_bindgen]
+    pub fn cancelLoad(&self, request_id: Option<u32>) -> u32 {
+        let mut g = self.instance_generation.borrow_mut();
+        *g = g.wrapping_add(1);
+        if *g == 0 {
+            *g = 1;
+        }
+        let gen_token = *g;
+        self.with_inner_mut(|inner| {
+            inner.memory_tracker.next_generation(request_id);
+            Self::emit_event(inner, "engine.error", None);
+        });
+        gen_token
+    }
+
+    #[wasm_bindgen]
+    pub fn applyPackageBytes(
+        &self,
+        bytes: &[u8],
+        plan_val: JsValue,
+        request_id: u32,
+        generation: u32,
+    ) -> Result<JsValue, JsValue> {
+        let current_gen = *self.instance_generation.borrow();
+        if generation != current_gen {
+            let err = EngineError {
+                code: ErrorCode::Cancelled,
+                recoverable: true,
+                detail: Some(format!(
+                    "Load generation {} superseded by current generation {}",
+                    generation, current_gen
+                )),
+                request_id: Some(request_id),
+                scene_generation: Some(generation),
+            };
+            return Err(serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+        }
+
+        let plan: RegionLoadPlan = serde_wasm_bindgen::from_value(plan_val).map_err(|e| {
+            let err = EngineError::new(
+                ErrorCode::AssetCorrupt,
+                format!("Invalid plan: {}", e),
+                false,
+            );
+            serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string()))
+        })?;
+
+        // Verify size
+        if let Err(e) = atlas_core::manifest::verify_size(plan.expected_package_bytes, bytes.len())
+        {
+            let err = EngineError {
+                code: ErrorCode::AssetCorrupt,
+                recoverable: true,
+                detail: Some(e.to_string()),
+                request_id: Some(request_id),
+                scene_generation: Some(generation),
+            };
+            return Err(serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+        }
+
+        // Verify SHA-256
+        if let Err(e) = atlas_core::manifest::verify_sha256(&plan.expected_package_sha256, bytes) {
+            let err = EngineError {
+                code: ErrorCode::AssetCorrupt,
+                recoverable: true,
+                detail: Some(e.to_string()),
+                request_id: Some(request_id),
+                scene_generation: Some(generation),
+            };
+            return Err(serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+        }
+
+        let mut borrow = self.inner.borrow_mut();
+        let inner = borrow
+            .as_mut()
+            .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
+
+        Self::emit_event(inner, "region.loading", None);
+
+        let mut new_scene = match parse_glb(bytes) {
+            Ok(s) => s,
+            Err(e) => {
+                Self::emit_event(inner, "engine.error", None);
+                let mut err = e;
+                err.request_id = Some(request_id);
+                err.scene_generation = Some(generation);
+                return Err(serde_wasm_bindgen::to_value(&err)
+                    .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+            }
+        };
+
+        let same_region = inner.region == plan.region_id;
+
+        // Atomic state transfer: preserve selection, visibility, and revision
+        new_scene.transfer_state_from(&inner.scene);
+
+        // Upload to GPU (explicitly frees old buffers)
+        inner.renderer.upload_scene(&new_scene);
+
+        if !same_region {
+            inner
+                .camera
+                .fit_bounds(new_scene.bounds.min, new_scene.bounds.max);
+        }
+
+        inner.scene = new_scene;
+        inner.region = plan.region_id.clone();
+        inner.variant = plan.variant_id.clone();
+        inner.current_lod = Some(plan.lod);
+
+        // Update memory tracker
+        let cpu_bytes = calculate_scene_cpu_bytes(&inner.scene);
+        inner.memory_tracker.set_decoded_cpu_bytes(cpu_bytes);
+        inner
+            .memory_tracker
+            .set_resident_gpu_bytes(inner.renderer.resident_gpu_bytes);
+
+        inner.needs_render = true;
+
+        Self::emit_event(inner, "region.ready", None);
+        Self::emit_event(inner, "scene.changed", None);
+
+        let snapshot = self.snapshot_internal(inner);
+        serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
     }
 
     #[wasm_bindgen]
@@ -314,11 +539,19 @@ impl AtlasEngine {
         inner.scene = scene;
         inner.region = "pelvis".into();
         inner.variant = "male-adult".into();
+        inner.current_lod = Some(0);
+
+        let cpu_bytes = calculate_scene_cpu_bytes(&inner.scene);
+        inner.memory_tracker.set_decoded_cpu_bytes(cpu_bytes);
+        inner
+            .memory_tracker
+            .set_resident_gpu_bytes(inner.renderer.resident_gpu_bytes);
+
         inner.needs_render = true;
         Self::emit_event(inner, "region.ready", None);
         Self::emit_event(inner, "scene.changed", None);
 
-        SCENE_GENERATION.fetch_add(1, Ordering::SeqCst);
+        let _ = self.nextGeneration(None);
 
         let snapshot = self.snapshot_internal(inner);
         serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
@@ -336,13 +569,70 @@ impl AtlasEngine {
         inner.scene = scene;
         inner.region = "synthetic-cube".into();
         inner.variant = "test".into();
+        inner.current_lod = None;
+
+        let cpu_bytes = calculate_scene_cpu_bytes(&inner.scene);
+        inner.memory_tracker.set_decoded_cpu_bytes(cpu_bytes);
+        inner
+            .memory_tracker
+            .set_resident_gpu_bytes(inner.renderer.resident_gpu_bytes);
+
         inner.needs_render = true;
         Self::emit_event(inner, "region.ready", None);
         Self::emit_event(inner, "scene.changed", None);
 
-        SCENE_GENERATION.fetch_add(1, Ordering::SeqCst);
+        let _ = self.nextGeneration(None);
         let snapshot = self.snapshot_internal(inner);
         serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    #[wasm_bindgen]
+    pub fn getMemoryStats(&self) -> JsValue {
+        let borrow = self.inner.borrow();
+        if let Some(inner) = borrow.as_ref() {
+            let stats = inner.memory_tracker.snapshot(inner.scene.revision);
+            serde_wasm_bindgen::to_value(&stats).unwrap_or(JsValue::NULL)
+        } else {
+            JsValue::NULL
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn setQualityProfile(&self, profile_str: &str) -> Result<JsValue, JsValue> {
+        let mut borrow = self.inner.borrow_mut();
+        let inner = borrow
+            .as_mut()
+            .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
+
+        let profile = match profile_str.to_lowercase().as_str() {
+            "low" => QualityProfile::Low,
+            "medium" => QualityProfile::Medium,
+            "high" => QualityProfile::High,
+            _ => {
+                return Err(JsValue::from_str(
+                    "Invalid quality profile. Expected low, medium, or high",
+                ));
+            }
+        };
+
+        inner.memory_tracker.set_profile(profile);
+        Self::emit_event(inner, "quality.changed", None);
+
+        serde_wasm_bindgen::to_value(&profile.budget())
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    #[wasm_bindgen]
+    pub fn simulateDeviceLoss(&self) -> Result<(), JsValue> {
+        let mut borrow = self.inner.borrow_mut();
+        let inner = borrow
+            .as_mut()
+            .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
+
+        log::warn!("AtlasEngine: SIMULATING GPU DEVICE LOSS...");
+        inner.renderer.destroy_gpu_resources();
+        Self::emit_event(inner, "device.recovering", None);
+        Ok(())
     }
 
     #[wasm_bindgen]
@@ -561,9 +851,26 @@ impl AtlasEngine {
             | wgpu::CurrentSurfaceTexture::Suboptimal(tex) => tex,
             wgpu::CurrentSurfaceTexture::Lost | wgpu::CurrentSurfaceTexture::Outdated => {
                 log::warn!("Surface lost or outdated, reconfiguring...");
+                Self::emit_event(inner, "device.recovering", None);
+                let surface_config = wgpu::SurfaceConfiguration {
+                    usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
+                    format: inner.renderer.surface_format,
+                    color_space: wgpu::SurfaceColorSpace::Auto,
+                    width: inner.renderer.width,
+                    height: inner.renderer.height,
+                    present_mode: wgpu::PresentMode::AutoVsync,
+                    alpha_mode: wgpu::CompositeAlphaMode::Auto,
+                    view_formats: vec![],
+                    desired_maximum_frame_latency: 2,
+                };
+                inner
+                    .surface
+                    .configure(&inner.renderer.device, &surface_config);
                 inner
                     .renderer
                     .resize(inner.renderer.width, inner.renderer.height);
+                inner.needs_render = true;
+                Self::emit_event(inner, "device.recovered", None);
                 return false;
             }
             wgpu::CurrentSurfaceTexture::Occluded => {
@@ -695,13 +1002,18 @@ impl AtlasEngine {
     }
 
     fn snapshot_internal(&self, inner: &EngineInner) -> SceneSnapshot {
+        let quality_str = match inner.memory_tracker.profile() {
+            QualityProfile::Low => "low",
+            QualityProfile::Medium => "medium",
+            QualityProfile::High => "high",
+        };
         SceneSnapshot {
             region: inner.region.clone(),
             variant: inner.variant.clone(),
             selected_id: inner.scene.selected_id.clone(),
             scene_revision: inner.scene.revision,
             visible_ids: inner.scene.get_visible_ids(),
-            quality: "medium".into(),
+            quality: quality_str.into(),
             backend: inner.renderer.capabilities.backend.clone(),
         }
     }

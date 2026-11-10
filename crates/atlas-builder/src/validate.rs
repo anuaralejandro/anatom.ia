@@ -38,6 +38,8 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
     let mut warnings = Vec::new();
     let mut checks = 0;
     let mut files_verified = Vec::new();
+    let mut catalog_ids = HashSet::new();
+    let canonical_release = release_dir.canonicalize()?;
 
     // 1. Validar manifest.json
     let manifest_path = release_dir.join("manifest.json");
@@ -101,6 +103,16 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
             errors.push(format!("URL de catálogo insegura o inválida: '{}'", url));
         }
 
+        // Reject unsafe paths BEFORE filesystem access; never follow escaping symlinks.
+        if !is_safe_relative_url(url) {
+            return Ok(ValidationSummary {
+                passed: false,
+                checks_count: checks,
+                errors,
+                warnings,
+                files_verified,
+            });
+        }
         let cat_file = release_dir.join(url);
         checks += 1;
         if !cat_file.exists() {
@@ -109,6 +121,16 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
                 cat_file
             ));
         } else {
+            if !cat_file.canonicalize()?.starts_with(&canonical_release) {
+                errors.push("Catálogo enlaza fuera del release".into());
+                return Ok(ValidationSummary {
+                    passed: false,
+                    checks_count: checks,
+                    errors,
+                    warnings,
+                    files_verified,
+                });
+            }
             let bytes = std::fs::read(&cat_file)?;
             checks += 1;
             if bytes.len() as u64 != exp_bytes {
@@ -145,6 +167,7 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
 
                     for s in structs {
                         if let Some(id) = s.get("id").and_then(|v| v.as_str()) {
+                            catalog_ids.insert(id.to_string());
                             if !seen_ids.insert(id.to_string()) {
                                 errors.push(format!(
                                     "ID de estructura duplicado en catálogo: {}",
@@ -180,7 +203,11 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
                             bilateral_count
                         ));
                     }
+                } else {
+                    errors.push("Catálogo inválido: falta arreglo structures".into());
                 }
+            } else {
+                errors.push("Catálogo inválido: no es JSON bien formado".into());
             }
         }
     } else {
@@ -208,12 +235,17 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
 
             if !is_safe_relative_url(url) {
                 errors.push(format!("URL de paquete insegura: '{}'", url));
+                continue;
             }
 
             let pkg_file = release_dir.join(url);
             checks += 1;
             if !pkg_file.exists() {
                 errors.push(format!("Archivo de paquete no encontrado: {:?}", pkg_file));
+                continue;
+            }
+            if !pkg_file.canonicalize()?.starts_with(&canonical_release) {
+                errors.push(format!("Paquete '{}' enlaza fuera del release", id));
                 continue;
             }
 
@@ -249,11 +281,21 @@ pub fn run_validate(release_dir: &Path) -> Result<ValidationSummary, Box<dyn std
                             .filter_map(|n| n.anatomy_id.clone())
                             .collect();
 
-                        if aids.len() != 26 {
+                        let id_count = scene
+                            .nodes
+                            .iter()
+                            .filter(|n| n.anatomy_id.is_some())
+                            .count();
+                        if aids.len() != 26 || id_count != 26 {
                             errors.push(format!(
-                                "Paquete '{}' contiene {} AnatomyIds (deben ser 26)",
-                                id,
-                                aids.len()
+                                "Paquete '{}' contiene {} AnatomyIds únicos, {} nodos etiquetados (deben ser 26/26)",
+                                id, aids.len(), id_count
+                            ));
+                        }
+                        if aids != catalog_ids {
+                            errors.push(format!(
+                                "Paquete '{}' no coincide exactamente con los IDs del catálogo",
+                                id
                             ));
                         }
 

@@ -12,13 +12,16 @@ pub fn compute_sha256(bytes: &[u8]) -> String {
 pub fn run_build(
     fixture_path: &Path,
     crosswalk_path: &Path,
-    _profile: &str,
+    profile: &str,
     out_dir: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     println!(
         "[atlas-builder:build] Construyendo release en: {:?}",
         out_dir
     );
+    if profile != "mobile" {
+        return Err(format!("Perfil de build no implementado: {profile} (solo mobile)").into());
+    }
     std::fs::create_dir_all(out_dir)?;
 
     let staging_dir = PathBuf::from("build/atlas/staging");
@@ -26,14 +29,11 @@ pub fn run_build(
 
     // 1. Paquete Base (LOD0 sin compresión)
     let staging_base = staging_dir.join("pelvis-normalized.glb");
-    if !staging_base.exists() {
-        // Fallback a experimental si ya existe
-        let alt = PathBuf::from("reports/experimental/pelvis-pbr-core-compat.glb");
-        if alt.exists() {
-            std::fs::copy(&alt, &staging_base)?;
-        } else {
-            crate::normalize::run_normalize(fixture_path, crosswalk_path, &staging_dir)?;
-        }
+    // Always regenerate from the specified Blender source and fixture. Never silently
+    // substitute old staging output or the M02 experimental GLB.
+    crate::normalize::run_normalize(fixture_path, crosswalk_path, &staging_dir)?;
+    if !staging_base.is_file() {
+        return Err("Blender failed to generate normalized GLB".into());
     }
 
     let rel_base_glb = out_dir.join("pelvis-base-lod0.glb");
@@ -43,35 +43,33 @@ pub fn run_build(
 
     // 2. Paquete LOD1
     let staging_lod1 = staging_dir.join("pelvis-lod1.glb");
-    if !staging_lod1.exists() {
-        println!("[atlas-builder:build] Generando LOD1 con Blender...");
-        let blender = crate::inspect::find_blender()
-            .map_err(|e| std::io::Error::new(std::io::ErrorKind::NotFound, e))?;
-        let script = PathBuf::from("tools/blender/export_lod.py");
-        let blend = PathBuf::from("sources/z-anatomy-template/Z-Anatomy/Startup.blend");
+    println!("[atlas-builder:build] Regenerando LOD1 desde Blender...");
+    let blender = crate::inspect::find_blender()
+        .map_err(|e| std::io::Error::new(std::io::ErrorKind::NotFound, e))?;
+    let script = PathBuf::from("tools/blender/export_lod.py");
+    let blend = PathBuf::from("sources/z-anatomy-template/Z-Anatomy/Startup.blend");
 
-        let status = Command::new(blender)
-            .arg("--background")
-            .arg("--disable-autoexec")
-            .arg(&blend)
-            .arg("--python")
-            .arg(&script)
-            .arg("--")
-            .arg("--fixture")
-            .arg(fixture_path)
-            .arg("--crosswalk")
-            .arg(crosswalk_path)
-            .arg("--lod")
-            .arg("1")
-            .arg("--out")
-            .arg(&staging_lod1)
-            .arg("--report")
-            .arg(staging_dir.join("lod1-report.json"))
-            .status()?;
+    let status = Command::new(blender)
+        .arg("--background")
+        .arg("--disable-autoexec")
+        .arg(&blend)
+        .arg("--python")
+        .arg(&script)
+        .arg("--")
+        .arg("--fixture")
+        .arg(fixture_path)
+        .arg("--crosswalk")
+        .arg(crosswalk_path)
+        .arg("--lod")
+        .arg("1")
+        .arg("--out")
+        .arg(&staging_lod1)
+        .arg("--report")
+        .arg(staging_dir.join("lod1-report.json"))
+        .status()?;
 
-        if !status.success() || !staging_lod1.exists() {
-            return Err("Generación de LOD1 en Blender falló".into());
-        }
+    if !status.success() || !staging_lod1.is_file() {
+        return Err("Generación de LOD1 desde Blender falló".into());
     }
 
     let rel_lod1_glb = out_dir.join("pelvis-lod1.glb");
@@ -83,30 +81,33 @@ pub fn run_build(
     let rel_meshopt_glb = out_dir.join("pelvis-meshopt-lod0.glb");
     let mut meshopt_pkg = None;
 
-    println!("[atlas-builder:build] Generando paquete experimental meshopt con gltfpack...");
-    let gltfpack_cmd = Command::new("npx.cmd")
-        .arg("--yes")
-        .arg("gltfpack")
-        .arg("-i")
-        .arg(&rel_base_glb)
-        .arg("-o")
-        .arg(&rel_meshopt_glb)
-        .arg("-c")
-        .arg("-kn")
-        .arg("-ke")
-        .status();
-
-    if let Ok(st) = gltfpack_cmd {
-        if st.success() && rel_meshopt_glb.exists() {
-            let m_bytes = std::fs::read(&rel_meshopt_glb)?;
-            let m_sha = compute_sha256(&m_bytes);
-            println!(
-                "[atlas-builder:build] Paquete meshopt generado ({} bytes, SHA={})",
-                m_bytes.len(),
-                m_sha
-            );
-            meshopt_pkg = Some((m_bytes.len(), m_sha));
+    // Explicit opt-in to an existing local binary. Build is offline by default.
+    // NEVER invoke npx --yes, which could install packages from the network.
+    if let Some(binary_path) = std::env::var_os("ATLAS_GLTFPACK_BIN") {
+        let binary_path = PathBuf::from(binary_path);
+        if !binary_path.is_file() {
+            return Err(format!("ATLAS_GLTFPACK_BIN no existe: {:?}", binary_path).into());
         }
+        let status = Command::new(&binary_path)
+            .arg("-i")
+            .arg(&rel_base_glb)
+            .arg("-o")
+            .arg(&rel_meshopt_glb)
+            .arg("-c")
+            .arg("-kn")
+            .arg("-ke")
+            .status()?;
+        if !status.success() || !rel_meshopt_glb.is_file() {
+            return Err(
+                "gltfpack local falló; no se publicará un paquete meshopt incompleto".into(),
+            );
+        }
+        let bytes = std::fs::read(&rel_meshopt_glb)?;
+        meshopt_pkg = Some((bytes.len(), compute_sha256(&bytes)));
+    } else {
+        println!(
+            "[atlas-builder:build] meshopt opcional omitido: define ATLAS_GLTFPACK_BIN para usar ejecutable local offline."
+        );
     }
 
     // 4. Catálogo Multilingüe (catalog.json)
@@ -209,9 +210,15 @@ pub fn run_build(
     let rel_manifest_path = out_dir.join("manifest.json");
     std::fs::write(&rel_manifest_path, manifest_str.as_bytes())?;
 
+    // Build success requires validating the newly written release, not just file creation.
+    let result = crate::validate::run_validate(out_dir)?;
+    if !result.passed {
+        return Err(format!("Release recién generado no válido: {:?}", result.errors).into());
+    }
     println!(
-        "[atlas-builder:build] Release completado exitosamente: {} paquetes emitidos, manifest y catalog listos.",
-        packages_list.len()
+        "[atlas-builder:build] Release verificado: {} paquetes, {} checks.",
+        packages_list.len(),
+        result.checks_count
     );
 
     Ok(())

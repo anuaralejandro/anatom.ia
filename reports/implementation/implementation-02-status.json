@@ -84,7 +84,11 @@
     "structures_count": 26,
     "bilateral_count": 18,
     "unpaired_count": 8,
-    "languages": ["es", "en", "la"]
+    "languages": [
+      "es",
+      "en",
+      "la"
+    ]
   },
   "manifest": {
     "file": "build/atlas/release/manifest.json",
@@ -118,5 +122,26 @@
       "validate_stage6_contracts": "PASS_DESIGN_ONLY",
       "validate_stage7_blueprint": "PASS_DESIGN_ONLY"
     }
+  },
+  "audit_override": {
+    "status": "PASS_CORRECTED_GO_M04_LOCAL_ONLY",
+    "report": "docs/AUDITORIA_IMPLEMENTACION_02.md",
+    "machine_result": "reports/audit/m03-independent-verdict.json",
+    "verified_triangles": {
+      "lod0": 38605,
+      "lod1": 33758
+    },
+    "real_silhouette": {
+      "view_count": 5,
+      "organ_count": 2,
+      "boundary_max_deviation_px": 1
+    },
+    "original_report_errors": [
+      "p95=0.01 was AABB-corner proxy, not raster silhouette",
+      "25542 was Blender polygon count, not GLB triangle count"
+    ],
+    "github_remote": "anuaralejandro/anatom.ia",
+    "github_pushed": false,
+    "licensing": "BLOCKED_FOR_COMMERCIAL_DISTRIBUTION"
   }
 }

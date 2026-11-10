@@ -9,6 +9,7 @@ sources/
 *.7z
 target/
 build/atlas/staging/
+build/atlas/audit-*/
 node_modules/
 dist/
 .venv/

@@ -1,3 +1,5 @@
+**AVISO DE AUDITORÍA CORRECTIVA 2026-11-09:** Este informe contiene afirmaciones originales que han quedado superadas: el cálculo p95=0.01 px procedía de bounding boxes, no de siluetas reales; los triángulos glTF correctos son 38,605→33,758. Se corrigieron builder, validador y reportes. La fuente de verdad actual es `docs/AUDITORIA_IMPLEMENTACION_02.md` y `reports/audit/m03-independent-verdict.json`.
+
 # ANATOM.IA — REPORTE DE RESULTADOS DE IMPLEMENTACIÓN 02 (M03: ATLAS BUILDER)
 
 > **Rol:** Principal Engineer (Rust Graphics, Blender Python API, glTF 2.0, Geometría Anatómica y Validación de Pipelines 3D)  

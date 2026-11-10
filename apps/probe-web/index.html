@@ -334,11 +334,11 @@
     <header id="top-bar">
       <div class="brand">
         <span>anatom.ia</span>
-        <span class="tag">M00–M02 PROBE</span>
+        <span class="tag">M00–M04 PROBE</span>
       </div>
 
       <div class="toolbar-group">
-        <label for="backend-select">Backend Solicitado:</label>
+        <label for="backend-select">Backend:</label>
         <select id="backend-select">
           <option value="auto">Auto (WebGPU &rarr; WebGL2)</option>
           <option value="webgpu">WebGPU Forzado</option>
@@ -350,10 +350,33 @@
       <div class="toolbar-group">
         <label for="scene-select">Escena:</label>
         <select id="scene-select">
-          <option value="pelvis">Pelvis PBR Core (26 TA2)</option>
-          <option value="pelvis-lod1">Pelvis LOD1 (M03 Pilot)</option>
+          <option value="pelvis">Pelvis (Stream M04)</option>
+          <option value="pelvis-lod1">Pelvis LOD1 (M03/M04)</option>
           <option value="cube">Cubo Sintético (M01)</option>
         </select>
+      </div>
+
+      <div class="toolbar-group">
+        <label for="lod-select">LOD:</label>
+        <select id="lod-select">
+          <option value="0" selected>LOD 0 (38.6k tris)</option>
+          <option value="1">LOD 1 (33.8k tris)</option>
+        </select>
+      </div>
+
+      <div class="toolbar-group">
+        <label for="quality-select">Perfil:</label>
+        <select id="quality-select">
+          <option value="low">Low (64M)</option>
+          <option value="medium" selected>Medium (128M)</option>
+          <option value="high">High (256M)</option>
+        </select>
+      </div>
+
+      <div class="toolbar-group">
+        <button id="offline-btn" title="Alternar simulación de modo sin conexión">🌐 Online</button>
+        <button id="rapid-lod-btn" title="Ejecutar 20 conmutaciones atómicas rápidas de LOD">⚡ 20x LOD</button>
+        <button id="device-loss-btn" title="Simular pérdida de dispositivo GPU y recuperación">💥 GPU Loss</button>
       </div>
 
       <div class="toolbar-group">
@@ -412,15 +435,20 @@
     <!-- Diagnostic Stats Footer -->
     <footer id="diagnostics-bar">
       <div>
-        <span class="stat-pill">Backend Activo: <strong id="stat-backend">—</strong></span>
-        <span class="stat-pill">Dispositivo/Adaptador: <strong id="stat-adapter">—</strong></span>
-        <span class="stat-pill">Estructura Seleccionada: <strong id="stat-selected">Ninguna</strong></span>
+        <span class="stat-pill">Backend: <strong id="stat-backend">—</strong></span>
+        <span class="stat-pill">Adaptador: <strong id="stat-adapter">—</strong></span>
+        <span class="stat-pill">Cache: <strong id="stat-cache">—</strong></span>
+        <span class="stat-pill">Descargado: <strong id="stat-downloaded">0 KB</strong></span>
+        <span class="stat-pill">Gen: <strong id="stat-generation">1</strong></span>
+        <span class="stat-pill">Selección: <strong id="stat-selected">Ninguna</strong></span>
       </div>
       <div>
+        <span class="stat-pill">GPU Est: <strong id="stat-gpu-mem">—</strong></span>
+        <span class="stat-pill">CPU Geom: <strong id="stat-cpu-mem">—</strong></span>
         <span class="stat-pill">Nodos: <strong id="stat-nodes">—</strong></span>
-        <span class="stat-pill">Primitivas: <strong id="stat-prims">—</strong></span>
-        <span class="stat-pill">Triángulos: <strong id="stat-tris">—</strong></span>
-        <span class="stat-pill">Draw Calls: <strong id="stat-drawcalls">—</strong></span>
+        <span class="stat-pill">Prims: <strong id="stat-prims">—</strong></span>
+        <span class="stat-pill">Tris: <strong id="stat-tris">—</strong></span>
+        <span class="stat-pill">Draws: <strong id="stat-drawcalls">—</strong></span>
         <span class="stat-pill">Frame: <strong id="stat-fps">—</strong></span>
       </div>
     </footer>

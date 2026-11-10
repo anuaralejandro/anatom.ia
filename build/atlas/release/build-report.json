@@ -1,6 +1,7 @@
 {
   "atlas_version": "0.3.0",
   "bilateral_pairs_count": 9,
+  "build_timestamp": null,
   "curve_objects_count": 8,
   "mesh_objects_count": 18,
   "milestone": "M03",
@@ -46,6 +47,7 @@
     }
   ],
   "packages_count": 3,
+  "report_reproducible": true,
   "source": {
     "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
     "repository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
@@ -53,6 +55,5 @@
   },
   "status": "PASS",
   "target_structures": 26,
-  "timestamp": "2026-11-09T16:00:00-06:00",
   "unpaired_structures_count": 8
 }

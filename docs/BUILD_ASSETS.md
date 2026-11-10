@@ -12,7 +12,7 @@ Este documento describe el procedimiento determinista y reproducible para ejecut
 | **Rust Toolchain** | `stable-x86_64-pc-windows-msvc` (1.80+) | `cargo --version` |
 | **Blender** | Blender 4.4+ LTS | `C:\Program Files\Blender Foundation\Blender 4.4\blender.exe` |
 | **Python** | 3.10+ (o el integrado en Blender) | `python --version` |
-| **Node.js / npx** | Node 18+ (para `gltfpack` experimental) | `npx --version` |
+| **gltfpack opcional local** | Solo cuando está instalado | Definir `ATLAS_GLTFPACK_BIN` como ruta del ejecutable; el build nunca usa `npx` ni red |
 
 > [!NOTE]
 > Si Blender está instalado en una ruta personalizada, exporta la variable de entorno `BLENDER_PATH`:
@@ -32,7 +32,7 @@ build/atlas/release/
 ├── catalog.json               # Catálogo multilingüe con las 26 estructuras TA2 y lateralidad
 ├── pelvis-base-lod0.glb       # Paquete base LOD0 Core PBR compatible (sin compresión obligatoria)
 ├── pelvis-lod1.glb            # Paquete simplificado LOD1 (Sacrum y Vejiga decimados, 24 reusados)
-├── pelvis-meshopt-lod0.glb    # Paquete experimental meshopt (requiere EXT_meshopt_compression)
+├── pelvis-meshopt-lod0.glb    # OPCIONAL: requiere ATLAS_GLTFPACK_BIN local; no soportado en runtime M02
 ├── build-report.json          # Reporte técnico de compilación y empaquetado
 ├── validation-report.json     # Reporte de validación estructural y referencial
 ├── license-report.json        # Reporte de licencias y bloqueo comercial
@@ -80,8 +80,8 @@ target\debug\atlas-builder.exe build reports\pelvis-fixture-candidate.json `
 
 **Resultado esperado:**
 - Genera `pelvis-base-lod0.glb` (681,500 bytes, Core PBR, 26 estructuras, 27 primitivas).
-- Genera `pelvis-lod1.glb` (593,928 bytes, 12.56% reducción poligonal, p95 silueta <= 0.01px).
-- Genera `pelvis-meshopt-lod0.glb` (169,924 bytes, 75.07% reducción, experimental).
+- Genera `pelvis-lod1.glb` (593,928 bytes; 38,605→33,758 triángulos glTF). La QA de siluetas se ejecuta por separado; la cifra previa de 0.01px por AABB no es válida.
+- El meshopt experimental solo se produce si `ATLAS_GLTFPACK_BIN` apunta a gltfpack local. Sin él se emiten dos paquetes core verificables.
 - Genera `catalog.json` (26 estructuras TA2 con nombres en ES, EN, LA).
 - Genera `manifest.json` (Atlas Manifest v1).
 
@@ -102,7 +102,11 @@ target\debug\atlas-builder.exe validate build\atlas\release
 - Modelos GLB base y LOD1: carga y decodificación real en `atlas_core::glb::parse_glb`.
 - Verificación de AABBs finitas y presencia de las 26 `AnatomyId` en los nodos.
 
-### Paso 5: Generar Reportes de Calidad, Licencias y Métricas
+### Paso 5: Auditoría real de silueta LOD (requisito para PASS)
+
+Ejecuta `python tools/audit_lod_silhouettes.py build/atlas/release/pelvis-base-lod0.glb build/atlas/release/pelvis-lod1.glb build/atlas/release/silhouette-audit.json` (Python con NumPy, SciPy y OpenCV). Rasteriza triángulos reales en cinco vistas a 1280×720, enlaza métricas a los hashes SHA-256 del release. Si falta esta evidencia o no coinciden los hashes, el reporte debe marcar NOT_RUN/UNVERIFIED. Ver `docs/AUDITORIA_IMPLEMENTACION_02.md`.
+
+### Paso 6: Generar Reportes de Calidad, Licencias y Métricas
 
 Genera los reportes oficiales en `reports\implementation\M03`:
 

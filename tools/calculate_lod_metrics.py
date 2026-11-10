@@ -217,9 +217,11 @@ def evaluate_quality(base_glb, lod_glb, lod_name="lod1"):
         "base_total_triangles": base_total_tris,
         "lod_total_triangles": lod_total_tris,
         "triangle_reduction_percent": round((1.0 - lod_total_tris / base_total_tris) * 100.0, 2),
-        "p95_silhouette_pixel_deviation_720p": round(p95_dev, 2),
+        # This is a bounding-box corner proxy, NOT rasterized triangle silhouettes.
+        "p95_silhouette_pixel_deviation_720p": None,
+        "bounds_corner_proxy_p95_px": round(p95_dev, 2),
         "quality_gate_p95_target": 2.0,
-        "quality_verdict": "PASS" if p95_dev <= 2.0 else "REJECTED_ERROR_EXCEEDED",
+        "quality_verdict": "NOT_EVALUATED_REQUIRES_TRUE_SILHOUETTE",
         "structures": evaluations
     }
 
@@ -238,7 +240,7 @@ def main():
         
     lod1_eval = evaluate_quality(base_glb, lod1_glb, "lod1")
     report = {
-        "status": "PASS" if lod1_eval["quality_verdict"] == "PASS" else "FAIL",
+        "status": "NOT_EVALUATED_BOUNDING_BOX_PROXY_ONLY",
         "lod1": lod1_eval
     }
     
@@ -248,7 +250,7 @@ def main():
         
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"[QUALITY_METRICS] {report['status']} -> {out_path} (LOD1 reduction: {lod1_eval['triangle_reduction_percent']}%, p95 dev: {lod1_eval['p95_silhouette_pixel_deviation_720p']}px)")
+    print(f"[QUALITY_PROXY_ONLY] {report['status']} -> {out_path} (LOD1 reduction: {lod1_eval['triangle_reduction_percent']}%, bounds-proxy p95: {lod1_eval['bounds_corner_proxy_p95_px']}px; no PASS allowed)")
 
 if __name__ == "__main__":
     main()

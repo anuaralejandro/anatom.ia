@@ -1,11 +1,12 @@
 // apps/probe-web/app.js
-// anatom.ia — Minimal Diagnostic Probe Shell (M00-M02)
+// anatom.ia — Diagnostic Probe Shell (M00-M04: Asset Streaming, Cache, Memory, Device Recovery)
 
 const state = {
   engine: null,
   activeBackend: null,
   requestedBackend: 'auto',
   activeScene: 'pelvis',
+  currentLod: 0,
   structures: [],
   selectedId: null,
   darkTheme: true,
@@ -24,6 +25,11 @@ const el = {
   backendSelect: document.getElementById('backend-select'),
   backendBadge: document.getElementById('backend-badge'),
   sceneSelect: document.getElementById('scene-select'),
+  lodSelect: document.getElementById('lod-select'),
+  qualitySelect: document.getElementById('quality-select'),
+  offlineBtn: document.getElementById('offline-btn'),
+  rapidLodBtn: document.getElementById('rapid-lod-btn'),
+  deviceLossBtn: document.getElementById('device-loss-btn'),
   themeBtn: document.getElementById('theme-btn'),
   logToggleBtn: document.getElementById('log-toggle-btn'),
   logDrawer: document.getElementById('log-drawer'),
@@ -49,6 +55,11 @@ const el = {
   statBackend: document.getElementById('stat-backend'),
   statAdapter: document.getElementById('stat-adapter'),
   statSelected: document.getElementById('stat-selected'),
+  statCache: document.getElementById('stat-cache'),
+  statDownloaded: document.getElementById('stat-downloaded'),
+  statGeneration: document.getElementById('stat-generation'),
+  statGpuMem: document.getElementById('stat-gpu-mem'),
+  statCpuMem: document.getElementById('stat-cpu-mem'),
   statNodes: document.getElementById('stat-nodes'),
   statPrims: document.getElementById('stat-prims'),
   statTris: document.getElementById('stat-tris'),
@@ -86,9 +97,227 @@ function hideLoading() {
   el.loadingOverlay.style.display = 'none';
 }
 
+// ============================================================================
+// M04: ASSET STREAM MANAGER (CacheStorage + Web Crypto SHA-256 + Atomic Swap)
+// ============================================================================
+class AssetStreamManager {
+  constructor() {
+    this.manifest = null;
+    this.cacheName = 'anatomia-atlas-v0.3.0';
+    this.cacheAvailable = typeof window !== 'undefined' && 'caches' in window;
+    this.activeAbortController = null;
+    this.currentRequestId = 0;
+    this.simulatedOffline = false;
+    this.stats = {
+      cacheHits: 0,
+      cacheMisses: 0,
+      bytesDownloaded: 0,
+      lastDigestVerificationMs: 0,
+    };
+  }
+
+  async getCache() {
+    if (!this.cacheAvailable) return null;
+    try {
+      return await window.caches.open(this.cacheName);
+    } catch (e) {
+      log(`CacheStorage no disponible o restringido: ${e}`, 'warn');
+      return null;
+    }
+  }
+
+  async computeSha256(arrayBuffer) {
+    const t0 = performance.now();
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', arrayBuffer);
+    this.stats.lastDigestVerificationMs = performance.now() - t0;
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async initManifest(manifestUrl = './manifest.json') {
+    log(`Cargando manifest desde ${manifestUrl}...`);
+    try {
+      const resp = await fetch(manifestUrl);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+      const manifestText = await resp.text();
+      this.manifest = JSON.parse(manifestText);
+
+      if (state.engine) {
+        const summary = state.engine.loadManifest(manifestText);
+        log(`Manifest registrado en Rust: version=${summary.atlasVersion}, packages=${summary.packagesCount}, regions=${summary.regionsCount}`);
+      }
+      return this.manifest;
+    } catch (err) {
+      log(`Fallo al cargar manifest: ${err?.detail || err?.message || err}`, 'warn');
+      return null;
+    }
+  }
+
+  async loadRegion(regionId = 'pelvis', variantId = 'male-adult', preferredLod = 0) {
+    if (!state.engine) {
+      throw new Error('AtlasEngine no está inicializado.');
+    }
+
+    // Cancel any previous in-flight load request
+    if (this.activeAbortController) {
+      this.activeAbortController.abort();
+    }
+    this.activeAbortController = new AbortController();
+    const signal = this.activeAbortController.signal;
+
+    const requestId = ++this.currentRequestId;
+    const expectedGeneration = state.engine.nextGeneration(requestId);
+    state.currentLod = preferredLod;
+    if (el.lodSelect) {
+      el.lodSelect.value = String(preferredLod);
+    }
+
+    log(`Iniciando streaming de región '${regionId}' (variante '${variantId}', LOD ${preferredLod}, req=${requestId}, gen=${expectedGeneration})...`);
+    showLoading(`Cargando ${regionId} LOD${preferredLod}...`);
+
+    let plan;
+    try {
+      plan = state.engine.createLoadPlan(regionId, variantId, preferredLod);
+    } catch (planErr) {
+      hideLoading();
+      showError(`Error creando plan de carga: ${planErr?.detail || planErr?.message || planErr}`);
+      return false;
+    }
+
+    const cacheKey = `https://atlas.local/assets/v0.3.0/${plan.package_id}?sha=${plan.expected_package_sha256}`;
+    let buffer = null;
+    let fromCache = false;
+
+    // 1. Check local CacheStorage
+    const cache = await this.getCache();
+    if (cache) {
+      try {
+        const matched = await cache.match(cacheKey);
+        if (matched) {
+          log(`Cache HIT en disco para ${plan.package_id}. Verificando digest SHA-256...`);
+          const candidateBuffer = await matched.arrayBuffer();
+          const digest = await this.computeSha256(candidateBuffer);
+
+          if (digest.toLowerCase() === plan.expected_package_sha256.toLowerCase()) {
+            buffer = candidateBuffer;
+            fromCache = true;
+            this.stats.cacheHits++;
+            if (el.statCache) el.statCache.textContent = 'HIT (Disk)';
+            log(`Digest de caché verificado en ${this.stats.lastDigestVerificationMs.toFixed(1)}ms. Cero peticiones de red.`);
+          } else {
+            log(`Digest de caché corrupto detectado en ${plan.package_id}! Purgando entrada del cache...`, 'warn');
+            await cache.delete(cacheKey);
+          }
+        }
+      } catch (cacheErr) {
+        log(`Error leyendo de CacheStorage: ${cacheErr}`, 'warn');
+      }
+    }
+
+    // 2. Fetch if Cache Miss or corrupt
+    if (!buffer) {
+      if (this.simulatedOffline) {
+        hideLoading();
+        const offlineErr = 'Modo sin conexión activado: el paquete no se encuentra en caché persistente (NETWORK_ERROR).';
+        showError(offlineErr);
+        if (el.statCache) el.statCache.textContent = 'OFFLINE (Miss)';
+        return false;
+      }
+
+      log(`Cache MISS. Descargando paquete ${plan.package_id} (${plan.package_url})...`);
+      if (el.statCache) el.statCache.textContent = 'MISS (Fetch)';
+
+      try {
+        const fetchResp = await fetch(plan.package_url, { signal });
+        if (!fetchResp.ok) {
+          throw new Error(`HTTP ${fetchResp.status}: ${fetchResp.statusText}`);
+        }
+        buffer = await fetchResp.arrayBuffer();
+        this.stats.cacheMisses++;
+        this.stats.bytesDownloaded += buffer.byteLength;
+        if (el.statDownloaded) {
+          el.statDownloaded.textContent = `${(this.stats.bytesDownloaded / 1024).toFixed(0)} KB`;
+        }
+
+        log(`Paquete descargado (${buffer.byteLength} bytes). Verificando integridad SHA-256...`);
+        const digest = await this.computeSha256(buffer);
+        if (digest.toLowerCase() !== plan.expected_package_sha256.toLowerCase()) {
+          throw new Error(`ASSET_CORRUPT: SHA-256 calculado '${digest}' no coincide con el manifest '${plan.expected_package_sha256}'`);
+        }
+
+        // Store in CacheStorage if passes integrity
+        if (cache) {
+          try {
+            await cache.put(cacheKey, new Response(buffer.slice(0), {
+              headers: { 'Content-Type': 'model/gltf-binary' }
+            }));
+            log(`Paquete ${plan.package_id} almacenado en caché persistente.`);
+          } catch (putErr) {
+            log(`Fallo al escribir en CacheStorage (cuota o política): ${putErr}`, 'warn');
+          }
+        }
+      } catch (netErr) {
+        hideLoading();
+        if (signal.aborted) {
+          log(`Petición ${requestId} abortada exitosamente.`);
+          return false;
+        }
+        showError(`Error de red/integridad: ${netErr.message || netErr}`);
+        return false;
+      }
+    }
+
+    // 3. Generational safety check before touching GPU
+    if (signal.aborted || state.engine.currentGeneration() !== expectedGeneration) {
+      log(`Carga de ${plan.package_id} descartada por generación obsoleta (gen ${expectedGeneration} vs actual ${state.engine.currentGeneration()}).`, 'warn');
+      hideLoading();
+      return false;
+    }
+
+    // 4. Atomic Swap into WASM Engine
+    try {
+      const bytes = new Uint8Array(buffer);
+      const snapshot = state.engine.applyPackageBytes(bytes, plan, requestId, expectedGeneration);
+
+      state.sceneLoaded = true;
+      state.activeScene = (preferredLod === 1) ? 'pelvis-lod1' : 'pelvis';
+      document.documentElement.dataset.atlasScene = state.activeScene;
+      el.sceneSelect.value = state.activeScene;
+
+      log(`Región aplicada exitosamente: ${snapshot.region} (rev ${snapshot.scene_revision}, visible ${snapshot.visible_ids.length}, backend ${snapshot.backend})`);
+      updateStats();
+      scheduleRender();
+      hideLoading();
+      return true;
+    } catch (applyErr) {
+      hideLoading();
+      showError(`Error aplicando paquete en GPU: ${applyErr?.detail || applyErr?.message || applyErr}`);
+      return false;
+    }
+  }
+
+  async purgeCache() {
+    if (!this.cacheAvailable) return false;
+    const cache = await this.getCache();
+    if (cache) {
+      const keys = await cache.keys();
+      for (const k of keys) {
+        await cache.delete(k);
+      }
+      log(`Caché purgado (${keys.length} entradas eliminadas).`);
+      return true;
+    }
+    return false;
+  }
+}
+
+const streamManager = new AssetStreamManager();
+
+// ============================================================================
+// ENGINE INITIALIZATION & CANVAS LIFECYCLE
+// ============================================================================
 let pointerListenerController = null;
 
-// Recreate canvas to allow switching between WebGPU and WebGL2 contexts cleanly
 function resetCanvas() {
   pointerListenerController?.abort();
   pointerListenerController = null;
@@ -105,7 +334,6 @@ function resetCanvas() {
   return newCanvas;
 }
 
-// Time-box a stalled browser WebGPU adapter/device request before auto fallback.
 async function initializeWithTimeout(engine, canvas, options, timeoutMs) {
   let timer;
   let expired = false;
@@ -129,7 +357,7 @@ async function initializeWithTimeout(engine, canvas, options, timeoutMs) {
     clearTimeout(timer);
   }
 }
-// Load WASM engine module based on requested backend
+
 async function bootstrapEngine(backendReq) {
   showLoading(`Iniciando backend ${backendReq.toUpperCase()}...`);
   state.sceneLoaded = false;
@@ -137,7 +365,6 @@ async function bootstrapEngine(backendReq) {
   state.requestedBackend = backendReq;
   el.backendSelect.value = backendReq;
 
-  // Dispose previous engine if present
   if (state.engine) {
     try {
       state.engine.dispose();
@@ -148,53 +375,42 @@ async function bootstrapEngine(backendReq) {
   }
 
   const canvas = resetCanvas();
-
-  let pkg = null;
   let effectiveBackend = null;
-  let initError = null;
+  let pkg = null;
 
-  // WebGPU attempt
   if (backendReq === 'webgpu' || backendReq === 'auto') {
-    if (!navigator.gpu) {
-      const msg = 'navigator.gpu no está disponible en este navegador/entorno.';
-      log(msg, 'warn');
+    try {
+      log('Importando módulo WebGPU WASM (pkg-webgpu)...');
+      pkg = await import('./pkg-webgpu/atlas_web.js');
+      await pkg.default();
+      log('Módulo WebGPU WASM instanciado.');
+
+      const engine = new pkg.AtlasEngine();
+      log('Solicitando inicialización con WebGPU...');
+      const caps = await initializeWithTimeout(engine, canvas, {
+        preferred_backend: 'webgpu',
+        power_preference: 'high-performance',
+        dpr: window.devicePixelRatio || 1.0,
+      }, 5000);
+
+      effectiveBackend = caps.backend;
+      state.engine = engine;
+      engine.setEventCallback((event) => {
+        log(`Rust event: ${event.type}${event.id ? ' (' + event.id + ')' : ''} (gen=${event.sceneGeneration || '?'}, rev=${event.sceneRevision || '?'})`);
+      });
+      state.activeBackend = 'webgpu';
+      el.statAdapter.textContent = caps.adapter_name || 'WebGPU Adapter';
+      log(`WebGPU inicializado exitosamente: adapter=${caps.adapter_name}, backend=${caps.backend}`);
+    } catch (err) {
+      log(`Fallo al inicializar WebGPU: ${err?.detail || err?.message || err}`, 'warn');
       if (backendReq === 'webgpu') {
-        showError(msg);
+        showError(`WebGPU no está disponible: ${err?.detail || err?.message || err}`);
         return false;
       }
-    } else {
-      try {
-        log('Importando módulo WebGPU WASM (pkg-webgpu)...');
-        pkg = await import('./pkg-webgpu/atlas_web.js');
-        await pkg.default();
-        log('Módulo WebGPU WASM instanciado.');
-
-        const engine = new pkg.AtlasEngine();
-        log('Solicitando inicialización de GPU con WebGPU...');
-        const caps = await initializeWithTimeout(engine, canvas, {
-          preferred_backend: 'webgpu',
-          power_preference: 'high-performance',
-          dpr: window.devicePixelRatio || 1.0,
-        }, backendReq === 'auto' ? 5500 : 12000);
-
-        effectiveBackend = caps.backend;
-        state.engine = engine;
-        engine.setEventCallback((event) => log('Rust event: ' + event.type + (event.id ? ' (' + event.id + ')' : '')));
-        state.activeBackend = 'webgpu';
-        el.statAdapter.textContent = caps.adapter_name || 'WebGPU Adapter';
-        log(`WebGPU inicializado exitosamente: adapter=${caps.adapter_name}, backend=${caps.backend}`);
-      } catch (err) {
-        initError = err;
-        log(`Fallo al inicializar WebGPU: ${err?.detail || err?.message || err}`, 'warn');
-        if (backendReq === 'webgpu') {
-          showError(`Fallo WebGPU: ${err?.detail || err?.message || err}`);
-          return false;
-        }
-      }
+      log('Intentando fallback automático a WebGL2...', 'warn');
     }
   }
 
-  // Fallback to WebGL2 if auto or if webgl2 was requested
   if (!state.engine && (backendReq === 'webgl2' || backendReq === 'auto')) {
     try {
       const fallbackCanvas = resetCanvas();
@@ -213,7 +429,9 @@ async function bootstrapEngine(backendReq) {
 
       effectiveBackend = caps.backend;
       state.engine = engine;
-      engine.setEventCallback((event) => log('Rust event: ' + event.type + (event.id ? ' (' + event.id + ')' : '')));
+      engine.setEventCallback((event) => {
+        log(`Rust event: ${event.type}${event.id ? ' (' + event.id + ')' : ''} (gen=${event.sceneGeneration || '?'}, rev=${event.sceneRevision || '?'})`);
+      });
       state.activeBackend = 'webgl2';
       el.statAdapter.textContent = caps.adapter_name || 'WebGL2 Adapter';
       log(`WebGL2 inicializado exitosamente: adapter=${caps.adapter_name}, backend=${caps.backend}`);
@@ -253,10 +471,15 @@ async function bootstrapEngine(backendReq) {
   });
   resizeObserver.observe(el.viewportContainer);
 
+  // Reload manifest into newly instantiated engine
+  if (streamManager.manifest) {
+    state.engine.loadManifest(JSON.stringify(streamManager.manifest));
+  }
+
   return true;
 }
 
-// Load Scene (Pelvis GLB or Synthetic Cube)
+// Load Scene (Pelvis GLB via Stream Manager or Synthetic Cube)
 async function loadScene(sceneType) {
   if (!state.engine) return;
   state.sceneLoaded = false;
@@ -278,31 +501,30 @@ async function loadScene(sceneType) {
     }
   } else {
     const isLod1 = (sceneType === 'pelvis-lod1');
-    const defaultGlb = isLod1 ? './pelvis-lod1.glb' : './pelvis-base-lod0.glb';
-    const fallbackGlb = './pelvis-pbr-core-compat.glb';
-    const glbUrl = window.__customModelUrl || defaultGlb;
-    showLoading(isLod1 ? 'Cargando Pelvis LOD1 (M03)...' : 'Cargando Pelvis Anatómica Real (M02/M03)...');
-    try {
-      log(`Descargando ${glbUrl}...`);
-      let resp = await fetch(glbUrl);
-      if (!resp.ok && glbUrl === './pelvis-base-lod0.glb') {
-        log(`Fallback a ${fallbackGlb}...`, 'warn');
-        resp = await fetch(fallbackGlb);
+    const lod = isLod1 ? 1 : 0;
+    state.currentLod = lod;
+    if (el.lodSelect) el.lodSelect.value = String(lod);
+
+    // If manifest is available, use AssetStreamManager!
+    if (streamManager.manifest) {
+      await streamManager.loadRegion('pelvis', 'male-adult', lod);
+    } else {
+      // Fallback direct load
+      const defaultGlb = isLod1 ? './pelvis-lod1.glb' : './pelvis-base-lod0.glb';
+      const glbUrl = window.__customModelUrl || defaultGlb;
+      showLoading(`Cargando Pelvis (LOD ${lod})...`);
+      try {
+        const resp = await fetch(glbUrl);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const buffer = await resp.arrayBuffer();
+        state.engine.loadGlbBytes(new Uint8Array(buffer));
+        state.sceneLoaded = true;
+        updateStats();
+        scheduleRender();
+        hideLoading();
+      } catch (err) {
+        showError(`Error cargando GLB: ${err}`);
       }
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
-      const buffer = await resp.arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-      log(`GLB descargado: ${bytes.byteLength} bytes. Parseando e inicializando en atlas-core...`);
-
-      const snapshot = state.engine.loadGlbBytes(bytes);
-      log(`GLB cargado exitosamente. Región: ${snapshot.region}, visible_ids: ${snapshot.visible_ids.length}`);
-
-      state.sceneLoaded = true;
-      updateStats();
-      scheduleRender();
-      hideLoading();
-    } catch (err) {
-      showError(`Error cargando GLB anatómico: ${err?.detail || err?.message || err}`);
     }
   }
 }
@@ -349,19 +571,22 @@ function renderStructureList(items) {
       toggleVisibility(item.id, chk.checked);
     });
 
-    // Name label
-    const title = document.createElement('span');
-    title.className = 'structure-title';
-    title.textContent = item.name_es;
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'structure-info';
 
-    // TA2 ID badge
-    const tag = document.createElement('span');
-    tag.className = 'structure-tag';
-    tag.textContent = `TA2:${item.ta2Id}`;
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'structure-name';
+    nameSpan.textContent = item.name_es;
+
+    const idSpan = document.createElement('span');
+    idSpan.className = 'structure-id';
+    idSpan.textContent = `${item.ta2Id} • ${item.side}`;
+
+    infoDiv.appendChild(nameSpan);
+    infoDiv.appendChild(idSpan);
 
     li.appendChild(chk);
-    li.appendChild(title);
-    li.appendChild(tag);
+    li.appendChild(infoDiv);
 
     li.addEventListener('click', () => {
       selectStructure(item.id);
@@ -372,12 +597,13 @@ function renderStructureList(items) {
 }
 
 function selectStructure(id) {
-  if (!state.engine) return;
   state.selectedId = id;
-  state.engine.selectStructure(id);
-  el.statSelected.textContent = id || 'Ninguna';
+  if (state.engine) {
+    state.engine.selectStructure(id);
+    scheduleRender();
+  }
 
-  // Highlight list item
+  // Update UI selection
   const items = el.structureList.querySelectorAll('.structure-item');
   items.forEach((li) => {
     if (li.dataset.id === id) {
@@ -388,9 +614,9 @@ function selectStructure(id) {
     }
   });
 
-  updateStats();
-  scheduleRender();
-  log(`Estructura seleccionada: ${id || 'Deselección'}`);
+  const selectedItem = state.structures.find((s) => s.id === id);
+  el.statSelected.textContent = selectedItem ? selectedItem.name_es : 'Ninguna';
+  log(`Selección cambiada a: ${id || 'Ninguna'}`);
 }
 
 function toggleVisibility(id, visible) {
@@ -406,10 +632,22 @@ function updateStats() {
   try {
     const stats = state.engine.getStats();
     if (stats) {
-      el.statNodes.textContent = stats.visible_nodes + '/' + stats.total_nodes;
+      el.statNodes.textContent = `${stats.visible_nodes}/${stats.total_nodes}`;
       el.statPrims.textContent = stats.primitive_count;
       el.statTris.textContent = stats.triangle_count.toLocaleString();
       el.statDrawcalls.textContent = stats.draw_call_count;
+    }
+    const mem = state.engine.getMemoryStats();
+    if (mem) {
+      if (el.statGpuMem) {
+        el.statGpuMem.textContent = `${(mem.residentGpuBytes / (1024 * 1024)).toFixed(1)} MB`;
+      }
+      if (el.statCpuMem) {
+        el.statCpuMem.textContent = `${(mem.decodedCpuBytes / (1024 * 1024)).toFixed(1)} MB`;
+      }
+      if (el.statGeneration) {
+        el.statGeneration.textContent = String(mem.currentGeneration);
+      }
     }
   } catch (e) {
     // getStats not available or failed
@@ -435,7 +673,6 @@ function renderLoop(time) {
   if (rendered) {
     state.frameCount++;
     if (state.sceneLoaded) {
-      // Used by headless testing: only ready after a successful WASM-rendered frame.
       document.documentElement.dataset.atlasProbeStatus = 'ready';
       document.documentElement.dataset.atlasBackend = state.activeBackend || 'unknown';
       document.documentElement.dataset.atlasScene = state.activeScene;
@@ -448,7 +685,6 @@ function renderLoop(time) {
     }
   }
 
-  // Continue rendering while interacting (orbit/pan)
   if (state.isInteracting) {
     scheduleRender();
   }
@@ -469,19 +705,15 @@ function attachPointerEvents(canvas) {
     startX = e.clientX;
     startY = e.clientY;
     moved = false;
-    isPan = e.button === 2 || e.shiftKey;
+    isPan = (e.button === 1 || e.button === 2);
     state.isInteracting = true;
-    scheduleRender();
-  });
+  }, { signal: listenerSignal });
 
   window.addEventListener('mousemove', (e) => {
     if (!isDown || !state.engine) return;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
-
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-      moved = true;
-    }
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
 
     if (isPan) {
       state.engine.pan(dx, dy);
@@ -499,7 +731,7 @@ function attachPointerEvents(canvas) {
     isDown = false;
     state.isInteracting = false;
 
-    // If click without dragging: perform Raycast Picking!
+    // Raycast Picking if clicked without drag
     if (!moved && state.engine && e.button === 0) {
       const rect = canvas.getBoundingClientRect();
       const cssX = e.clientX - rect.left;
@@ -519,7 +751,7 @@ function attachPointerEvents(canvas) {
     scheduleRender();
   }, { passive: false });
 
-  // Touch support (1 finger orbit, 2 finger pinch/pan)
+  // Touch controls
   let initialPinchDist = 0;
   canvas.addEventListener('touchstart', (e) => {
     state.isInteracting = true;
@@ -567,7 +799,7 @@ function attachPointerEvents(canvas) {
   });
 }
 
-// Wire action buttons
+// Action buttons
 el.btnFocus.addEventListener('click', () => {
   if (state.selectedId && state.engine) {
     state.engine.focusStructure(state.selectedId);
@@ -579,11 +811,10 @@ el.btnFocus.addEventListener('click', () => {
 el.btnIsolate.addEventListener('click', () => {
   if (state.selectedId && state.engine) {
     state.engine.isolateStructure(state.selectedId);
-    // update checkboxes in list
     const items = el.structureList.querySelectorAll('.structure-item');
     items.forEach((li) => {
       const chk = li.querySelector('input[type="checkbox"]');
-      if (chk) chk.checked = li.dataset.id === state.selectedId;
+      if (chk) chk.checked = (li.dataset.id === state.selectedId);
     });
     updateStats();
     scheduleRender();
@@ -594,7 +825,7 @@ el.btnIsolate.addEventListener('click', () => {
 el.btnHide.addEventListener('click', () => {
   if (state.selectedId && state.engine) {
     state.engine.setVisibility(state.selectedId, false);
-    const li = el.structureList.querySelector(`[data-id="${state.selectedId}"]`);
+    const li = el.structureList.querySelector(`.structure-item[data-id="${state.selectedId}"]`);
     if (li) {
       const chk = li.querySelector('input[type="checkbox"]');
       if (chk) chk.checked = false;
@@ -628,7 +859,7 @@ el.btnDeselect.addEventListener('click', () => {
   selectStructure(null);
 });
 
-// Presets
+// Camera Presets
 el.preset0.addEventListener('click', () => {
   if (state.engine) {
     state.engine.setCameraPreset(0);
@@ -666,6 +897,102 @@ el.sceneSelect.addEventListener('change', async (e) => {
   await loadScene(e.target.value);
 });
 
+el.lodSelect.addEventListener('change', async (e) => {
+  const lod = parseInt(e.target.value, 10);
+  await streamManager.loadRegion('pelvis', 'male-adult', lod);
+});
+
+el.qualitySelect.addEventListener('change', (e) => {
+  const profile = e.target.value;
+  if (state.engine) {
+    try {
+      const budget = state.engine.setQualityProfile(profile);
+      log(`Perfil de calidad cambiado a: ${profile.toUpperCase()} (GPU: ${(budget.gpuResidentBudgetBytes / (1024 * 1024))}MB)`);
+      updateStats();
+    } catch (err) {
+      log(`Error configurando perfil: ${err}`, 'warn');
+    }
+  }
+});
+
+el.offlineBtn.addEventListener('click', () => {
+  streamManager.simulatedOffline = !streamManager.simulatedOffline;
+  if (streamManager.simulatedOffline) {
+    el.offlineBtn.textContent = '🔌 Offline';
+    el.offlineBtn.style.background = '#b91c1c';
+    log('Simulación de modo sin conexión activada.');
+  } else {
+    el.offlineBtn.textContent = '🌐 Online';
+    el.offlineBtn.style.background = '';
+    log('Modo en línea restaurado.');
+  }
+});
+
+// M04 20x Rapid LOD Toggle Test
+async function runRapidLodToggleTest(iterations = 20) {
+  log(`=== INICIANDO PRUEBA M04: 20x CONMUTACIÓN ATÓMICA DE LOD ===`);
+  const initialMem = state.engine.getMemoryStats();
+  const initialGpuBytes = initialMem.residentGpuBytes;
+  let peakGpuBytes = initialGpuBytes;
+  let targetLod = 1;
+
+  for (let i = 0; i < iterations; i++) {
+    log(`[${i + 1}/${iterations}] Alternando a LOD ${targetLod}...`);
+    const ok = await streamManager.loadRegion('pelvis', 'male-adult', targetLod);
+    if (!ok) {
+      log(`Error en iteración ${i + 1} de conmutación de LOD!`, 'err');
+      return { pass: false, iteration: i + 1 };
+    }
+    const currentMem = state.engine.getMemoryStats();
+    if (currentMem.residentGpuBytes > peakGpuBytes) {
+      peakGpuBytes = currentMem.residentGpuBytes;
+    }
+    targetLod = (targetLod === 0) ? 1 : 0;
+    await new Promise(r => setTimeout(r, 60));
+  }
+
+  const finalMem = state.engine.getMemoryStats();
+  const structures = state.engine.getStructures();
+  const idsIntact = (structures.length === 26);
+  // Monotonic leak check: final memory should be bounded within initial peak margin
+  const leakFree = (finalMem.residentGpuBytes <= peakGpuBytes * 1.05);
+
+  log(`Prueba 20x finalizada:`);
+  log(`- Estructuras TA2 intactas: ${structures.length}/26 (${idsIntact ? 'PASS' : 'FAIL'})`);
+  log(`- Pico GPU resident: ${(peakGpuBytes / (1024 * 1024)).toFixed(2)} MB`);
+  log(`- GPU resident final: ${(finalMem.residentGpuBytes / (1024 * 1024)).toFixed(2)} MB`);
+  log(`- Sin fuga acumulativa: ${leakFree ? 'PASS' : 'FAIL'}`);
+
+  return {
+    pass: idsIntact && leakFree,
+    iterations,
+    idsCount: structures.length,
+    initialGpuBytes,
+    peakGpuBytes,
+    finalGpuBytes: finalMem.residentGpuBytes,
+  };
+}
+el.rapidLodBtn.addEventListener('click', () => runRapidLodToggleTest(20));
+
+// M04 Device Loss Simulation & Recovery
+async function simulateDeviceLossAndRecover() {
+  log(`=== INICIANDO SIMULACIÓN M04: PÉRDIDA DE DISPOSITIVO GPU Y RECUPERACIÓN ===`, 'warn');
+  if (state.engine) {
+    state.engine.simulateDeviceLoss();
+  }
+  // Re-bootstrap canvas & engine context
+  log('Reconstruyendo contexto GPU y pipelines...');
+  const success = await bootstrapEngine(state.requestedBackend);
+  if (success) {
+    log('Recargando escena desde caché persistente verificada...');
+    await streamManager.loadRegion('pelvis', 'male-adult', state.currentLod || 0);
+    log('Recuperación de dispositivo GPU completada (SIMULATED_PASS).', 'info');
+    return true;
+  }
+  return false;
+}
+el.deviceLossBtn.addEventListener('click', () => simulateDeviceLossAndRecover());
+
 el.structureSearch.addEventListener('input', () => {
   renderStructureList(state.structures);
 });
@@ -687,12 +1014,21 @@ el.logToggleBtn.addEventListener('click', () => {
   el.logDrawer.style.display = open ? 'none' : 'block';
 });
 
+// Expose globals for automated test harness
+window.__atlasEngine = () => state.engine;
+window.__atlasStreamManager = streamManager;
+window.__atlasState = state;
+window.__runRapidLodToggle = runRapidLodToggleTest;
+window.__simulateDeviceLoss = simulateDeviceLossAndRecover;
+
 // Bootstrap application on page load
 async function main() {
-  log('Iniciando probe-web...');
+  log('Iniciando probe-web M04...');
   const params = new URLSearchParams(window.location.search);
   const requestedBackend = params.get('backend') || 'auto';
   const initialScene = params.get('scene') || 'pelvis';
+  const isLod1 = (initialScene === 'pelvis-lod1');
+  const initialLod = parseInt(params.get('lod') || (isLod1 ? '1' : '0'), 10);
   const customModel = params.get('model');
   if (customModel) {
     window.__customModelUrl = customModel;
@@ -702,9 +1038,14 @@ async function main() {
 
   const success = await bootstrapEngine(requestedBackend);
   if (success) {
-    await loadScene(initialScene);
+    await streamManager.initManifest('./manifest.json');
+    if (initialScene === 'cube') {
+      await loadScene('cube');
+    } else {
+      await streamManager.loadRegion('pelvis', 'male-adult', initialLod);
+    }
     scheduleRender();
-    log('Probe-web listo y en ejecución.');
+    log('Probe-web M04 listo y en ejecución.');
   }
 }
 

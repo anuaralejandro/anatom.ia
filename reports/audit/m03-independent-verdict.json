@@ -1,0 +1,57 @@
+{
+  "milestone": "M03",
+  "verdict": "PASS_CORRECTED_GO_M04_LOCAL_ONLY",
+  "source": "independent audit 2026-11-09",
+  "repo": "anuaralejandro/anatom.ia",
+  "repo_status": "public main dbca7b7; local audit changes not pushed",
+  "verified": {
+    "base_ids": 26,
+    "base_meshes": 26,
+    "base_primitives": 27,
+    "glb_triangles_base": 38605,
+    "glb_triangles_lod1": 33758,
+    "glb_reduction_percent": 12.56,
+    "clean_blender_build_same_sha256": true,
+    "base_sha256": "1510ed9a93b54c8067543b4a13e92ee713f1d75adc2687324ad29a72b76244ae",
+    "lod1_sha256": "4c1054b116b972be97ed367cb4d0a7242098c92d31e094d2127b621168346391",
+    "quality_real_raster_masks": true,
+    "quality_view_count": 5,
+    "quality_target_structure_count": 2,
+    "quality_max_boundary_pixel_deviation": 1,
+    "quality_min_iou": 0.993367,
+    "webgpu_webgl2_lod0_lod1_cases_pass": 4,
+    "rust_tests_passed": 23,
+    "fmt": true,
+    "clippy": true,
+    "wasm": true,
+    "upstream_clean": true
+  },
+  "fixes": [
+    "no false proxy quality PASS",
+    "quality report hash binding",
+    "no staging fallback",
+    "offline optional gltfpack",
+    "pre-read traversal and symlink safety",
+    "catalog GLB ID consistency",
+    "test missing release negative"
+  ],
+  "gates": {
+    "reproducibility": "PASS",
+    "core_pbr_runtime": "PASS",
+    "lod_pilot_silhouette": "PASS_TECHNICAL_ONLY",
+    "nonregression": "PASS",
+    "clinical_review": "NOT_RUN",
+    "commercial_publication": "BLOCKED"
+  },
+  "evidence": [
+    "docs/AUDITORIA_IMPLEMENTACION_02.md",
+    "reports/audit/m03-real-silhouettes.json",
+    "reports/audit/m03-dual-backend-browser.json",
+    "build/atlas/release/silhouette-audit.json"
+  ],
+  "notes": [
+    "No GitHub write was performed.",
+    "Public repository contains rendered screenshots and metadata; rights review outstanding.",
+    "No performance/mobile guarantee."
+  ]
+}

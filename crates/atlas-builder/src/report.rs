@@ -40,7 +40,8 @@ pub fn run_report(release_dir: &Path, out_dir: &Path) -> Result<(), Box<dyn std:
         "bilateral_pairs_count": 9,
         "unpaired_structures_count": 8,
         "packages": manifest.get("packages"),
-        "timestamp": chrono_iso_now()
+        "build_timestamp": null,
+        "report_reproducible": true
     });
 
     let build_report_path = out_dir.join("build-report.json");
@@ -76,28 +77,38 @@ pub fn run_report(release_dir: &Path, out_dir: &Path) -> Result<(), Box<dyn std:
         serde_json::to_string_pretty(&license_report)?.as_bytes(),
     )?;
 
-    // 4. quality-report.json
-    // Si existe el reporte en staging o experimental, copiarlo o generarlo
-    let staging_quality = Path::new("build/atlas/staging/quality-report.json");
-    let exp_quality = Path::new("reports/experimental/quality-report.json");
-
-    let quality_val: serde_json::Value = if staging_quality.exists() {
-        let txt = std::fs::read_to_string(staging_quality)?;
-        serde_json::from_str(&txt).unwrap_or(json!({}))
-    } else if exp_quality.exists() {
-        let txt = std::fs::read_to_string(exp_quality)?;
-        serde_json::from_str(&txt).unwrap_or(json!({}))
-    } else {
+    // 4. Quality evidence is only accepted when produced by the independent
+    // rasterized triangle-mask evaluator against exactly THESE release binaries.
+    // Never synthesize quality PASS from missing/stale reports or box-corner proxies.
+    let qa_path = release_dir.join("silhouette-audit.json");
+    let unverified = || {
         json!({
-            "status": "PASS",
-            "quality_gate_p95_target": 2.0,
-            "lod1": {
-                "quality_verdict": "PASS",
-                "byte_reduction_percent": 12.8,
-                "triangle_reduction_percent": 12.56,
-                "p95_silhouette_pixel_deviation_720p": 0.01
-            }
+            "status": "NOT_RUN",
+            "quality_verdict": "UNVERIFIED",
+            "reason": "Run tools/audit_lod_silhouettes.py on this exact release; report requires matching SHA-256 hashes",
+            "method": "rasterized_triangle_masks",
         })
+    };
+    let quality_val = if qa_path.is_file() {
+        let qa: serde_json::Value = serde_json::from_slice(&std::fs::read(&qa_path)?)?;
+        let expected0 =
+            crate::build::compute_sha256(&std::fs::read(release_dir.join("pelvis-base-lod0.glb"))?);
+        let expected1 =
+            crate::build::compute_sha256(&std::fs::read(release_dir.join("pelvis-lod1.glb"))?);
+        if qa.get("status").and_then(|v| v.as_str()) == Some("PASS_MEASURED")
+            && qa.get("sha256_lod0").and_then(|v| v.as_str()) == Some(expected0.as_str())
+            && qa.get("sha256_lod1").and_then(|v| v.as_str()) == Some(expected1.as_str())
+            && qa
+                .get("is_real_rasterized_triangle_mask")
+                .and_then(|v| v.as_bool())
+                == Some(true)
+        {
+            qa
+        } else {
+            unverified()
+        }
+    } else {
+        unverified()
     };
 
     let quality_report_path = out_dir.join("quality-report.json");
@@ -111,8 +122,4 @@ pub fn run_report(release_dir: &Path, out_dir: &Path) -> Result<(), Box<dyn std:
         out_dir
     );
     Ok(())
-}
-
-fn chrono_iso_now() -> String {
-    "2026-11-09T16:00:00-06:00".to_string()
 }

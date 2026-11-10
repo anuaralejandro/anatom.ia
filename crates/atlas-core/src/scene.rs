@@ -280,6 +280,30 @@ impl Scene {
         self.revision += 1;
     }
 
+    /// Atomically transfers selection and visibility state from a previous scene
+    /// (e.g. during an LOD swap of the same anatomical region), incrementing revision.
+    pub fn transfer_state_from(&mut self, old_scene: &Scene) {
+        if let Some(ref sel_id) = old_scene.selected_id
+            && self
+                .nodes
+                .iter()
+                .any(|n| n.anatomy_id.as_deref() == Some(sel_id))
+        {
+            self.selected_id = Some(sel_id.clone());
+        }
+        for node in &mut self.nodes {
+            if let Some(ref aid) = node.anatomy_id
+                && let Some(old_node) = old_scene
+                    .nodes
+                    .iter()
+                    .find(|n| n.anatomy_id.as_deref() == Some(aid))
+            {
+                node.visible = old_node.visible;
+            }
+        }
+        self.revision = old_scene.revision.wrapping_add(1);
+    }
+
     pub fn get_structure_bounds(&self, id: &str) -> Option<AABB> {
         let mut bounds = AABB::default();
         let mut found = false;

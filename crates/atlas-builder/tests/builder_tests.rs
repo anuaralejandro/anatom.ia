@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use atlas_builder::validate::run_validate;
 
 #[test]
-fn test_validate_release_package_passes() {
+fn test_validate_release_package_or_missing_release() {
     let release_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .unwrap()
@@ -14,19 +14,34 @@ fn test_validate_release_package_passes() {
         .join("release");
 
     if !release_dir.join("manifest.json").exists() {
-        eprintln!("Release package does not exist yet at {:?}, skipping test", release_dir);
+        // A clean public checkout intentionally excludes the source-derived GLB binaries.
+        // No silent PASS: verify that validation explicitly rejects missing releases.
+        let report =
+            run_validate(&release_dir).expect("Missing release should be rejected cleanly");
+        assert!(!report.passed, "Missing release cannot validate");
         return;
     }
 
     let report = run_validate(&release_dir).expect("Validation should succeed for release dir");
-    assert!(report.passed, "Validation report should pass: {:?}", report.errors);
-    assert!(report.errors.is_empty(), "Validation report should have 0 errors");
-    assert!(report.checks_count >= 20, "Should have performed at least 20 checks");
+    assert!(
+        report.passed,
+        "Validation report should pass: {:?}",
+        report.errors
+    );
+    assert!(
+        report.errors.is_empty(),
+        "Validation report should have 0 errors"
+    );
+    assert!(
+        report.checks_count >= 20,
+        "Should have performed at least 20 checks"
+    );
 }
 
 #[test]
 fn test_adversarial_path_traversal_rejected() {
-    let temp_dir = std::env::temp_dir().join(format!("anatomia_test_traversal_{}", std::process::id()));
+    let temp_dir =
+        std::env::temp_dir().join(format!("anatomia_test_traversal_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&temp_dir);
     std::fs::create_dir_all(&temp_dir).unwrap();
 
@@ -56,16 +71,26 @@ fn test_adversarial_path_traversal_rejected() {
         }]
     });
 
-    std::fs::write(temp_dir.join("manifest.json"), serde_json::to_string_pretty(&malicious_manifest).unwrap()).unwrap();
+    std::fs::write(
+        temp_dir.join("manifest.json"),
+        serde_json::to_string_pretty(&malicious_manifest).unwrap(),
+    )
+    .unwrap();
 
     let result = run_validate(&temp_dir);
     let _ = std::fs::remove_dir_all(&temp_dir);
 
     match result {
         Ok(summary) => {
-            assert!(!summary.passed, "Path traversal manifest must not pass validation");
             assert!(
-                summary.errors.iter().any(|e| e.contains("ruta sospechosa") || e.contains("no existe")),
+                !summary.passed,
+                "Path traversal manifest must not pass validation"
+            );
+            assert!(
+                summary
+                    .errors
+                    .iter()
+                    .any(|e| e.contains("ruta sospechosa") || e.contains("no existe")),
                 "Expected rejection error for traversal path in errors: {:?}",
                 summary.errors
             );
@@ -92,7 +117,8 @@ fn test_adversarial_bad_hash_rejected() {
         return;
     }
 
-    let temp_dir = std::env::temp_dir().join(format!("anatomia_test_bad_hash_{}", std::process::id()));
+    let temp_dir =
+        std::env::temp_dir().join(format!("anatomia_test_bad_hash_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&temp_dir);
     std::fs::create_dir_all(&temp_dir).unwrap();
 
@@ -106,9 +132,15 @@ fn test_adversarial_bad_hash_rejected() {
 
     // Tamper with manifest hash
     let manifest_path = temp_dir.join("manifest.json");
-    let mut manifest: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(&manifest_path).unwrap()).unwrap();
-    manifest["packages"][0]["sha256"] = serde_json::json!("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-    std::fs::write(&manifest_path, serde_json::to_string_pretty(&manifest).unwrap()).unwrap();
+    let mut manifest: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&manifest_path).unwrap()).unwrap();
+    manifest["packages"][0]["sha256"] =
+        serde_json::json!("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    std::fs::write(
+        &manifest_path,
+        serde_json::to_string_pretty(&manifest).unwrap(),
+    )
+    .unwrap();
 
     let result = run_validate(&temp_dir);
     let _ = std::fs::remove_dir_all(&temp_dir);
@@ -117,7 +149,10 @@ fn test_adversarial_bad_hash_rejected() {
         Ok(summary) => {
             assert!(!summary.passed, "Tampered SHA-256 must not pass validation");
             assert!(
-                summary.errors.iter().any(|e| e.contains("SHA256") || e.contains("no coincide")),
+                summary
+                    .errors
+                    .iter()
+                    .any(|e| e.contains("SHA256") || e.contains("no coincide")),
                 "Expected hash mismatch in errors: {:?}",
                 summary.errors
             );
@@ -131,7 +166,8 @@ fn test_adversarial_bad_hash_rejected() {
 
 #[test]
 fn test_adversarial_duplicate_package_id_rejected() {
-    let temp_dir = std::env::temp_dir().join(format!("anatomia_test_dup_pkg_{}", std::process::id()));
+    let temp_dir =
+        std::env::temp_dir().join(format!("anatomia_test_dup_pkg_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&temp_dir);
     std::fs::create_dir_all(&temp_dir).unwrap();
 
@@ -175,14 +211,21 @@ fn test_adversarial_duplicate_package_id_rejected() {
         ]
     });
 
-    std::fs::write(temp_dir.join("manifest.json"), serde_json::to_string_pretty(&dup_manifest).unwrap()).unwrap();
+    std::fs::write(
+        temp_dir.join("manifest.json"),
+        serde_json::to_string_pretty(&dup_manifest).unwrap(),
+    )
+    .unwrap();
 
     let result = run_validate(&temp_dir);
     let _ = std::fs::remove_dir_all(&temp_dir);
 
     match result {
         Ok(summary) => {
-            assert!(!summary.passed, "Duplicate package ID must not pass validation");
+            assert!(
+                !summary.passed,
+                "Duplicate package ID must not pass validation"
+            );
             assert!(
                 summary.errors.iter().any(|e| e.contains("duplicado")),
                 "Expected duplicate error in errors: {:?}",
@@ -198,7 +241,8 @@ fn test_adversarial_duplicate_package_id_rejected() {
 
 #[test]
 fn test_adversarial_unlisted_package_in_region_rejected() {
-    let temp_dir = std::env::temp_dir().join(format!("anatomia_test_unlisted_{}", std::process::id()));
+    let temp_dir =
+        std::env::temp_dir().join(format!("anatomia_test_unlisted_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&temp_dir);
     std::fs::create_dir_all(&temp_dir).unwrap();
 
@@ -230,16 +274,26 @@ fn test_adversarial_unlisted_package_in_region_rejected() {
         ]
     });
 
-    std::fs::write(temp_dir.join("manifest.json"), serde_json::to_string_pretty(&unlisted_manifest).unwrap()).unwrap();
+    std::fs::write(
+        temp_dir.join("manifest.json"),
+        serde_json::to_string_pretty(&unlisted_manifest).unwrap(),
+    )
+    .unwrap();
 
     let result = run_validate(&temp_dir);
     let _ = std::fs::remove_dir_all(&temp_dir);
 
     match result {
         Ok(summary) => {
-            assert!(!summary.passed, "Unlisted package in region must not pass validation");
             assert!(
-                summary.errors.iter().any(|e| e.contains("paquete inexistente") || e.contains("no existe")),
+                !summary.passed,
+                "Unlisted package in region must not pass validation"
+            );
+            assert!(
+                summary
+                    .errors
+                    .iter()
+                    .any(|e| e.contains("paquete inexistente") || e.contains("no existe")),
                 "Expected unlisted package error in errors: {:?}",
                 summary.errors
             );

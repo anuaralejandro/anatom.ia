@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "requested_backend": "webgl2",
+      "scene": "pelvis",
+      "requests": [
+        {
+          "url": "pelvis-base-lod0.glb",
+          "status": 200
+        }
+      ],
+      "console_errors": [],
+      "effective_backend": "webgl2",
+      "loaded_scene": "pelvis",
+      "visible_nodes": "26/26",
+      "triangle_count": "38,605",
+      "list_rows": 26,
+      "expected_asset": "pelvis-base-lod0.glb",
+      "actual_asset_retrieved": true,
+      "isolated_nodes": "1/26",
+      "restored_nodes": "26/26",
+      "status": "PASS"
+    },
+    {
+      "requested_backend": "webgl2",
+      "scene": "pelvis-lod1",
+      "requests": [
+        {
+          "url": "pelvis-lod1.glb",
+          "status": 200
+        }
+      ],
+      "console_errors": [],
+      "effective_backend": "webgl2",
+      "loaded_scene": "pelvis-lod1",
+      "visible_nodes": "26/26",
+      "triangle_count": "33,758",
+      "list_rows": 26,
+      "expected_asset": "pelvis-lod1.glb",
+      "actual_asset_retrieved": true,
+      "isolated_nodes": "1/26",
+      "restored_nodes": "26/26",
+      "status": "PASS"
+    },
+    {
+      "requested_backend": "webgpu",
+      "scene": "pelvis",
+      "requests": [
+        {
+          "url": "pelvis-base-lod0.glb",
+          "status": 200
+        }
+      ],
+      "console_errors": [],
+      "effective_backend": "webgpu",
+      "loaded_scene": "pelvis",
+      "visible_nodes": "26/26",
+      "triangle_count": "38,605",
+      "list_rows": 26,
+      "expected_asset": "pelvis-base-lod0.glb",
+      "actual_asset_retrieved": true,
+      "isolated_nodes": "1/26",
+      "restored_nodes": "26/26",
+      "status": "PASS"
+    },
+    {
+      "requested_backend": "webgpu",
+      "scene": "pelvis-lod1",
+      "requests": [
+        {
+          "url": "pelvis-lod1.glb",
+          "status": 200
+        }
+      ],
+      "console_errors": [],
+      "effective_backend": "webgpu",
+      "loaded_scene": "pelvis-lod1",
+      "visible_nodes": "26/26",
+      "triangle_count": "33,758",
+      "list_rows": 26,
+      "expected_asset": "pelvis-lod1.glb",
+      "actual_asset_retrieved": true,
+      "isolated_nodes": "1/26",
+      "restored_nodes": "26/26",
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "Chrome Windows desktop headless only",
+    "No physical mobile, FPS or touch pinch benchmarking"
+  ]
+}

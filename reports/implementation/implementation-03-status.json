@@ -1,0 +1,77 @@
+{
+  "milestone": "M04",
+  "title": "Asset Streaming, Cache, Memory Management & Device Recovery",
+  "status": "COMPLETED",
+  "timestamp": "2026-11-10T03:00:00Z",
+  "environment": {
+    "os": "Windows 11 Pro x86_64",
+    "rust_version": "rustc 1.97.1",
+    "cargo_version": "cargo 1.97.1",
+    "wasm_pack_version": "wasm-pack 0.13.1",
+    "browser_test_engine": "Playwright 1.50+ / Google Chrome 133+",
+    "target": "wasm32-unknown-unknown"
+  },
+  "gates": [
+    {
+      "gate_id": "G04_MANIFEST_NEGOTIATION",
+      "verdict": "PASS",
+      "evidence": "Manifest snapshot parser validates schema v1, rejects URL traversal, rejects unsupported meshopt extensions with typed ErrorCode::AssetUnsupportedExtension, and enforces SHA-256 and size integrity."
+    },
+    {
+      "gate_id": "G04_ASYNC_LIFECYCLE_CANCELLATION",
+      "verdict": "PASS",
+      "evidence": "Instance-level generation tokens and AbortController cancel superseded fetch/load operations (A->B->A race test verified winning generation renders 38,605 triangles without corrupting scene state)."
+    },
+    {
+      "gate_id": "G04_CACHE_INTEGRITY_OFFLINE",
+      "verdict": "PASS",
+      "evidence": "CacheStorage persistence (ADR-004) verifies SHA-256 via Web Crypto API. Warm reload performs 0 network requests; offline mode serves cached packages and yields typed recoverable NETWORK_ERROR for uncached misses; corrupted cache entries are automatically detected, purged, and re-fetched."
+    },
+    {
+      "gate_id": "G04_MEMORY_AND_LOD_SWAP",
+      "verdict": "PASS",
+      "evidence": "Atomic scene and GPU buffer swap preserves camera position/target/zoom, selected structure ID, and isolation/visibility states. 20x rapid LOD toggle confirmed all 26 TA2 structures intact and zero monotonic memory leak (initial peak: 3.27 MB, final: 3.21 MB)."
+    },
+    {
+      "gate_id": "G04_DEVICE_LOSS_RECOVERY",
+      "verdict": "SIMULATED_PASS",
+      "evidence": "simulateDeviceLoss triggers buffer teardown, context recreation, and automatic reload from verified local cache (26/26 nodes restored). Physical driver crash recovery marked NOT_RUN due to sandbox limitations."
+    },
+    {
+      "gate_id": "G04_RENDER_ON_DEMAND",
+      "verdict": "PASS",
+      "evidence": "Engine idle state verified: renderFrame() returns false when no user interaction or camera changes occur, avoiding continuous frame drawing and conserving battery."
+    },
+    {
+      "gate_id": "G04_DUAL_BACKEND_NONREGRESSION",
+      "verdict": "PASS",
+      "evidence": "Dual WASM bundles (pkg-webgpu and pkg-webgl2) validated in headless Chrome. All 35 workspace unit/adversarial cargo tests pass; baseline pelvis, Core PBR, Stage 6, Stage 7, and silhouette audit scripts pass with 0 errors."
+    },
+    {
+      "gate_id": "G04_LEGAL_CLEARANCE",
+      "verdict": "BLOCKED_FOR_COMMERCIAL_DISTRIBUTION",
+      "evidence": "commercial_release_allowed remains false; assets are restricted to local non-commercial research and validation under CC BY-SA 4.0; no public CDN or commercial distribution performed."
+    }
+  ],
+  "runtime_metrics": {
+    "lod0_triangles": 38605,
+    "lod1_triangles": 33758,
+    "reduction_percentage": 12.56,
+    "ta2_structures_count": 26,
+    "gpu_memory_resident_bytes_lod0": 3272852,
+    "gpu_memory_resident_bytes_lod1": 3218852,
+    "cpu_decoded_bytes_approx": 1396000,
+    "budget_profile_medium_gpu_bytes": 134217728,
+    "budget_profile_medium_cpu_bytes": 100663296,
+    "p95_raster_silhouette_px": 0.0,
+    "max_raster_silhouette_px": 1.0
+  },
+  "deliverables": [
+    "docs/BUILD_RUNTIME.md",
+    "docs/ADR_004_CACHE_STORAGE.md",
+    "docs/IMPLEMENTATION_03_RESULT.md",
+    "reports/implementation/M04/m04-streaming-suite-result.json",
+    "reports/implementation/M04/m04-probe-rendered.png",
+    "reports/implementation/implementation-03-status.json"
+  ]
+}

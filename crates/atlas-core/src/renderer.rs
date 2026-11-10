@@ -85,6 +85,7 @@ pub struct Renderer {
     pub clear_color: wgpu::Color,
 
     pub capabilities: EngineCapabilities,
+    pub resident_gpu_bytes: usize,
 }
 
 impl Renderer {
@@ -255,6 +256,7 @@ impl Renderer {
                 a: 1.0,
             },
             capabilities,
+            resident_gpu_bytes: 0,
         }
     }
 
@@ -296,10 +298,30 @@ impl Renderer {
         self.clear_color = wgpu::Color { r, g, b, a: 1.0 };
     }
 
-    pub fn upload_scene(&mut self, scene: &Scene) {
+    /// Releases GPU vertex, index, object, and material buffers explicitly.
+    pub fn destroy_gpu_resources(&mut self) {
+        for mesh in &self.gpu_meshes {
+            for prim in &mesh.primitives {
+                prim.vertex_buffer.destroy();
+                prim.index_buffer.destroy();
+            }
+        }
+        for node in &self.gpu_nodes {
+            node.object_buffer.destroy();
+        }
+        for mat in &self.gpu_materials {
+            mat.uniform_buffer.destroy();
+        }
         self.gpu_meshes.clear();
         self.gpu_nodes.clear();
         self.gpu_materials.clear();
+        self.resident_gpu_bytes = 0;
+    }
+
+    pub fn upload_scene(&mut self, scene: &Scene) {
+        self.destroy_gpu_resources();
+
+        let mut gpu_bytes = 0usize;
 
         // 1. Upload materials
         for mat in &scene.materials {
@@ -318,6 +340,8 @@ impl Renderer {
                         contents: bytemuck::cast_slice(&[uniform]),
                         usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
                     });
+
+            gpu_bytes += std::mem::size_of::<MaterialUniform>();
 
             let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("material_bind_group"),
@@ -351,6 +375,7 @@ impl Renderer {
                         contents: bytemuck::cast_slice(&[uniform]),
                         usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
                     });
+            gpu_bytes += std::mem::size_of::<MaterialUniform>();
             let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("default_material_bind_group"),
                 layout: &self.material_bind_group_layout,
@@ -369,6 +394,9 @@ impl Renderer {
         for mesh in &scene.meshes {
             let mut gpu_prims = Vec::new();
             for prim in &mesh.primitives {
+                let vertex_bytes = prim.vertices.len() * std::mem::size_of::<Vertex>();
+                let index_bytes = prim.indices.len() * std::mem::size_of::<u32>();
+
                 let vertex_buffer =
                     self.device
                         .create_buffer_init(&wgpu::util::BufferInitDescriptor {
@@ -384,6 +412,8 @@ impl Renderer {
                             contents: bytemuck::cast_slice(&prim.indices),
                             usage: wgpu::BufferUsages::INDEX,
                         });
+
+                gpu_bytes += vertex_bytes + index_bytes;
 
                 gpu_prims.push(GpuPrimitive {
                     vertex_buffer,
@@ -419,6 +449,8 @@ impl Renderer {
                     usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
                 });
 
+            gpu_bytes += std::mem::size_of::<ObjectUniform>();
+
             let object_bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("object_bind_group"),
                 layout: &self.object_bind_group_layout,
@@ -434,6 +466,12 @@ impl Renderer {
                 mesh_index: node.mesh_index,
             });
         }
+
+        // Camera uniform buffer and depth texture overhead
+        gpu_bytes += std::mem::size_of::<CameraUniform>();
+        gpu_bytes += (self.width as usize) * (self.height as usize) * 4;
+
+        self.resident_gpu_bytes = gpu_bytes;
     }
 
     /// Uploads a synthetic colored cube for M01 gate validation
@@ -636,5 +674,12 @@ impl Renderer {
 
         self.queue.submit(std::iter::once(encoder.finish()));
         Ok(())
+    }
+}
+
+impl Drop for Renderer {
+    fn drop(&mut self) {
+        self.destroy_gpu_resources();
+        self.camera_buffer.destroy();
     }
 }

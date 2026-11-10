@@ -1,253 +1,169 @@
 {
-  "lod1": {
-    "base_bytes": 681500,
-    "base_file": "build/atlas/staging/pelvis-normalized.glb",
-    "base_total_triangles": 38605,
-    "byte_reduction_percent": 12.85,
-    "lod_bytes": 593928,
-    "lod_file": "build/atlas/staging/pelvis-lod1.glb",
-    "lod_name": "lod1",
-    "lod_total_triangles": 33758,
-    "p95_silhouette_pixel_deviation_720p": 0.01,
-    "quality_gate_p95_target": 2.0,
-    "quality_verdict": "PASS",
-    "structures": {
-      "ta2:1071": {
-        "base_triangles": 11676,
-        "center_shift_meters": 0.000012,
-        "lod_triangles": 7589,
-        "max_screen_pixel_deviation": 0.01,
-        "name": "atlas__Sacrum",
-        "status": "PASS",
-        "triangle_ratio": 0.65
-      },
-      "ta2:1092": {
-        "base_triangles": 1166,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1166,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Coccyx",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:1850:left": {
-        "base_triangles": 656,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 656,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Sacrotuberous ligament.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:1850:right": {
-        "base_triangles": 656,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 656,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Sacrotuberous ligament.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:1852:left": {
-        "base_triangles": 280,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 280,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Sacrospinous ligament.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:1852:right": {
-        "base_triangles": 280,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 280,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Sacrospinous ligament.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:1855": {
-        "base_triangles": 416,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 416,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Pubic symphysis",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:2412:left": {
-        "base_triangles": 1034,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1034,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Coccygeus muscle.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:2412:right": {
-        "base_triangles": 1034,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1034,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Coccygeus muscle.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3401": {
-        "base_triangles": 3036,
-        "center_shift_meters": 2e-6,
-        "lod_triangles": 2276,
-        "max_screen_pixel_deviation": 0.06,
-        "name": "atlas__Urinary bladder",
-        "status": "PASS",
-        "triangle_ratio": 0.7497
-      },
-      "ta2:3576:left": {
-        "base_triangles": 1356,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1356,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Testis.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3576:right": {
-        "base_triangles": 1356,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1356,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Testis.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3631:left": {
-        "base_triangles": 360,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 360,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Seminal gland.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3631:right": {
-        "base_triangles": 360,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 360,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Seminal gland.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3637": {
-        "base_triangles": 468,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 468,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Prostate",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3668": {
-        "base_triangles": 1391,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1391,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Glans penis",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3678": {
-        "base_triangles": 1288,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 1288,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Corpus cavernosum of penis",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:3681": {
-        "base_triangles": 560,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 560,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Corpus spongiosum of penis",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:4301:left": {
-        "base_triangles": 288,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 288,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Common iliac artery.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:4301:right": {
-        "base_triangles": 576,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 576,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Common iliac artery.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:4302:left": {
-        "base_triangles": 576,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 576,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Internal iliac artery.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:4302:right": {
-        "base_triangles": 576,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 576,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Internal iliac artery.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:5050:left": {
-        "base_triangles": 576,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 576,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__External iliac vein.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:5050:right": {
-        "base_triangles": 576,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 576,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__External iliac vein.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:6522:left": {
-        "base_triangles": 4032,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 4032,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Femoral nerve.l",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      },
-      "ta2:6522:right": {
-        "base_triangles": 4032,
-        "center_shift_meters": 0.0,
-        "lod_triangles": 4032,
-        "max_screen_pixel_deviation": 0.0,
-        "name": "atlas__Femoral nerve.r",
-        "status": "PASS",
-        "triangle_ratio": 1.0
-      }
+  "cameras": [
+    "anterior",
+    "oblique",
+    "posterior",
+    "inferior",
+    "superior"
+  ],
+  "ids_exactly_26": true,
+  "is_real_rasterized_triangle_mask": true,
+  "limitations": [
+    "independent surface silhouette, not visible-scene compositing",
+    "no depth/self-occlusion test",
+    "not clinical validation of topology"
+  ],
+  "max_per_camera_boundary_p95_px": 0.0,
+  "measurement": "triangle-projected binary silhouette per organ, symmetric nearest-boundary distance in pixel units",
+  "sha256_lod0": "1510ed9a93b54c8067543b4a13e92ee713f1d75adc2687324ad29a72b76244ae",
+  "sha256_lod1": "4c1054b116b972be97ed367cb4d0a7242098c92d31e094d2127b621168346391",
+  "source0": "build\\atlas\\release\\pelvis-base-lod0.glb",
+  "source1": "build\\atlas\\release\\pelvis-lod1.glb",
+  "status": "PASS_MEASURED",
+  "tests": [
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "anterior",
+      "id": "ta2:1071",
+      "mask_iou": 0.9944,
+      "name": "sacrum",
+      "pixels0": 7284,
+      "pixels1": 7317,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 11676,
+      "triangles1": 7589
     },
-    "triangle_reduction_percent": 12.56
-  },
-  "status": "PASS"
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "oblique",
+      "id": "ta2:1071",
+      "mask_iou": 0.995138,
+      "name": "sacrum",
+      "pixels0": 6159,
+      "pixels1": 6151,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 11676,
+      "triangles1": 7589
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "posterior",
+      "id": "ta2:1071",
+      "mask_iou": 0.99544,
+      "name": "sacrum",
+      "pixels0": 9838,
+      "pixels1": 9853,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 11676,
+      "triangles1": 7589
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "inferior",
+      "id": "ta2:1071",
+      "mask_iou": 0.993367,
+      "name": "sacrum",
+      "pixels0": 7062,
+      "pixels1": 7063,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 11676,
+      "triangles1": 7589
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "superior",
+      "id": "ta2:1071",
+      "mask_iou": 0.995095,
+      "name": "sacrum",
+      "pixels0": 5288,
+      "pixels1": 5288,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 11676,
+      "triangles1": 7589
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "anterior",
+      "id": "ta2:3401",
+      "mask_iou": 0.997739,
+      "name": "urinary_bladder",
+      "pixels0": 2648,
+      "pixels1": 2654,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 3036,
+      "triangles1": 2276
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 0.0,
+      "camera": "oblique",
+      "id": "ta2:3401",
+      "mask_iou": 0.998858,
+      "name": "urinary_bladder",
+      "pixels0": 2623,
+      "pixels1": 2626,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 3036,
+      "triangles1": 2276
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 0.0,
+      "camera": "posterior",
+      "id": "ta2:3401",
+      "mask_iou": 0.999623,
+      "name": "urinary_bladder",
+      "pixels0": 2654,
+      "pixels1": 2655,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 3036,
+      "triangles1": 2276
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "inferior",
+      "id": "ta2:3401",
+      "mask_iou": 0.997559,
+      "name": "urinary_bladder",
+      "pixels0": 2867,
+      "pixels1": 2862,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 3036,
+      "triangles1": 2276
+    },
+    {
+      "boundary_max_px": 1.0,
+      "boundary_symmetric_p95_px": 0.0,
+      "boundary_symmetric_p99_px": 1.0,
+      "camera": "superior",
+      "id": "ta2:3401",
+      "mask_iou": 0.994294,
+      "name": "urinary_bladder",
+      "pixels0": 3326,
+      "pixels1": 3315,
+      "status": "MEASURED_RASTER_SILHOUETTE",
+      "triangles0": 3036,
+      "triangles1": 2276
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ]
 }
