@@ -1,0 +1,42 @@
+{
+  "topbar_buttons": [
+    {
+      "label": "Abrir explorador",
+      "width": 44,
+      "height": 44,
+      "pass": true
+    },
+    {
+      "label": "Cambiar a modo claro",
+      "width": 44,
+      "height": 44,
+      "pass": true
+    },
+    {
+      "label": "Abrir inspector",
+      "width": 44,
+      "height": 44,
+      "pass": true
+    }
+  ],
+  "sheet_handle": {
+    "width": 390,
+    "height": 44,
+    "pass": true
+  },
+  "camera_buttons": [
+    {
+      "label": "Restablecer cámara (Disponible en M05-B)",
+      "width": 44,
+      "height": 44,
+      "pass": true
+    },
+    {
+      "label": "Enfocar estructura (Disponible en M05-B)",
+      "width": 44,
+      "height": 44,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

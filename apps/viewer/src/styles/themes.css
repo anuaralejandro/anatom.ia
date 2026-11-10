@@ -1,0 +1,36 @@
+/* =====================================================================
+   ANATOM.IA — THEMES SPECIFICATION
+   ===================================================================== */
+
+/* Light Mode Overrides */
+html[data-theme="light"] {
+  --bg-app: #F5F8FA;
+  --bg-canvas: #E9F0F3;
+  --bg-panel: #FFFFFF;
+  --bg-raised: #EDF3F6;
+  --bg-hover: #E1E9EF;
+  --border: #DCE5EC;
+  --border-subtle: rgba(220, 229, 236, 0.8);
+  --border-focus: #087A7A;
+
+  --text-primary: #162736;
+  --text-secondary: #455B6A;
+  --text-muted: #7E93A3;
+
+  --accent: #087A7A;
+  --accent-hover: #0A9696;
+  --accent-strong: #055C5C;
+  --accent-soft: rgba(8, 122, 122, 0.12);
+  --nav-accent: #3157C8;
+
+  --warning: #915315;
+  --warning-soft: rgba(145, 83, 21, 0.12);
+  --error: #B42B40;
+  --error-soft: rgba(180, 43, 64, 0.12);
+  --success: #2E7D32;
+  --success-soft: rgba(46, 125, 50, 0.12);
+
+  --shadow-sm: 0 1px 3px rgba(22, 39, 54, 0.08);
+  --shadow-md: 0 4px 12px rgba(22, 39, 54, 0.12);
+  --shadow-lg: 0 12px 32px rgba(22, 39, 54, 0.16);
+}

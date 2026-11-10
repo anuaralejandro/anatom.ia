@@ -1,0 +1,149 @@
+/* =====================================================================
+   ANATOM.IA — RESPONSIVE GRID & BREAKPOINTS
+   ===================================================================== */
+
+/* Base Workspace Layout: Pro-Wide (>=1536px) */
+.atlas-workspace {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--rail-width) var(--explorer-width) minmax(0, 1fr) var(--inspector-width);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header Heights by Breakpoint */
+@media (max-width: 839.98px) {
+  :root {
+    --header-height: 56px;
+  }
+}
+
+@media (max-width: 599.98px) {
+  :root {
+    --header-height: 52px;
+  }
+}
+
+@media (max-height: 649.98px) {
+  :root {
+    --header-height: 48px;
+  }
+}
+
+/* Height Guard: Viewports with height < 500px degrade to compact-wide (maximize stage) */
+@media (max-height: 499.98px) and (min-width: 600px) {
+  .atlas-workspace {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .atlas-rail,
+  .atlas-explorer-permanent,
+  .atlas-inspector-permanent {
+    display: none !important;
+  }
+}
+
+/* Breakpoint 4: Workstation (1120px - 1535.98px) */
+@media (max-width: 1535.98px) {
+  :root {
+    --rail-width: 56px;
+  }
+
+  .atlas-workspace {
+    grid-template-columns: var(--rail-width) var(--explorer-width) minmax(0, 1fr);
+  }
+
+  /* Permanent Inspector is hidden; accessible via on-demand drawer */
+  .atlas-inspector-permanent {
+    display: none !important;
+  }
+}
+
+/* Breakpoint 3: Tablet (840px - 1119.98px) */
+@media (max-width: 1119.98px) {
+  .atlas-workspace {
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  }
+
+  /* Permanent Explorer is hidden; accessible via on-demand drawer */
+  .atlas-explorer-permanent {
+    display: none !important;
+  }
+}
+
+/* Breakpoint 2: Compact-Wide (600px - 839.98px) */
+@media (max-width: 839.98px) {
+  .atlas-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atlas-rail {
+    display: none !important;
+  }
+
+  .atlas-explorer-permanent {
+    display: none !important;
+  }
+}
+
+/* Breakpoint 1: Compact (320px - 599.98px) */
+@media (max-width: 599.98px) {
+  .atlas-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atlas-rail {
+    display: none !important;
+  }
+
+  .atlas-explorer-permanent {
+    display: none !important;
+  }
+
+  /* Bottom sheet is shown in compact */
+  .atlas-sheet {
+    display: flex !important;
+  }
+}
+
+/* Touch & Coarse Pointer Targets (>=44x44 CSS px) */
+@media (pointer: coarse) {
+  .atlas-control-btn,
+  .atlas-rail-btn,
+  .atlas-tab-btn,
+  .atlas-action-btn,
+  .atlas-tree-btn,
+  .atlas-btn,
+  .atlas-chip,
+  .atlas-tree-action-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .atlas-tree-node {
+    min-height: 44px;
+  }
+
+  .atlas-sheet-handle-row {
+    min-height: 44px;
+  }
+
+  .atlas-search-input {
+    font-size: 16px !important; /* Prevents auto-zoom in iOS Safari */
+    height: 44px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

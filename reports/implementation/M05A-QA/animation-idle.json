@@ -1,0 +1,6 @@
+{
+  "raf_in_750ms": 0,
+  "threshold_max": 3,
+  "measured_state": "repose_reduced_motion",
+  "pass": true
+}

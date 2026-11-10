@@ -1,0 +1,23 @@
+{
+  "verdict": "PASS",
+  "f01_coalesced_independent_abort": {
+    "status": "PASS",
+    "coalescedAbort": [
+      {
+        "status": "rejected",
+        "error": "AbortError: Aborted"
+      },
+      {
+        "status": "resolved"
+      }
+    ],
+    "fetchCallsForShared": 1,
+    "description": "Aborting subscriber A rejects A with AbortError while subscriber B resolves successfully with a single underlying network fetch."
+  },
+  "f02_terminal_retry_separation": {
+    "status": "PASS",
+    "calls404": 1,
+    "error404": "Error: HTTP 404: Not Found",
+    "description": "HTTP 404 triggers exactly 1 fetch attempt, zero retries, and zero exponential backoff delay."
+  }
+}

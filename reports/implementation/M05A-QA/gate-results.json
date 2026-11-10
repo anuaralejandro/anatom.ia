@@ -1,0 +1,291 @@
+{
+  "suite": "M05A_REACT_QA_CLOSEOUT_SUITE",
+  "timestamp": 1794326565.4392257,
+  "is_negative_test": false,
+  "total_viewports": 16,
+  "viewport_results": [
+    {
+      "name": "iphone-se",
+      "width": 320,
+      "height": 568,
+      "layout_mode": "compact",
+      "no_horizontal_overflow": true,
+      "stage_width": 320,
+      "stage_height": 520,
+      "pass": true
+    },
+    {
+      "name": "android-compact",
+      "width": 360,
+      "height": 640,
+      "layout_mode": "compact",
+      "no_horizontal_overflow": true,
+      "stage_width": 360,
+      "stage_height": 592,
+      "pass": true
+    },
+    {
+      "name": "iphone-8",
+      "width": 375,
+      "height": 667,
+      "layout_mode": "compact",
+      "no_horizontal_overflow": true,
+      "stage_width": 375,
+      "stage_height": 615,
+      "pass": true
+    },
+    {
+      "name": "iphone-portrait",
+      "width": 390,
+      "height": 844,
+      "layout_mode": "compact",
+      "no_horizontal_overflow": true,
+      "stage_width": 390,
+      "stage_height": 792,
+      "pass": true
+    },
+    {
+      "name": "iphone-promax",
+      "width": 430,
+      "height": 932,
+      "layout_mode": "compact",
+      "no_horizontal_overflow": true,
+      "stage_width": 430,
+      "stage_height": 880,
+      "pass": true
+    },
+    {
+      "name": "foldable-split",
+      "width": 600,
+      "height": 800,
+      "layout_mode": "compact-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 600,
+      "stage_height": 744,
+      "pass": true
+    },
+    {
+      "name": "ipad-mini",
+      "width": 768,
+      "height": 1024,
+      "layout_mode": "compact-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 768,
+      "stage_height": 968,
+      "pass": true
+    },
+    {
+      "name": "ipad-portrait",
+      "width": 834,
+      "height": 1194,
+      "layout_mode": "compact-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 834,
+      "stage_height": 1138,
+      "pass": true
+    },
+    {
+      "name": "iphone-landscape",
+      "width": 844,
+      "height": 390,
+      "layout_mode": "compact-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 844,
+      "stage_height": 342,
+      "pass": true
+    },
+    {
+      "name": "ipad-landscape",
+      "width": 1024,
+      "height": 768,
+      "layout_mode": "tablet",
+      "no_horizontal_overflow": true,
+      "stage_width": 968,
+      "stage_height": 708,
+      "pass": true
+    },
+    {
+      "name": "ipad-pro-landscape",
+      "width": 1194,
+      "height": 834,
+      "layout_mode": "workstation",
+      "no_horizontal_overflow": true,
+      "stage_width": 842,
+      "stage_height": 774,
+      "pass": true
+    },
+    {
+      "name": "macbook-laptop",
+      "width": 1280,
+      "height": 800,
+      "layout_mode": "workstation",
+      "no_horizontal_overflow": true,
+      "stage_width": 928,
+      "stage_height": 740,
+      "pass": true
+    },
+    {
+      "name": "hd-laptop",
+      "width": 1366,
+      "height": 768,
+      "layout_mode": "workstation",
+      "no_horizontal_overflow": true,
+      "stage_width": 1014,
+      "stage_height": 708,
+      "pass": true
+    },
+    {
+      "name": "macbook-pro",
+      "width": 1440,
+      "height": 900,
+      "layout_mode": "workstation",
+      "no_horizontal_overflow": true,
+      "stage_width": 1088,
+      "stage_height": 840,
+      "pass": true
+    },
+    {
+      "name": "desktop-pro",
+      "width": 1536,
+      "height": 960,
+      "layout_mode": "pro-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 832,
+      "stage_height": 900,
+      "pass": true
+    },
+    {
+      "name": "desktop-wide-fhd",
+      "width": 1920,
+      "height": 1080,
+      "layout_mode": "pro-wide",
+      "no_horizontal_overflow": true,
+      "stage_width": 1216,
+      "stage_height": 1020,
+      "pass": true
+    }
+  ],
+  "idle_animation": {
+    "raf_in_750ms": 0,
+    "threshold_max": 3,
+    "measured_state": "repose_reduced_motion",
+    "pass": true
+  },
+  "touch_targets": {
+    "topbar_buttons": [
+      {
+        "label": "Abrir explorador",
+        "width": 44,
+        "height": 44,
+        "pass": true
+      },
+      {
+        "label": "Cambiar a modo claro",
+        "width": 44,
+        "height": 44,
+        "pass": true
+      },
+      {
+        "label": "Abrir inspector",
+        "width": 44,
+        "height": 44,
+        "pass": true
+      }
+    ],
+    "sheet_handle": {
+      "width": 390,
+      "height": 44,
+      "pass": true
+    },
+    "camera_buttons": [
+      {
+        "label": "Restablecer cámara (Disponible en M05-B)",
+        "width": 44,
+        "height": 44,
+        "pass": true
+      },
+      {
+        "label": "Enfocar estructura (Disponible en M05-B)",
+        "width": 44,
+        "height": 44,
+        "pass": true
+      }
+    ],
+    "pass": true
+  },
+  "focus_lifecycle": {
+    "semantic_role_dialog": true,
+    "aria_modal_true": true,
+    "initial_focus_inside": true,
+    "after_20_tabs_inside": true,
+    "outside_nav_escaped": false,
+    "after_20_shift_tabs_inside": true,
+    "escape_closes": true,
+    "focus_restored_to_trigger": true,
+    "ten_open_close_cycles_stable": true,
+    "pass": true
+  },
+  "truthful_ui": {
+    "header_badge_text": "VISTA CONCEPTUAL",
+    "header_badge_truthful": true,
+    "camera_actions_disabled_m05b": true,
+    "inspector_actions_demo_labeled": true,
+    "pass": true
+  },
+  "height_responsive": {
+    "viewport": [
+      844,
+      390
+    ],
+    "layout_mode": "compact-wide",
+    "rail_hidden": true,
+    "no_overflow": true,
+    "stage_width": 844,
+    "stage_height": 342,
+    "pass": true
+  },
+  "axis_gizmo": {
+    "visible": true,
+    "width": 76,
+    "height": 76,
+    "axes_present": {
+      "X": true,
+      "Y": true,
+      "Z": true
+    },
+    "total_nodes": 6,
+    "pass": true
+  },
+  "interaction_results": {
+    "selection_change": true,
+    "rapid_resize_20_cycles": true,
+    "pass": true
+  },
+  "taxonomy_validation": {
+    "canonical_total_structures": 26,
+    "rendered_tree_nodes": 26,
+    "symphysis_pubica_verified": true,
+    "pass": true
+  },
+  "visual_audit": {
+    "turquoise_count": 0,
+    "sky_blue_count": 7660,
+    "dark_surface_ratio": 0.9502983940972223,
+    "rule": "dark_ratio >= 0.75 and turquoise == 0 and sky_blue > 0",
+    "pass": true
+  },
+  "gate_status": {
+    "F13_viewport_matrix": "PASS",
+    "F13_height_guard": "PASS",
+    "F09_idle_render_loop": "PASS",
+    "F10_touch_hitboxes": "PASS",
+    "F11_focus_trap_lifecycle": "PASS",
+    "F12_truthful_ui": "PASS",
+    "F16_axis_gizmo": "PASS",
+    "F14_taxonomy_validation": "PASS",
+    "F08_color_palette": "PASS",
+    "F15_stress_and_interactions": "PASS"
+  },
+  "verdict": "PASS",
+  "failed_reasons": []
+}

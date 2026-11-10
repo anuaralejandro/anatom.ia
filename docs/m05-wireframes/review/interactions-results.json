@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "checks": {
+    "desktop_selection": true,
+    "search_filters": true,
+    "theme_toggle": true,
+    "laptop_inspector_open": true,
+    "laptop_escape_close": true,
+    "phone_explorer_sheet": true,
+    "phone_selects_inspector": true,
+    "phone_sheet_expands": true,
+    "gallery_images_resolve": true
+  }
+}

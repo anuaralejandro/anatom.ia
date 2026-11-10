@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>anatom.ia · Galería de wireframes M05</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#05080D;color:#F0F5FA;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:32px max(24px,4vw) 24px;border-bottom:1px solid #202D40;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+h1{font-size:26px;letter-spacing:-.8px;margin:0 0 5px}header p{margin:0;color:#A3B2C5;max-width:680px}.mint{color:#58B9FF}
+.actions{display:flex;gap:10px;flex-wrap:wrap}a.button{border:1px solid #202D40;color:#F0F5FA;text-decoration:none;padding:11px 15px;border-radius:9px;background:#121C2B}a.button.primary{background:#58B9FF;color:#031525;font-weight:700;border-color:#58B9FF}a.button.primary:hover{background:#7AC8FF;border-color:#7AC8FF}
+main{max-width:1720px;margin:auto;padding:30px clamp(16px,3vw,40px) 85px}h2{font-size:17px;letter-spacing:-.3px;margin:24px 0 17px}p.note{color:#A3B2C5;max-width:1050px}
+.layout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:21px}.card{background:#0B111C;border:1px solid #202D40;border-radius:13px;padding:14px;min-width:0}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:9px}.card strong{font-size:13px}.card small{color:#A3B2C5;font-size:11px}.card img{display:block;max-width:100%;width:100%;height:auto;border-radius:7px;border:1px solid #202D40;object-fit:contain;background:#03060B}
+.portraits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}.portraits .card img{max-height:660px;width:auto;max-width:100%;margin:auto}
+.states{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.states .card img{height:265px;object-fit:contain;object-position:top}
+footer{color:#89a4b3;padding:25px 5px;font-size:12px}footer a{color:#58B9FF}
+@media(max-width:1050px){.states{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:750px){.layout-grid{grid-template-columns:1fr}.portraits{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){header{padding:23px 16px}.portraits,.states{grid-template-columns:1fr}.states .card img{height:auto;max-height:520px}}
+</style></head>
+<body>
+<header><div><div class="mint" style="font-size:11px;letter-spacing:1.9px;font-weight:700">ANATOM.IA · DESIGN REVIEW D0</div><h1>Clinical Precision <span class="mint">/ Obsidian Navy</span></h1><p>Wireframes generados en Chromium sobre tamaños CSS reales. Diseño estático: no incluye motor 3D, información clínica validada ni assets derivados de Z-Anatomy.</p></div>
+<div class="actions"><a class="button primary" href="./index.html">Abrir prototipo interactivo</a><a class="button" href="./index.html?theme=light">Ver modo claro</a></div></header>
+<main>
+<h2>01 · Área de trabajo</h2>
+<div class="layout-grid">
+<div class="card"><div class="card-header"><strong>Escritorio profesional</strong><small>1536 × 960 · 3 paneles</small></div><img src="./review/desktop-pro-selected-dark.png" alt="Composición desktop: rail, explorador, canvas y ficha contextual"></div>
+<div class="card"><div class="card-header"><strong>MacBook y laptop</strong><small>1280 × 800 · Inspector bajo demanda</small></div><img src="./review/macbook-selected-dark.png" alt="Composición laptop: explorador fijo y canvas extendido"></div>
+</div>
+<h2>02 · Dispositivos táctiles</h2>
+<div class="portraits">
+<div class="card"><div class="card-header"><strong>iPad vertical</strong><small>834 × 1194</small></div><img src="./review/ipad-portrait-selected-dark.png" alt="Canvas completo en tablet vertical"></div>
+<div class="card"><div class="card-header"><strong>iPhone vertical</strong><small>390 × 844</small></div><img src="./review/iphone-portrait-selected-dark.png" alt="Canvas central y sheet inferior compacto"></div>
+<div class="card"><div class="card-header"><strong>iPhone · sheet expandido</strong><small>390 × 844</small></div><img src="./review/iphone-portrait-sheet-expanded.png" alt="Sheet expandido con información y acciones anatómicas"></div>
+</div>
+<h2>03 · Estados y temas</h2>
+<div class="states">
+<div class="card"><div class="card-header"><strong>Modo claro · escritorio</strong><small>1536 × 960</small></div><img src="./review/desktop-pro-selected-light.png" alt="Tema claro de escritorio"></div>
+<div class="card"><div class="card-header"><strong>Cargando · escritorio</strong><small>1536 × 960</small></div><img src="./review/desktop-pro-loading-dark.png" alt="Estado de carga"></div>
+<div class="card"><div class="card-header"><strong>Error · iPhone</strong><small>390 × 844</small></div><img src="./review/iphone-portrait-error-dark.png" alt="Estado de error con acción de retorno"></div>
+<div class="card"><div class="card-header"><strong>Modo claro · iPhone</strong><small>390 × 844</small></div><img src="./review/iphone-portrait-selected-light.png" alt="Tema claro en móvil"></div>
+</div>
+<p class="note">Las capturas validan únicamente la composición CSS en Chrome headless Windows. Safe areas reales, teclado virtual, Safari/iOS/iPadOS, Stage Manager, Apple Pencil y Android nativo requieren pruebas en dispositivos reales antes de la aprobación final de M05.</p>
+<footer>Documentación normativa: <a href="../12_M05_RESPONSIVE_DESIGN_SYSTEM_SPEC.md">Contrato responsive</a> · <a href="../13_M05_WIREFRAME_REVIEW.md">Revisión D0</a> · Ningún asset clínico se ha publicado.</footer>
+</main></body></html>

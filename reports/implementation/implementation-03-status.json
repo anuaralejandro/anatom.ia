@@ -63,8 +63,8 @@
     "cpu_decoded_bytes_approx": 1396000,
     "budget_profile_medium_gpu_bytes": 134217728,
     "budget_profile_medium_cpu_bytes": 100663296,
-    "p95_raster_silhouette_px": 0.0,
-    "max_raster_silhouette_px": 1.0
+    "p95_raster_silhouette_px": 0,
+    "max_raster_silhouette_px": 1
   },
   "deliverables": [
     "docs/BUILD_RUNTIME.md",
@@ -73,5 +73,42 @@
     "reports/implementation/M04/m04-streaming-suite-result.json",
     "reports/implementation/M04/m04-probe-rendered.png",
     "reports/implementation/implementation-03-status.json"
-  ]
+  ],
+  "independent_audit": {
+    "verdict": "PARTIAL_PASS_CORRECTED_M04_NOT_FINAL",
+    "local_date": "2026-11-09",
+    "source": "docs/AUDITORIA_IMPLEMENTACION_03.md",
+    "evidence": "reports/audit/m04-independent-verdict.json",
+    "original_tests": 35,
+    "tests_after_fixes": 36,
+    "webgpu_webgl2": "PASS_HEADLESS_LOCAL",
+    "gpu_loss": "SIMULATED_ONLY",
+    "real_offline_reload": "FAIL",
+    "memory_budgets": "TRACKED_NOT_ENFORCED",
+    "gpu_swap_rollback": "NOT_IMPLEMENTED",
+    "source_publication": "BLOCKED",
+    "m05": "NOT_IMPLEMENTED",
+    "changes_pushed": false
+  },
+  "audit_override": {
+    "milestone": "M04-H",
+    "title": "Runtime Definitive Hardening (M04-H1 to M04-H6)",
+    "verdict": "PASS_TECHNICAL_LOCAL_M04H",
+    "timestamp": "2026-11-10T04:25:00Z",
+    "report": "docs/M04_HARDENING_RESULT.md",
+    "results_json": "reports/implementation/M04H/m04h-results.json",
+    "test_matrix_json": "reports/implementation/M04H/test-matrix.json",
+    "adr_005": "docs/ADR_005_GPU_SWAP_AND_RECOVERY.md",
+    "adr_006": "docs/ADR_006_MEMORY_AND_SCHEDULER.md",
+    "bridge_contract": "docs/M04_RUNTIME_BRIDGE_CONTRACT.md",
+    "workspace_tests_pass": 38,
+    "gpu_swap_rollback": "PASS",
+    "memory_budget_enforcement": "PASS",
+    "event_ordering_and_semantics": "PASS",
+    "device_loss_recovery": "SIMULATED_PASS",
+    "physical_driver_loss": "NOT_RUN",
+    "transport_scheduler_and_coalescing": "PASS",
+    "real_offline_reload": "PASS (RELOADED_OFFLINE)",
+    "commercial_distribution": "BLOCKED"
+  }
 }

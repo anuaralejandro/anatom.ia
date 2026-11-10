@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es-MX" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070E17">
+  <title>anatom.ia · M05 Diseño conceptual</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-defs" aria-hidden="true">
+    <symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="ic-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Zm-9 10 9 5 9-5M3 17l9 5 9-5"/></symbol>
+    <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="ic-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="ic-hide" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><path d="M3 3 21 21"/></symbol>
+    <symbol id="ic-focus" viewBox="0 0 24 24"><path d="M8 3H4v4M16 3h4v4M4 17v4h4M20 17v4h-4"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="ic-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2-6M3 3v6h6"/></symbol>
+    <symbol id="ic-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="ic-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></symbol>
+    <symbol id="ic-x" viewBox="0 0 24 24"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+    <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z"/></symbol>
+    <symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></symbol>
+    <symbol id="ic-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+    <symbol id="ic-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.3 4.7-4.7 2.3 2.3-4.7 4.7-2.3Z"/></symbol>
+    <symbol id="ic-settings" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16M9 5v6M16 13v6"/></symbol>
+    <symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M6 18 18 6M9 6h9v9"/></symbol>
+    <symbol id="ic-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="ic-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5ZM3 7l9 5 9-5M12 12v10"/></symbol>
+    <symbol id="ic-zoom" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol>
+  </svg>
+
+  <div class="atlas-app" id="root">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" data-action="explorer" aria-label="Abrir explorador"><svg><use href="#ic-menu"/></svg></button>
+      <a class="brand" href="#" aria-label="anatom punto ia, inicio">
+        <span class="brand-mark"><span class="brand-mark-inner"></span></span>
+        <span class="brand-word">anatom<span>.ia</span></span>
+      </a>
+      <span class="topbar-divider"></span>
+      <nav class="breadcrumbs" aria-label="Ubicación"><span class="crumb-overview">Atlas anatómico</span><svg><use href="#ic-chevron"/></svg><strong>Pelvis</strong><span class="crumb-overview muted">/ Masculino</span></nav>
+      <span class="topbar-space"></span>
+      <span class="header-status"><span class="status-dot"></span>VISOR 3D <span class="engine-badge">WIREFRAME</span></span>
+      <button class="icon-btn top-search" title="Buscar" data-action="search" aria-label="Buscar estructuras"><svg><use href="#ic-search"/></svg></button>
+      <button class="icon-btn theme-btn" data-action="theme" title="Cambiar tema" aria-label="Cambiar tema"><svg><use href="#ic-moon"/></svg></button>
+      <button class="icon-btn info-btn" data-action="info" title="Acerca del diseño" aria-label="Acerca del diseño"><svg><use href="#ic-info"/></svg></button>
+    </header>
+
+    <div class="workspace" id="workspace">
+      <nav class="side-rail" aria-label="Navegación principal">
+        <div class="rail-group">
+          <button class="rail-button active" title="Atlas anatómico" aria-label="Atlas anatómico"><svg><use href="#ic-cube"/></svg></button>
+          <button class="rail-button" title="Explorar estructuras" data-action="explorer" aria-label="Explorar estructuras"><svg><use href="#ic-layers"/></svg></button>
+          <button class="rail-button" title="Inspector anatómico" data-action="inspector" aria-label="Inspector anatómico"><svg><use href="#ic-panel"/></svg></button>
+        </div>
+        <div class="rail-group bottom"><button class="rail-button" data-action="theme" title="Tema visual" aria-label="Tema visual"><svg><use href="#ic-settings"/></svg></button></div>
+      </nav>
+
+      <aside class="explorer-panel" id="explorer" aria-label="Explorador anatómico">
+        <div class="panel-heading">
+          <div><p class="eyebrow">BIBLIOTECA</p><h2>Explorador</h2></div>
+          <button class="icon-btn panel-close" data-action="close" aria-label="Cerrar explorador"><svg><use href="#ic-x"/></svg></button>
+        </div>
+        <label class="searchbox"><svg><use href="#ic-search"/></svg><input id="anatomySearch" placeholder="Buscar estructura..." autocomplete="off" type="search"><kbd>⌘ K</kbd></label>
+        <div class="library-meta"><span>REGIÓN DISPONIBLE</span><span class="meta-count">01 / 01</span></div>
+        <button class="region-card"><span class="region-mini"><svg><use href="#ic-cube"/></svg></span><span class="region-txt"><strong>Pelvis masculina</strong><small>26 estructuras · 3D</small></span><svg class="region-chevron"><use href="#ic-chevron"/></svg></button>
+        <div class="tree-heading"><span>ESTRUCTURAS</span><span class="meta-count">8 / 26</span></div>
+        <div class="category-row"><svg><use href="#ic-chevron"/></svg><span>Sistema esquelético</span><span class="mini-count">03</span></div>
+        <div class="tree-list" id="anatomyList">
+          <button class="anatomy-row selected" data-name="Sacro"><span class="row-marker bone"></span><span class="row-label"><strong>Sacro</strong><small>TA2 · Seleccionado</small></span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+          <button class="anatomy-row" data-name="Cóccix"><span class="row-marker bone"></span><span class="row-label">Cóccix</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+          <button class="anatomy-row" data-name="Sínfisis púbica"><span class="row-marker bone"></span><span class="row-label">Sínfisis púbica</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+        </div>
+        <div class="category-row category-sep"><svg><use href="#ic-chevron"/></svg><span>Órganos pélvicos</span><span class="mini-count">03</span></div>
+        <div class="tree-list" id="organList">
+          <button class="anatomy-row" data-name="Vejiga urinaria"><span class="row-marker organ"></span><span class="row-label">Vejiga urinaria</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+          <button class="anatomy-row" data-name="Próstata"><span class="row-marker organ"></span><span class="row-label">Próstata</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+          <button class="anatomy-row" data-name="Vesículas seminales"><span class="row-marker organ"></span><span class="row-label">Vesículas seminales</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button>
+        </div>
+        <div class="category-row category-sep"><svg><use href="#ic-chevron"/></svg><span>Vasos, nervios y ligamentos</span><span class="mini-count">02</span></div>
+        <div class="tree-list"><button class="anatomy-row" data-name="Arteria ilíaca interna"><span class="row-marker vascular"></span><span class="row-label">Arteria ilíaca interna</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button><button class="anatomy-row" data-name="Nervio femoral"><span class="row-marker nerve"></span><span class="row-label">Nervio femoral</span><svg class="eye-icon"><use href="#ic-eye"/></svg></button></div>
+        <div class="explorer-footer"><svg><use href="#ic-info"/></svg><span>Catálogo ilustrativo. El modelo real no está conectado en esta vista.</span></div>
+      </aside>
+
+      <main class="viewport" id="viewport" aria-label="Área conceptual del visor 3D">
+        <div class="canvas-backdrop">
+          <div class="canvas-grid"></div><div class="canvas-halo"></div>
+          <div class="canvas-annotation top-left"><span class="overline">VISTA ANATÓMICA</span><strong>Pelvis · Vista anterior</strong><small>Ilustración conceptual de composición</small></div>
+          <div class="camera-control top-right"><button class="floating-button" title="Vista anterior" aria-label="Vista anterior">A</button><button class="floating-button" title="Vista lateral" aria-label="Vista lateral">L</button><button class="floating-button" title="Vista posterior" aria-label="Vista posterior">P</button></div>
+          <div class="state-visual" role="status" aria-live="polite"><span class="state-visual-symbol"><svg><use href="#ic-cube"/></svg></span><span class="state-title" id="stateTitle"></span><span class="state-description" id="stateDescription"></span><button class="state-retry" data-action="retry">Volver a la vista conceptual</button></div>
+          <div class="anatomy-visual" aria-hidden="true">
+            <svg class="pelvis-concept" viewBox="0 0 640 610" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gBone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4dac4"/><stop offset=".44" stop-color="#dba990"/><stop offset="1" stop-color="#9d7985"/></linearGradient>
+                <linearGradient id="gBone2" x1="1" y1="0" x2=".1" y2="1"><stop stop-color="#f7dfca"/><stop offset=".5" stop-color="#d29d87"/><stop offset="1" stop-color="#8b697e"/></linearGradient>
+                <linearGradient id="gSacrum" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9c4a5"/><stop offset="1" stop-color="#ba827b"/></linearGradient>
+                <filter id="soft3d"><feGaussianBlur stdDeviation="1.7"/></filter>
+              </defs>
+              <g class="pelvis-bone" stroke="#f6e4d4" stroke-opacity=".55" stroke-width="2" stroke-linejoin="round">
+                <path fill="url(#gBone)" d="M299 192C255 119 205 93 129 97 81 100 58 141 61 195c2 37 16 72 49 98 39 29 71 45 88 79 17 33 17 86 53 114 16 12 35 13 44 4 20-19 6-54-9-76-32-48-25-91-4-140 13-31 33-52 17-82ZM132 159c38-22 82-20 115 14 28 27 23 47 9 72-9 18-17 47-21 67-2 11-7 20-13 17-22-11-44-37-79-50-32-15-53-41-54-75 0-19 14-36 43-45Z" fill-rule="evenodd"/>
+                <path fill="url(#gBone2)" d="M341 192c44-73 94-99 170-95 48 3 71 44 68 98-2 37-16 72-49 98-39 29-71 45-88 79-17 33-17 86-53 114-16 12-35 13-44 4-20-19-6-54 9-76 32-48 25-91 4-140-13-31-33-52-17-82Zm167-33c-38-22-82-20-115 14-28 27-23 47-9 72 9 18 17 47 21 67 2 11 7 20 13 17 22-11 44-37 79-50 32-15 53-41 54-75 0-19-14-36-43-45Z" fill-rule="evenodd"/>
+                <path fill="url(#gSacrum)" d="M280 206c4-28 13-43 40-44 27 1 36 16 40 44l-11 119-20 46c-5 12-13 12-18 0l-20-46-11-119Z"/>
+                <path fill="#c89181" d="M309 374q11 20 22 0l-11 72-11-72Z"/>
+                <path fill="#c99382" d="M252 448q-12 31-15 35 34 24 58 4l24-44q23 46 29 47 31 4 55-7l-17-35q-13 12-39 4l-28-12-27 12q-26 10-40-4Z"/>
+                <path fill="none" stroke="#fff2e5" stroke-opacity=".38" stroke-width="4" d="M78 183q13-55 74-60 65-3 113 54M562 183q-13-55-74-60-65-3-113 54"/>
+                <path fill="none" stroke="#fce3cb" stroke-opacity=".47" d="m303 245 9-4m-7 34 10-3m-7 34 9-2m20-59-9-4m7 34-10-3m7 34-9-2"/>
+              </g>
+              <path d="M265 210 284 263 299 341M375 210 356 263 341 341" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="9" filter="url(#soft3d)"/>
+              <circle cx="319" cy="303" r="114" fill="none" stroke="#47d2ca" stroke-opacity=".17" stroke-dasharray="3 12"/>
+              <path d="M319 184v239M199 303h240" fill="none" stroke="#7fdbdd" stroke-opacity=".14" stroke-dasharray="3 9"/>
+              <circle cx="319" cy="303" r="5" fill="#31d6c9" opacity=".8"/>
+            </svg>
+          </div>
+          <div class="model-selector"><span class="selector-line"></span><span class="selector-caption">ESTRUCTURA SELECCIONADA</span><strong id="stageSelected">Sacro</strong><span class="selector-circle"></span></div>
+          <div class="compass"><span>ANT.</span><b>N</b><span>POST.</span></div>
+          <div class="viewport-bottom-left"><span class="viewpoint-badge"><span class="status-dot"></span> VISTA CONCEPTUAL</span><span class="viewport-metadata">A · Anterior</span></div>
+          <div class="viewport-bottom-right"><button class="floating-button" aria-label="Restaurar vista" title="Restaurar vista"><svg><use href="#ic-reset"/></svg></button><button class="floating-button" aria-label="Enfocar selección" title="Enfocar selección"><svg><use href="#ic-focus"/></svg></button><button class="floating-button" aria-label="Ajustes visuales" title="Ajustes visuales"><svg><use href="#ic-settings"/></svg></button></div>
+        </div>
+      </main>
+
+      <aside class="inspector-panel" id="inspector" aria-label="Inspector de estructura">
+        <div class="panel-heading inspector-top"><div><p class="eyebrow">SELECCIÓN ACTUAL</p><h2>Inspector</h2></div><button class="icon-btn panel-close" data-action="close" aria-label="Cerrar inspector"><svg><use href="#ic-x"/></svg></button></div>
+        <div class="inspector-body">
+          <div class="organ-thumb"><span class="thumb-label">Estructura ósea</span><svg class="thumb-symbol"><use href="#ic-cube"/></svg><span class="thumb-tag">3D</span></div>
+          <div class="selection-header"><span class="eyebrow">SISTEMA ESQUELÉTICO</span><h1 id="inspectorName">Sacro</h1><p id="inspectorSecondary">Sacrum · Os sacrum</p></div>
+          <div class="inspector-tags"><span class="tag selected-tag"><span class="status-dot"></span> Seleccionado</span><span class="tag">Pelvis</span></div>
+          <div class="inspector-section"><h3>Nomenclatura anatómica</h3><div class="meta-row"><span>Español</span><strong id="metaSpanish">Sacro</strong></div><div class="meta-row"><span>Inglés</span><strong id="metaEnglish">Sacrum</strong></div><div class="meta-row"><span>Latín</span><strong id="metaLatin">Os sacrum</strong></div><div class="meta-row"><span>Terminología</span><strong>TA2</strong></div></div>
+          <div class="inspector-section"><h3>Acciones sobre la estructura</h3><div class="actions-two"><button class="action-primary"><svg><use href="#ic-focus"/></svg> Enfocar</button><button class="action-neutral"><svg><use href="#ic-layers"/></svg> Aislar</button></div><button class="action-full"><svg><use href="#ic-hide"/></svg> Ocultar estructura</button></div>
+          <div class="inspector-tip"><svg><use href="#ic-info"/></svg><p>La información mostrada es una propuesta de presentación. Las etiquetas definitivas provendrán del catálogo validado.</p></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="drawer-scrim" id="scrim" data-action="close"></div>
+    <div class="mobile-sheet" id="mobileSheet" aria-label="Panel anatómico">
+      <button class="sheet-handle" data-action="sheet" aria-label="Expandir panel anatómico"><span></span></button>
+      <div class="sheet-summary"><div><span class="eyebrow">SELECCIÓN ACTUAL</span><strong id="sheetSelected">Sacro</strong></div><button class="icon-btn" data-action="sheet" aria-label="Ver detalles"><svg><use href="#ic-chevron"/></svg></button></div>
+      <div class="sheet-expanded"><div class="sheet-tabs"><button class="sheet-tab active" data-sheet-tab="inspector">Inspector</button><button class="sheet-tab" data-sheet-tab="explorer">Explorar</button></div>
+        <div class="sheet-content" id="sheetContent"><div class="sheet-name">Sacro</div><p>Os sacrum · Estructura ósea</p><div class="actions-two"><button class="action-primary"><svg><use href="#ic-focus"/></svg> Enfocar</button><button class="action-neutral"><svg><use href="#ic-layers"/></svg> Aislar</button></div><div class="meta-row"><span>Región</span><strong>Pelvis</strong></div><div class="meta-row"><span>Referencia</span><strong>TA2</strong></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prototype-controls" aria-label="Opciones del prototipo">
+    <span class="prototype-label">M05 · Diseño visual</span>
+    <select id="stateSelect" aria-label="Estado de pantalla"><option value="selected">Seleccionado</option><option value="empty">Sin selección</option><option value="loading">Cargando</option><option value="error">Error</option></select>
+    <button id="panelBtn" title="Alternar inspector">Panel</button><span class="prototype-note">Prototipo estático · sin motor 3D</span>
+  </div>
+  <script src="./mock.js"></script>
+</body>
+</html>

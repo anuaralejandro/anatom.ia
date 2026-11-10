@@ -1,0 +1,12 @@
+{
+  "semantic_role_dialog": true,
+  "aria_modal_true": true,
+  "initial_focus_inside": true,
+  "after_20_tabs_inside": true,
+  "outside_nav_escaped": false,
+  "after_20_shift_tabs_inside": true,
+  "escape_closes": true,
+  "focus_restored_to_trigger": true,
+  "ten_open_close_cycles_stable": true,
+  "pass": true
+}

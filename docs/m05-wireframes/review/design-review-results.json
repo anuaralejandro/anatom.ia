@@ -1,0 +1,585 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "desktop-pro",
+      "viewport": [
+        1536,
+        960
+      ],
+      "expectedLayout": "pro-wide",
+      "metrics": {
+        "layout": "pro-wide",
+        "stageWidth": 832,
+        "stageHeight": 900,
+        "docWidth": 1536,
+        "clientWidth": 1536,
+        "explorerVisible": true,
+        "inspectorVisible": true,
+        "topbarControls": [
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\desktop-pro-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "macbook",
+      "viewport": [
+        1280,
+        800
+      ],
+      "expectedLayout": "workstation",
+      "metrics": {
+        "layout": "workstation",
+        "stageWidth": 928,
+        "stageHeight": 740,
+        "docWidth": 1280,
+        "clientWidth": 1280,
+        "explorerVisible": true,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\macbook-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "ipad-portrait",
+      "viewport": [
+        834,
+        1194
+      ],
+      "expectedLayout": "compact-wide",
+      "metrics": {
+        "layout": "compact-wide",
+        "stageWidth": 834,
+        "stageHeight": 1138,
+        "docWidth": 834,
+        "clientWidth": 834,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\ipad-portrait-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "iphone-portrait",
+      "viewport": [
+        390,
+        844
+      ],
+      "expectedLayout": "compact",
+      "metrics": {
+        "layout": "compact",
+        "stageWidth": 390,
+        "stageHeight": 792,
+        "docWidth": 390,
+        "clientWidth": 390,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 44,
+            "height": 44
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\iphone-portrait-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "iphone-landscape",
+      "viewport": [
+        844,
+        390
+      ],
+      "expectedLayout": "compact-wide",
+      "metrics": {
+        "layout": "compact-wide",
+        "stageWidth": 844,
+        "stageHeight": 334,
+        "docWidth": 844,
+        "clientWidth": 844,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\iphone-landscape-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "ipad-landscape",
+      "viewport": [
+        1194,
+        834
+      ],
+      "expectedLayout": "workstation",
+      "metrics": {
+        "layout": "workstation",
+        "stageWidth": 842,
+        "stageHeight": 774,
+        "docWidth": 1194,
+        "clientWidth": 1194,
+        "explorerVisible": true,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\docs\\m05-wireframes\\review\\ipad-landscape-selected-dark.png",
+      "status": "PASS"
+    },
+    {
+      "name": "android-compact",
+      "viewport": [
+        360,
+        800
+      ],
+      "expectedLayout": "compact",
+      "metrics": {
+        "layout": "compact",
+        "stageWidth": 360,
+        "stageHeight": 748,
+        "docWidth": 360,
+        "clientWidth": 360,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 44,
+            "height": 44
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "small-phone",
+      "viewport": [
+        320,
+        568
+      ],
+      "expectedLayout": "compact",
+      "metrics": {
+        "layout": "compact",
+        "stageWidth": 320,
+        "stageHeight": 520,
+        "docWidth": 320,
+        "clientWidth": 320,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 44,
+            "height": 44
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "split-view",
+      "viewport": [
+        600,
+        800
+      ],
+      "expectedLayout": "compact-wide",
+      "metrics": {
+        "layout": "compact-wide",
+        "stageWidth": 600,
+        "stageHeight": 744,
+        "docWidth": 600,
+        "clientWidth": 600,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "laptop-height",
+      "viewport": [
+        1440,
+        650
+      ],
+      "expectedLayout": "workstation",
+      "metrics": {
+        "layout": "workstation",
+        "stageWidth": 1088,
+        "stageHeight": 602,
+        "docWidth": 1440,
+        "clientWidth": 1440,
+        "explorerVisible": true,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "desktop-wide",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "expectedLayout": "pro-wide",
+      "metrics": {
+        "layout": "pro-wide",
+        "stageWidth": 1216,
+        "stageHeight": 1020,
+        "docWidth": 1920,
+        "clientWidth": 1920,
+        "explorerVisible": true,
+        "inspectorVisible": true,
+        "topbarControls": [
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "tablet-1024",
+      "viewport": [
+        1024,
+        768
+      ],
+      "expectedLayout": "tablet",
+      "metrics": {
+        "layout": "tablet",
+        "stageWidth": 1024,
+        "stageHeight": 712,
+        "docWidth": 1024,
+        "clientWidth": 1024,
+        "explorerVisible": false,
+        "inspectorVisible": false,
+        "topbarControls": [
+          {
+            "label": "Abrir explorador",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Buscar estructuras",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Cambiar tema",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "label": "Acerca del diseño",
+            "width": 36,
+            "height": 36
+          }
+        ],
+        "illustrationOnly": true,
+        "engineInstantiated": false
+      },
+      "errors": [],
+      "checks": {
+        "layout": true,
+        "noHorizontalOverflow": true,
+        "stageNotCollapsed": true,
+        "fixedExplorerOnlyWhereExpected": true,
+        "fixedInspectorOnlyOnPro": true,
+        "prototypeNotUsingEngine": true,
+        "noJsErrors": true
+      },
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "Chrome Windows headless emulation only",
+    "3D illustration is original and conceptual; no clinical geometry",
+    "No iOS Safari / Android Chrome native verification"
+  ]
+}

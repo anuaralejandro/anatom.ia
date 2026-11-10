@@ -1,0 +1,12 @@
+{
+  "verdict": "PASS",
+  "f03_memory_preflight_browser_wasm": {
+    "status": "PASS",
+    "error_code": "MEMORY_LIMIT",
+    "rejection_detail": "",
+    "preflight_rejected": true,
+    "existing_scene_nodes_intact": true,
+    "high_watermark_peak_tracking": true,
+    "description": "Genuine WASM memory budget preflight failure returns ErrorCode.MEMORY_LIMIT, preserving intact scene hierarchy and existing buffers."
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "turquoise_count": 0,
+  "sky_blue_count": 7660,
+  "dark_surface_ratio": 0.9502983940972223,
+  "rule": "dark_ratio >= 0.75 and turquoise == 0 and sky_blue > 0",
+  "pass": true
+}

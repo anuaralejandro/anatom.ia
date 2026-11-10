@@ -7,6 +7,8 @@
     "build:webgpu": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgpu --no-default-features --features webgpu",
     "build:webgl2": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgl2 --no-default-features --features webgl",
     "build": "npm run build:webgpu && npm run build:webgl2",
+    "build:viewer": "cd apps/viewer && npm run build",
+    "test:viewer": "cd apps/viewer && npm test",
     "test": "cargo test --workspace",
     "check": "cargo check --workspace && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings",
     "serve": "python tools/serve_probe.py",

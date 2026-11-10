@@ -1,0 +1,141 @@
+{
+  "scope": "independent browser inspection on existing running Vite dev server",
+  "environment": "Chrome headless Windows; not native iOS, Android or Safari",
+  "checks": {
+    "desktop": {
+      "layout": "pro-wide",
+      "stage": {
+        "x": 360,
+        "y": 60,
+        "width": 832,
+        "height": 900,
+        "top": 60,
+        "right": 1192,
+        "bottom": 960,
+        "left": 360
+      },
+      "canvas2d": true,
+      "headerBackendBadge": "VISTA CONCEPTUAL",
+      "hasWebGpuContext": false,
+      "overflow": false,
+      "pageErrors": []
+    },
+    "mobile_reduced_motion": {
+      "rafIn750ms": 0,
+      "touchTargets": {
+        "topbar": [
+          {
+            "label": "Abrir explorador",
+            "width": 44,
+            "height": 44,
+            "rect": {
+              "x": 16,
+              "y": 3.5,
+              "width": 44,
+              "height": 44,
+              "top": 3.5,
+              "right": 60,
+              "bottom": 47.5,
+              "left": 16
+            }
+          },
+          {
+            "label": "Cambiar a modo claro",
+            "width": 44,
+            "height": 44,
+            "rect": {
+              "x": 278,
+              "y": 3.5,
+              "width": 44,
+              "height": 44,
+              "top": 3.5,
+              "right": 322,
+              "bottom": 47.5,
+              "left": 278
+            }
+          },
+          {
+            "label": "Abrir inspector",
+            "width": 44,
+            "height": 44,
+            "rect": {
+              "x": 330,
+              "y": 3.5,
+              "width": 44,
+              "height": 44,
+              "top": 3.5,
+              "right": 374,
+              "bottom": 47.5,
+              "left": 330
+            }
+          }
+        ],
+        "sheetHandle": {
+          "x": 0,
+          "y": 735,
+          "width": 390,
+          "height": 44,
+          "top": 735,
+          "right": 390,
+          "bottom": 779,
+          "left": 0
+        },
+        "sheetButton": {
+          "x": 0,
+          "y": 735,
+          "width": 390,
+          "height": 44,
+          "top": 735,
+          "right": 390,
+          "bottom": 779,
+          "left": 0
+        },
+        "camera": [
+          {
+            "label": "Restablecer cámara (Disponible en M05-B)",
+            "w": 44,
+            "h": 44
+          },
+          {
+            "label": "Enfocar estructura (Disponible en M05-B)",
+            "w": 44,
+            "h": 44
+          }
+        ]
+      },
+      "pageErrors": []
+    },
+    "mobile_sheet": {
+      "afterClickStyle": "height: 52%;"
+    },
+    "drawer_focus": {
+      "initial": "<button type=\"button\" class=\"atlas-btn atlas-btn-icon atlas-control-btn\" title=\"Cerrar explorador\" aria-label=\"Cerrar explorador\" style=\"min-width: 44px; min-he",
+      "after12Tabs": {
+        "tag": "BUTTON",
+        "cls": "atlas-tree-action-btn",
+        "insideDrawer": true,
+        "outsideNavigation": false
+      },
+      "pageErrors": []
+    },
+    "short_landscape": {
+      "layout": "compact-wide",
+      "viewport": [
+        844,
+        390
+      ],
+      "stage": {
+        "x": 0,
+        "y": 48,
+        "width": 844,
+        "height": 342,
+        "top": 48,
+        "right": 844,
+        "bottom": 390,
+        "left": 0
+      },
+      "horizontalOverflow": false,
+      "pageErrors": []
+    }
+  }
+}
