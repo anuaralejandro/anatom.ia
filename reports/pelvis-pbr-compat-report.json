@@ -1,0 +1,170 @@
+{
+  "status": "experimental_only_not_licensed_for_distribution",
+  "input": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-baseline-uncompressed.glb",
+  "output": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-pbr-core-compat.glb",
+  "input_bytes": 682900,
+  "output_bytes": 681492,
+  "input_sha256": "8c9a107824bc11c64551cb3452c63395af35abf1fbbf9a9c058f074d2954ca47",
+  "output_sha256": "405da36949f511b197291f2b1274d5fcdd340bb2a31d9042ee2648f8782c5797",
+  "binary_payload_preserved_sha256": "66ed3b34dd94714c2c62500391a07c5b5453561033dfa424563d26bfb6966171",
+  "anatomy_ids_preserved": 26,
+  "materials_graded": [
+    {
+      "name": "Bone-5",
+      "category": "bone",
+      "before": {
+        "metallic": 0.49038460850715637,
+        "roughness": 0.6730769872665405,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.73
+      }
+    },
+    {
+      "name": "Cartilage",
+      "category": "cartilage",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.317307710647583,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.57
+      }
+    },
+    {
+      "name": "Organ",
+      "category": "organ",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.5,
+        "extensions": []
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.64
+      }
+    },
+    {
+      "name": "Gland",
+      "category": "gland",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.21474356949329376,
+        "extensions": []
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.58
+      }
+    },
+    {
+      "name": "Mucosa",
+      "category": "mucosa",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.20192307233810425,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.53
+      }
+    },
+    {
+      "name": "Ligament",
+      "category": "ligament",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.1022409051656723,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.77
+      }
+    },
+    {
+      "name": "Orbicularis/Constrictor",
+      "category": "orbicularis",
+      "before": {
+        "metallic": 0.5185555219650269,
+        "roughness": 0.4045208692550659,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.73
+      }
+    },
+    {
+      "name": "Artery",
+      "category": "artery",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.35256409645080566,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.57
+      }
+    },
+    {
+      "name": "Vein",
+      "category": "vein",
+      "before": {
+        "metallic": 0,
+        "roughness": 0.35256409645080566,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.61
+      }
+    },
+    {
+      "name": "Nerve-2",
+      "category": "nerve",
+      "before": {
+        "metallic": 0.8974359035491943,
+        "roughness": 0.682692289352417,
+        "extensions": [
+          "KHR_materials_ior",
+          "KHR_materials_specular"
+        ]
+      },
+      "after": {
+        "metallic": 0.0,
+        "roughness": 0.7
+      }
+    }
+  ],
+  "required_extensions": [],
+  "used_extensions": [],
+  "notes": "Only material JSON modified; GLB binary payload byte-for-byte unchanged. Equivalent appearance not claimed. No GPU render test, no LOD."
+}

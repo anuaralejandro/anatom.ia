@@ -1,0 +1,22 @@
+{
+  "pass": true,
+  "expected": 26,
+  "identified_in_glb": 26,
+  "missing": [],
+  "extra": [],
+  "wrong_source": [],
+  "invalid_meshes": [],
+  "missing_mesh": [],
+  "glb_bytes": 682900,
+  "sha256": "8c9a107824bc11c64551cb3452c63395af35abf1fbbf9a9c058f074d2954ca47",
+  "nodes_total": 26,
+  "meshes_total": 26,
+  "primitives_total": 27,
+  "extensions_used": [
+    "KHR_materials_specular",
+    "KHR_materials_ior"
+  ],
+  "materials": 10,
+  "textures": 0,
+  "notes": "Identity/GLB structural check only. No runtime rendering, mobile performance, source-license clearance, meshopt or LOD proven."
+}

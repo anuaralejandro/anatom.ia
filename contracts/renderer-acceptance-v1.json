@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "status": "planned_not_run",
+  "sourceCommit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+  "fixtures": [
+    "reports/experimental/pelvis-baseline-uncompressed.glb",
+    "reports/experimental/pelvis-pbr-core-compat.glb"
+  ],
+  "gates": [
+    {
+      "id": "R00",
+      "name": "Core GLB reference integrity",
+      "kind": "automated",
+      "state": "PASS",
+      "evidence": "reports/pelvis-baseline-validation.json"
+    },
+    {
+      "id": "R01",
+      "name": "PBR core JSON + binary equivalence",
+      "kind": "automated",
+      "state": "PASS",
+      "evidence": "reports/pelvis-pbr-compat-validation.json"
+    },
+    {
+      "id": "R02",
+      "name": "WGSL shader validation via wgpu/Naga",
+      "kind": "compile",
+      "state": "NOT_RUN",
+      "acceptance": "both targets compile and create all required pipelines"
+    },
+    {
+      "id": "R03",
+      "name": "WebGPU real render",
+      "kind": "browser",
+      "state": "NOT_RUN",
+      "acceptance": "26 IDs scene visible, nonblack and colors distinct"
+    },
+    {
+      "id": "R04",
+      "name": "WebGL2 fallback real render",
+      "kind": "browser",
+      "state": "NOT_RUN",
+      "acceptance": "same scene visible, no required features missing"
+    },
+    {
+      "id": "R05",
+      "name": "Selection accuracy and visibility",
+      "kind": "interaction",
+      "state": "NOT_RUN",
+      "acceptance": "26/26 selectable by ID when visually reachable; isolate/hide/reset coherent"
+    },
+    {
+      "id": "R06",
+      "name": "Mouse and touch camera",
+      "kind": "interaction",
+      "state": "NOT_RUN",
+      "acceptance": "orbit/pan/zoom stable, preserves scene and DPR"
+    },
+    {
+      "id": "R07",
+      "name": "Clockwise winding, normals and left/right",
+      "kind": "visual",
+      "state": "NOT_RUN",
+      "acceptance": "no inverted culling or systematic mirrored anatomy"
+    },
+    {
+      "id": "R08",
+      "name": "LOD id/mapping/appearance",
+      "kind": "pipeline",
+      "state": "NOT_RUN",
+      "acceptance": "100% id conservation, atomic swap; silhouette error tested"
+    },
+    {
+      "id": "R09",
+      "name": "Cold/warm cache",
+      "kind": "network",
+      "state": "NOT_RUN",
+      "acceptance": "no unnecessary re-download in warm-cache and no broken initial load"
+    },
+    {
+      "id": "R10",
+      "name": "Cancellation and GPU context loss",
+      "kind": "robustness",
+      "state": "NOT_RUN",
+      "acceptance": "no stale scene mutation; graceful rebuild"
+    },
+    {
+      "id": "R11",
+      "name": "Memory and thermal",
+      "kind": "physical-device",
+      "state": "NOT_RUN",
+      "acceptance": "budget respected under repeated scene transitions"
+    },
+    {
+      "id": "R12",
+      "name": "Mobile FPS p95 and touch latency",
+      "kind": "physical-device",
+      "state": "NOT_RUN",
+      "acceptance": "measure against provisional quality targets by device tier"
+    },
+    {
+      "id": "R13",
+      "name": "Source asset legal clearance",
+      "kind": "rights-review",
+      "state": "BLOCKED",
+      "acceptance": "per asset provenance and license compatible with intended distribution"
+    },
+    {
+      "id": "R14",
+      "name": "Clinical accuracy and bilateral mapping",
+      "kind": "anatomical-review",
+      "state": "PENDING",
+      "acceptance": "qualified manual review of coordinates, labels and geometry"
+    }
+  ]
+}

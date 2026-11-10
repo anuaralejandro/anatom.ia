@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "status": "provisional_targets_not_benchmarked",
+  "priorityRules": [
+    "do not exceed adapter capabilities",
+    "preserve selected anatomy identity",
+    "preserve responsiveness and battery",
+    "fallback to lower LOD instead of OOM"
+  ],
+  "profiles": {
+    "low": {
+      "targetFps": 30,
+      "dynamicResolution": [
+        0.65,
+        0.85
+      ],
+      "msaaSamples": 1,
+      "shadows": false,
+      "postprocess": false,
+      "ambientLight": true,
+      "geometryStrategy": "mostly original for sub-2500 triangles, region chunk visibility",
+      "estimatedGpuResidentBudgetMiB": 64,
+      "cpuDecodedBudgetMiB": 48,
+      "persistentCacheTargetMiB": 100,
+      "concurrentFetchesInitial": 2
+    },
+    "medium": {
+      "targetFps": 45,
+      "dynamicResolution": [
+        0.85,
+        1
+      ],
+      "msaaSamples": 1,
+      "shadows": false,
+      "postprocess": false,
+      "ambientLight": true,
+      "geometryStrategy": "screen-space error prioritized",
+      "estimatedGpuResidentBudgetMiB": 128,
+      "cpuDecodedBudgetMiB": 96,
+      "persistentCacheTargetMiB": 300,
+      "concurrentFetchesInitial": 3
+    },
+    "high": {
+      "targetFps": 60,
+      "dynamicResolution": [
+        1,
+        1
+      ],
+      "msaaSamples": 4,
+      "shadows": "deferred_optional",
+      "postprocess": false,
+      "ambientLight": true,
+      "geometryStrategy": "highest appropriate LOD",
+      "estimatedGpuResidentBudgetMiB": 256,
+      "cpuDecodedBudgetMiB": 160,
+      "persistentCacheTargetMiB": 800,
+      "concurrentFetchesInitial": 4
+    }
+  },
+  "metadata": {
+    "timePercentile": "p95 >= 120 interaction frames per scenario",
+    "note": "All values are starting hypotheses and do not represent measured speed, total browser memory or guarantees.",
+    "dynamicResolutionPixelRatio": "ratio relative to CSS pixels * capped devicePixelRatio; clamp physical canvas size to adapter texture limits",
+    "limitBehavior": "degrade or error gracefully; no unchecked allocations"
+  }
+}

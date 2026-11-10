@@ -1,0 +1,45 @@
+{
+  "stage": "7-implementation-blueprint",
+  "result": "PASS_DESIGN_ONLY",
+  "checks": {
+    "schemas_v1": true,
+    "milestones_7_unique": true,
+    "milestone_dag_valid": true,
+    "milestone_gates_unique": true,
+    "no_milestone_fake_pass": true,
+    "gate_states_not_fake_pass": true,
+    "M01_depends_on_preflight": true,
+    "M02_depends_on_backend": true,
+    "M05_depends_on_robust_core": true,
+    "M06_release_last": true,
+    "bridge_commands_unique": true,
+    "bridge_required_commands": true,
+    "bridge_owns_scene_in_rust": true,
+    "dual_backend_and_shader_contract": true,
+    "source_fixture_valid": true,
+    "pbr_geometry_identical": true,
+    "stage6_design_pass": true,
+    "only_R00_R01_prior_pass": true,
+    "rights_gate_still_blocked": true,
+    "documents_exist": true,
+    "fixture_exists": true
+  },
+  "milestones": 7,
+  "bridge_commands": 12,
+  "unrun_gates": [
+    "G-M00",
+    "G-M01",
+    "G-M02",
+    "G-M03",
+    "G-M04",
+    "G-M05",
+    "G-M06"
+  ],
+  "remaining_blockers": [
+    "runtime shaders and GPU compatibility not tested",
+    "legal asset clearance R13 blocked",
+    "clinical review R14 pending",
+    "physical device benchmarks missing"
+  ],
+  "note": "A green design checklist never implies production or implementation completion."
+}

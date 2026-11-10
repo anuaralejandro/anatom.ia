@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "stage": "7-implementation-blueprint",
+  "status": "DESIGN_ONLY",
+  "upstreamCommit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+  "milestones": [
+    {
+      "id": "M00",
+      "name": "Preflight reproducible",
+      "dependsOn": [],
+      "deliverable": "Entorno Rust/WASM y fixture congelados",
+      "files": [
+        "Cargo.toml",
+        "Cargo.lock",
+        "rust-toolchain.toml",
+        "package.json",
+        "docs/BUILD.md"
+      ],
+      "work": [
+        "Verificar toolchain Rust y MSRV wgpu, instalar wasm32-unknown-unknown y wasm-bindgen-cli de versión fijada",
+        "Crear workspace sin código de producto innecesario",
+        "Verificar fixture PBR core 26 IDs y 27 primitives con checksum",
+        "Configurar compilación local reproducible en 127.0.0.1 o HTTPS"
+      ],
+      "tests": [
+        "cargo fmt --check",
+        "cargo metadata --locked",
+        "Validación scripts preexistentes y hashes"
+      ],
+      "acceptance": "Workspace y build inicial reproducibles; los assets originales no se modifican",
+      "gate": "G-M00",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M01",
+      "name": "Spina web gráfica mínima",
+      "dependsOn": [
+        "M00"
+      ],
+      "deliverable": "Canvas Rust/wgpu con dos builds y shader mínimo",
+      "files": [
+        "crates/atlas-core/",
+        "crates/atlas-web/",
+        "shaders/anatomy_opaque.wgsl",
+        "apps/probe-web/"
+      ],
+      "work": [
+        "Definir build browser-webgpu y browser-webgl2 desde código compartido",
+        "Crear canvas y surface con Depth24Plus y color sRGB cuando esté soportado",
+        "Validar adapter/device/features/limits antes de pipelines",
+        "Hacer fallback reconstruyendo el canvas tras fallo WebGPU",
+        "Conservar build WEBGL2 sin compute, storage buffers ni shaders avanzados"
+      ],
+      "tests": [
+        "compilación wasm WebGPU y WebGL2",
+        "Naga shader check y pipeline init en navegador",
+        "capturas automáticas y error visible en fallo"
+      ],
+      "acceptance": "Render simple (triángulo/cubo sintético) visible en WebGPU y WebGL2 reales; sin pantalla negra",
+      "gate": "G-M01",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M02",
+      "name": "Carga real de pelvis y selección",
+      "dependsOn": [
+        "M01"
+      ],
+      "deliverable": "26 IDs anatómicos interactivos",
+      "files": [
+        "crates/atlas-core/src/assets/",
+        "crates/atlas-core/src/scene/",
+        "crates/atlas-core/src/picking/",
+        "apps/probe-web/"
+      ],
+      "work": [
+        "Leer GLB core PBR y validar accessors, índices y node extras",
+        "Construir mallas/buffers y renderizar los 26 IDs sin remapeos",
+        "Cámara orbit/pan/zoom, fit bounds, ray test CPU y visibilidad",
+        "Implementar 26/26 selección, ocultar, aislar y restaurar",
+        "Verificar norma/transformación/lateralidad, screenshot reference"
+      ],
+      "tests": [
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "Test de GLB corrupto, índices fuera de rango, no NaN"
+      ],
+      "acceptance": "Pelvis real visible, selección e aislamiento correctos en ambos backends",
+      "gate": "G-M02",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M03",
+      "name": "Builder de producción incremental",
+      "dependsOn": [
+        "M02"
+      ],
+      "deliverable": "Pipeline de asset validado y primera LOD",
+      "files": [
+        "crates/atlas-builder/",
+        "tools/blender/",
+        "contracts/atlas-manifest.schema.json"
+      ],
+      "work": [
+        "Adaptar scripts exploratorios a CLI y scripts reproducibles",
+        "Separar etiquetas FONT, marcadores vacíos y curvas evaluadas",
+        "Crosswalk TA2 explícito, trazabilidad/atribución por fuente",
+        "Simplificar sacro y vejiga en copias cuando métricas lo permitan",
+        "Verificar node extras, hashes, LOD y error de silueta",
+        "Registrar que fixture no está aprobado para distribución comercial"
+      ],
+      "tests": [
+        "R08",
+        "validación schema y SHA",
+        "roundtrip 26 IDs de source a LOD",
+        "reconstrucción determinista cuando sea viable"
+      ],
+      "acceptance": "Builder produce releases completos con IDs/lateralidad intactos y valida sin publicar assets no autorizados",
+      "gate": "G-M03",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M04",
+      "name": "Assets streaming, caché y recuperación",
+      "dependsOn": [
+        "M03"
+      ],
+      "deliverable": "Scene lifecycle robusto en móvil",
+      "files": [
+        "crates/atlas-core/src/streaming/",
+        "crates/atlas-core/src/memory/",
+        "crates/atlas-web/src/cache/"
+      ],
+      "work": [
+        "Token scene_generation y jobs cancelables",
+        "Caché HTTP/Cache Storage con hashes y cuota controlada",
+        "Cargar LOD base primero y sustituir atómicamente",
+        "LRU GPU/CPU con handles generacionales",
+        "Recuperación DeviceLost y error visible; render on-demand"
+      ],
+      "tests": [
+        "R09",
+        "R10",
+        "R11",
+        "pruebas de estrés de alternancia de regiones",
+        "caché ausente, disco lleno, red interrumpida"
+      ],
+      "acceptance": "No stale mutations, sin fugas sostenidas, errores recuperables y segunda carga desde caché",
+      "gate": "G-M04",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M05",
+      "name": "Visor React final",
+      "dependsOn": [
+        "M02",
+        "M04"
+      ],
+      "deliverable": "Viewer responsive premium",
+      "files": [
+        "apps/viewer/"
+      ],
+      "work": [
+        "Implementar bridge tipado sin posesión GPU en React",
+        "Tema claro/oscuro con turquesa/azul/naranja y accesibilidad",
+        "Paneles responsive, búsqueda TA2, bottom sheet móvil, visibilidad",
+        "Gestos pointer/touch, teclado, estados de error, carga y offline",
+        "PWA opcional tras revisar cuota/caché"
+      ],
+      "tests": [
+        "end to end: paneles y selección",
+        "a11y y tamaños táctiles",
+        "regresión móvil WebGPU y WebGL2"
+      ],
+      "acceptance": "UI funcional y accesible sin rerender React por frame; operaciones sincronizadas por eventos",
+      "gate": "G-M05",
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "M06",
+      "name": "QA de release y publicación condicionada",
+      "dependsOn": [
+        "M05"
+      ],
+      "deliverable": "Release candidate con benchmark y checklist legal",
+      "files": [
+        "reports/performance/",
+        "reports/license-report.json",
+        "reports/release-gates.json"
+      ],
+      "work": [
+        "Benchmarks físicos Android bajo/medio/alto e iPhone Safari",
+        "Verificar p50/p95 frame, memoria, primera carga y errores",
+        "Pruebas de fallbacks y actualización atómica de versión",
+        "Validación clínica manual de geometría y lateralidad",
+        "Auditoría de licencias y exclusión de piezas NC no autorizadas",
+        "Publicar estáticos en S3 + CloudFront solo si gates legales pasan"
+      ],
+      "tests": [
+        "R11",
+        "R12",
+        "R13",
+        "R14",
+        "security/integrity/regression"
+      ],
+      "acceptance": "Release no se distribuye públicamente si falla cualquier gate bloqueante; rendimiento documentado",
+      "gate": "G-M06",
+      "status": "NOT_STARTED"
+    }
+  ],
+  "blockingPolicies": [
+    "Original upstream immutable",
+    "26 IDs preserved",
+    "no production publishing until license and clinical gate",
+    "do not implement full UI before Rust viewer vertical slice passes",
+    "no backend user service unless future feature requires one"
+  ],
+  "gateState": {
+    "G-M00": "NOT_RUN",
+    "G-M01": "NOT_RUN",
+    "G-M02": "NOT_RUN",
+    "G-M03": "NOT_RUN",
+    "G-M04": "NOT_RUN",
+    "G-M05": "NOT_RUN",
+    "G-M06": "NOT_RUN"
+  }
+}

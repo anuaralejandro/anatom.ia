@@ -1,0 +1,737 @@
+{
+  "orientationWarnings": [],
+  "schemaVersion": 0,
+  "source": "TA2.csv and Z-Anatomy Startup.blend",
+  "status": "release_candidate_offline",
+  "structures": [
+    {
+      "conceptId": "ta2:1071",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.000039,
+          0.049302,
+          0.923294
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1071",
+      "labels": {
+        "en": "Sacrum",
+        "es-MX": "Hueso sacro",
+        "la": "Os sacrum"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Sacrum",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1071",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1092",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.000011,
+          0.076506,
+          0.845711
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1092",
+      "labels": {
+        "en": "Coccyx",
+        "es-MX": "Cóccix",
+        "la": "Os coccygis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Coccyx",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1092",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1855",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.0,
+          -0.042736,
+          0.844489
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1855",
+      "labels": {
+        "en": "Pubic symphysis",
+        "es-MX": "Sínfisis púbica",
+        "la": "Symphysis pubica"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Pubic symphysis",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1855",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3401",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.000389,
+          -0.000135,
+          0.854927
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3401",
+      "labels": {
+        "en": "Urinary bladder",
+        "es-MX": "Vejiga urinaria",
+        "la": "Vesica urinaria"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Urinary bladder",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3401",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3637",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.000064,
+          0.015319,
+          0.820716
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3637",
+      "labels": {
+        "en": "Prostate",
+        "es-MX": "Próstata",
+        "la": "Prostata"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Prostate",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3637",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3631",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.019512,
+          0.034044,
+          0.84355
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3631:left",
+      "labels": {
+        "en": "Seminal gland",
+        "es-MX": "Glándula seminal",
+        "la": "Glandula seminalis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Seminal gland.l",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3631",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3631",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.019512,
+          0.034044,
+          0.84355
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3631:right",
+      "labels": {
+        "en": "Seminal gland",
+        "es-MX": "Glándula seminal",
+        "la": "Glandula seminalis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Seminal gland.r",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3631",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3576",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.020688,
+          -0.056154,
+          0.741372
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3576:left",
+      "labels": {
+        "en": "Testis",
+        "es-MX": "Testículo",
+        "la": "Testis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Testis.l",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3576",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3576",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.020688,
+          -0.056154,
+          0.741372
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3576:right",
+      "labels": {
+        "en": "Testis",
+        "es-MX": "Testículo",
+        "la": "Testis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Testis.r",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3576",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3668",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.000059,
+          -0.093601,
+          0.760166
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3668",
+      "labels": {
+        "en": "Glans penis",
+        "es-MX": "Glande del pene",
+        "la": "Glans penis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Glans penis",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3668",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3678",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.000111,
+          -0.033272,
+          0.78676
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3678",
+      "labels": {
+        "en": "Corpus cavernosum of penis",
+        "es-MX": "Cuerpo cavernoso del pene",
+        "la": "Corpus cavernosum penis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Corpus cavernosum of penis",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3678",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:3681",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.000653,
+          -0.032928,
+          0.783084
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:3681",
+      "labels": {
+        "en": "Corpus spongiosum of penis",
+        "es-MX": "Cuerpo esponjoso del pene",
+        "la": "Corpus spongiosum penis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "unpaired_or_unspecified",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Corpus spongiosum of penis",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "3681",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1852",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.026056,
+          0.062498,
+          0.887896
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1852:left",
+      "labels": {
+        "en": "Sacrospinous ligament",
+        "es-MX": "Ligamento sacroespinoso",
+        "la": "Ligamentum sacrospinale"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Sacrospinous ligament.l",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1852",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1852",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.026889,
+          0.061065,
+          0.888278
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1852:right",
+      "labels": {
+        "en": "Sacrospinous ligament",
+        "es-MX": "Ligamento sacroespinoso",
+        "la": "Ligamentum sacrospinale"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Sacrospinous ligament.r",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1852",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1850",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.03451,
+          0.064161,
+          0.854878
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1850:left",
+      "labels": {
+        "en": "Sacrotuberous ligament",
+        "es-MX": "Ligamento sacrotuberoso",
+        "la": "Ligamentum sacrotuberale"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Sacrotuberous ligament.l",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1850",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:1850",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.034342,
+          0.06194,
+          0.855063
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:1850:right",
+      "labels": {
+        "en": "Sacrotuberous ligament",
+        "es-MX": "Ligamento sacrotuberoso",
+        "la": "Ligamentum sacrotuberale"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Sacrotuberous ligament.r",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "1850",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:2412",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.024596,
+          0.062927,
+          0.857105
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:2412:left",
+      "labels": {
+        "en": "Coccygeus muscle",
+        "es-MX": "Músculo coccígeo",
+        "la": "Musculus coccygeus"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Coccygeus muscle.l",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "2412",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:2412",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.024596,
+          0.062927,
+          0.857105
+        ],
+        "sourceType": "MESH"
+      },
+      "id": "ta2:2412:right",
+      "labels": {
+        "en": "Coccygeus muscle",
+        "es-MX": "Músculo coccígeo",
+        "la": "Musculus coccygeus"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Coccygeus muscle.r",
+        "objectType": "MESH",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "2412",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:4301",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.015244,
+          -0.023038,
+          1.005653
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:4301:left",
+      "labels": {
+        "en": "Common iliac artery",
+        "es-MX": "Arteria ilíaca común",
+        "la": "Arteria iliaca communis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Common iliac artery.l",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "4301",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:4301",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.009818,
+          -0.02302,
+          1.005632
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:4301:right",
+      "labels": {
+        "en": "Common iliac artery",
+        "es-MX": "Arteria ilíaca común",
+        "la": "Arteria iliaca communis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Common iliac artery.r",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "4301",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:4302",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.030802,
+          -0.001804,
+          0.963063
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:4302:left",
+      "labels": {
+        "en": "Internal iliac artery",
+        "es-MX": "Arteria ilíaca interna",
+        "la": "Arteria iliaca interna"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Internal iliac artery.l",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "4302",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:4302",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.030802,
+          -0.001804,
+          0.963063
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:4302:right",
+      "labels": {
+        "en": "Internal iliac artery",
+        "es-MX": "Arteria ilíaca interna",
+        "la": "Arteria iliaca interna"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Internal iliac artery.r",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "4302",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:5050",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.030714,
+          -0.021708,
+          0.932802
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:5050:left",
+      "labels": {
+        "en": "External iliac vein",
+        "es-MX": "Vena iliaca externa",
+        "la": "Vena iliaca externa"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "External iliac vein.l",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "5050",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:5050",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.030714,
+          -0.021708,
+          0.932802
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:5050:right",
+      "labels": {
+        "en": "External iliac vein",
+        "es-MX": "Vena iliaca externa",
+        "la": "Vena iliaca externa"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "External iliac vein.r",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "5050",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:6522",
+      "geometry": {
+        "boundsCenterBlender": [
+          0.049884,
+          -0.007184,
+          0.864626
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:6522:left",
+      "labels": {
+        "en": "Femoral nerve",
+        "es-MX": "Nervio femoral",
+        "la": "Nervus femoralis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "left",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Femoral nerve.l",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "6522",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    },
+    {
+      "conceptId": "ta2:6522",
+      "geometry": {
+        "boundsCenterBlender": [
+          -0.049884,
+          -0.007184,
+          0.864626
+        ],
+        "sourceType": "CURVE"
+      },
+      "id": "ta2:6522:right",
+      "labels": {
+        "en": "Femoral nerve",
+        "es-MX": "Nervio femoral",
+        "la": "Nervus femoralis"
+      },
+      "licenseStatus": "pending_per_asset_review",
+      "side": "right",
+      "source": {
+        "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+        "object": "Femoral nerve.r",
+        "objectType": "CURVE",
+        "repository": "Z-Anatomy/Models-of-human-anatomy"
+      },
+      "ta2Id": "6522",
+      "validationStatus": "lexical_exact_and_geometry_presence_only",
+      "variant": "male-adult"
+    }
+  ],
+  "warning": "Not for production: label matching is lexical, no anatomical clinician review or per-asset license clearance."
+}

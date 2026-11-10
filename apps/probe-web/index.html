@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>anatom.ia — M00-M02 Diagnostic Probe</title>
+  <style>
+    :root {
+      --bg-color: #12151b;
+      --text-color: #e0e4ec;
+      --panel-bg: rgba(26, 32, 44, 0.92);
+      --panel-border: #2d3748;
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --danger-color: #ef4444;
+      --success-color: #10b981;
+      --badge-bg: #374151;
+      --canvas-bg: #181a20;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #e2e8f0;
+      --text-color: #1e293b;
+      --panel-bg: rgba(255, 255, 255, 0.92);
+      --panel-border: #cbd5e1;
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+      --danger-color: #dc2626;
+      --success-color: #059669;
+      --badge-bg: #e2e8f0;
+      --canvas-bg: #eaecf0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    #app-container {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--panel-border);
+      z-index: 10;
+      font-size: 13px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand span.tag {
+      font-size: 10px;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    select, button, input {
+      background: var(--badge-bg);
+      color: var(--text-color);
+      border: 1px solid var(--panel-border);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    select:hover, button:hover {
+      border-color: var(--accent-color);
+    }
+
+    button.primary {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+    }
+
+    button.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-webgpu { background: #065f46; color: #34d399; }
+    .badge-webgl2 { background: #1e40af; color: #93c5fd; }
+    .badge-fallback { background: #92400e; color: #fde68a; }
+    .badge-error { background: #991b1b; color: #fca5a5; }
+
+    #main-content {
+      display: flex;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #viewport-container {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      background: var(--canvas-bg);
+    }
+
+    canvas#canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+    }
+
+    #sidebar {
+      width: 380px;
+      height: 100%;
+      background: var(--panel-bg);
+      border-left: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      z-index: 5;
+    }
+
+    .sidebar-header {
+      padding: 12px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .action-grid button {
+      padding: 6px 4px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .camera-presets {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .camera-presets button {
+      flex: 1;
+      font-size: 11px;
+      padding: 4px;
+    }
+
+    .search-box {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    #structure-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px;
+      list-style: none;
+    }
+
+    .structure-item {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      margin-bottom: 3px;
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      gap: 8px;
+      border: 1px solid transparent;
+      transition: background 0.1s, border-color 0.1s;
+    }
+
+    .structure-item:hover {
+      background: var(--badge-bg);
+    }
+
+    .structure-item.selected {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .structure-item input[type="checkbox"] {
+      cursor: pointer;
+    }
+
+    .structure-title {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .structure-tag {
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      background: var(--badge-bg);
+      color: #94a3b8;
+    }
+
+    #diagnostics-bar {
+      padding: 6px 16px;
+      background: var(--panel-bg);
+      border-top: 1px solid var(--panel-border);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #94a3b8;
+      z-index: 10;
+    }
+
+    .stat-pill {
+      margin-right: 14px;
+    }
+
+    .stat-pill strong {
+      color: var(--text-color);
+    }
+
+    #loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(18, 21, 27, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-left-color: var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #error-banner {
+      display: none;
+      background: #7f1d1d;
+      color: #fecaca;
+      padding: 8px 16px;
+      font-size: 12px;
+      border-bottom: 1px solid #991b1b;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #log-drawer {
+      height: 100px;
+      background: #0f1117;
+      border-top: 1px solid var(--panel-border);
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      color: #a0aec0;
+      display: none;
+    }
+
+    .log-entry { margin-bottom: 2px; }
+    .log-warn { color: #f6e05e; }
+    .log-err { color: #fc8181; }
+    .log-info { color: #63b3ed; }
+  </style>
+</head>
+<body data-theme="dark">
+  <div id="app-container">
+    <div id="error-banner">
+      <span id="error-message">Error general</span>
+      <button onclick="document.getElementById('error-banner').style.display='none'">✕</button>
+    </div>
+
+    <!-- Header bar -->
+    <header id="top-bar">
+      <div class="brand">
+        <span>anatom.ia</span>
+        <span class="tag">M00–M02 PROBE</span>
+      </div>
+
+      <div class="toolbar-group">
+        <label for="backend-select">Backend Solicitado:</label>
+        <select id="backend-select">
+          <option value="auto">Auto (WebGPU &rarr; WebGL2)</option>
+          <option value="webgpu">WebGPU Forzado</option>
+          <option value="webgl2">WebGL2 Forzado</option>
+        </select>
+        <span id="backend-badge" class="badge">Iniciando...</span>
+      </div>
+
+      <div class="toolbar-group">
+        <label for="scene-select">Escena:</label>
+        <select id="scene-select">
+          <option value="pelvis">Pelvis PBR Core (26 TA2)</option>
+          <option value="pelvis-lod1">Pelvis LOD1 (M03 Pilot)</option>
+          <option value="cube">Cubo Sintético (M01)</option>
+        </select>
+      </div>
+
+      <div class="toolbar-group">
+        <button id="theme-btn">☀️ Claro</button>
+        <button id="log-toggle-btn">📋 Logs</button>
+      </div>
+    </header>
+
+    <!-- Main Viewport and Inspector Sidebar -->
+    <main id="main-content">
+      <div id="viewport-container">
+        <canvas id="canvas"></canvas>
+
+        <div id="loading-overlay">
+          <div class="spinner"></div>
+          <div id="loading-text" style="font-size: 14px;">Inicializando motor wgpu WebAssembly...</div>
+        </div>
+      </div>
+
+      <!-- Sidebar with 26 Anatomy Structures -->
+      <aside id="sidebar">
+        <div class="sidebar-header">
+          <div style="font-weight: 600; font-size: 13px; display: flex; justify-content: space-between;">
+            <span>Estructuras Anatómicas</span>
+            <span id="structure-count-badge" style="font-size: 11px; color: #94a3b8;">26 / 26</span>
+          </div>
+
+          <div class="action-grid">
+            <button id="btn-focus">🎯 Enfocar</button>
+            <button id="btn-isolate">🔍 Aislar</button>
+            <button id="btn-hide">👁️ Ocultar</button>
+            <button id="btn-reset-vis">🔄 Restaurar</button>
+            <button id="btn-reset-cam">🎥 Reset Cam</button>
+            <button id="btn-deselect">✖ Deselecc.</button>
+          </div>
+
+          <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">Cámaras Diagnósticas:</div>
+          <div class="camera-presets">
+            <button id="preset-0" title="Vista anterior y superior de la pelvis">1. Anterior</button>
+            <button id="preset-1" title="Vista lateral oblicua de cresta ilíaca">2. Oblicua</button>
+            <button id="preset-2" title="Vista perineal inferior de sínfisis y cuerpos cavernosos">3. Perineal</button>
+          </div>
+
+          <input type="text" id="structure-search" class="search-box" placeholder="Filtrar por nombre o TA2 ID..." />
+        </div>
+
+        <ul id="structure-list">
+          <!-- Populated dynamically via JS -->
+        </ul>
+      </aside>
+    </main>
+
+    <!-- Diagnostic log drawer -->
+    <div id="log-drawer"></div>
+
+    <!-- Diagnostic Stats Footer -->
+    <footer id="diagnostics-bar">
+      <div>
+        <span class="stat-pill">Backend Activo: <strong id="stat-backend">—</strong></span>
+        <span class="stat-pill">Dispositivo/Adaptador: <strong id="stat-adapter">—</strong></span>
+        <span class="stat-pill">Estructura Seleccionada: <strong id="stat-selected">Ninguna</strong></span>
+      </div>
+      <div>
+        <span class="stat-pill">Nodos: <strong id="stat-nodes">—</strong></span>
+        <span class="stat-pill">Primitivas: <strong id="stat-prims">—</strong></span>
+        <span class="stat-pill">Triángulos: <strong id="stat-tris">—</strong></span>
+        <span class="stat-pill">Draw Calls: <strong id="stat-drawcalls">—</strong></span>
+        <span class="stat-pill">Frame: <strong id="stat-fps">—</strong></span>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+[package]
+name = "atlas-web"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["webgpu"]
+webgpu = ["wgpu/webgpu"]
+webgl = ["wgpu/webgl"]
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+wgpu = { workspace = true, features = ["wgsl"] }
+bytemuck = { workspace = true }
+glam = { workspace = true }
+log = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde-wasm-bindgen = "0.6"
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Window",
+    "Document",
+    "HtmlCanvasElement",
+    "Element",
+    "MouseEvent",
+    "WheelEvent",
+    "TouchEvent",
+    "TouchList",
+    "Touch",
+    "PointerEvent",
+    "KeyboardEvent",
+    "console",
+    "Performance",
+    "CssStyleDeclaration",
+    "DomRect",
+    "HtmlElement",
+    "MediaQueryList",
+    "EventTarget",
+    "AddEventListenerOptions",
+] }
+js-sys = "0.3"
+console_log = "1"
+console_error_panic_hook = "0.1"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"

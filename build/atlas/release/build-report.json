@@ -1,0 +1,58 @@
+{
+  "atlas_version": "0.3.0",
+  "bilateral_pairs_count": 9,
+  "curve_objects_count": 8,
+  "mesh_objects_count": 18,
+  "milestone": "M03",
+  "packages": [
+    {
+      "bytes": 681500,
+      "encoding": "none",
+      "id": "pelvis-base-lod0",
+      "lod": 0,
+      "region": "pelvis",
+      "requiredExtensions": [],
+      "sha256": "1510ed9a93b54c8067543b4a13e92ee713f1d75adc2687324ad29a72b76244ae",
+      "system": "pelvis",
+      "url": "pelvis-base-lod0.glb",
+      "variant": "male-adult"
+    },
+    {
+      "bytes": 593928,
+      "encoding": "none",
+      "id": "pelvis-lod1",
+      "lod": 1,
+      "region": "pelvis",
+      "requiredExtensions": [],
+      "sha256": "4c1054b116b972be97ed367cb4d0a7242098c92d31e094d2127b621168346391",
+      "system": "pelvis",
+      "url": "pelvis-lod1.glb",
+      "variant": "male-adult"
+    },
+    {
+      "bytes": 169924,
+      "encoding": "meshopt",
+      "id": "pelvis-experimental-meshopt",
+      "lod": 0,
+      "region": "pelvis",
+      "requiredExtensions": [
+        "EXT_meshopt_compression",
+        "KHR_mesh_quantization"
+      ],
+      "sha256": "65c18e90e003e651b0da128e7dc7acf4700fe67964ce5b24f5bf8f070ee07a7d",
+      "system": "pelvis",
+      "url": "pelvis-meshopt-lod0.glb",
+      "variant": "male-adult"
+    }
+  ],
+  "packages_count": 3,
+  "source": {
+    "commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+    "repository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+    "source_blend": "sources/z-anatomy-template/Z-Anatomy/Startup.blend"
+  },
+  "status": "PASS",
+  "target_structures": 26,
+  "timestamp": "2026-11-09T16:00:00-06:00",
+  "unpaired_structures_count": 8
+}

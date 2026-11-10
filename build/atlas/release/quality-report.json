@@ -1,0 +1,253 @@
+{
+  "lod1": {
+    "base_bytes": 681500,
+    "base_file": "build/atlas/staging/pelvis-normalized.glb",
+    "base_total_triangles": 38605,
+    "byte_reduction_percent": 12.85,
+    "lod_bytes": 593928,
+    "lod_file": "build/atlas/staging/pelvis-lod1.glb",
+    "lod_name": "lod1",
+    "lod_total_triangles": 33758,
+    "p95_silhouette_pixel_deviation_720p": 0.01,
+    "quality_gate_p95_target": 2.0,
+    "quality_verdict": "PASS",
+    "structures": {
+      "ta2:1071": {
+        "base_triangles": 11676,
+        "center_shift_meters": 0.000012,
+        "lod_triangles": 7589,
+        "max_screen_pixel_deviation": 0.01,
+        "name": "atlas__Sacrum",
+        "status": "PASS",
+        "triangle_ratio": 0.65
+      },
+      "ta2:1092": {
+        "base_triangles": 1166,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1166,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Coccyx",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:1850:left": {
+        "base_triangles": 656,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 656,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Sacrotuberous ligament.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:1850:right": {
+        "base_triangles": 656,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 656,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Sacrotuberous ligament.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:1852:left": {
+        "base_triangles": 280,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 280,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Sacrospinous ligament.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:1852:right": {
+        "base_triangles": 280,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 280,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Sacrospinous ligament.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:1855": {
+        "base_triangles": 416,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 416,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Pubic symphysis",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:2412:left": {
+        "base_triangles": 1034,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1034,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Coccygeus muscle.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:2412:right": {
+        "base_triangles": 1034,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1034,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Coccygeus muscle.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3401": {
+        "base_triangles": 3036,
+        "center_shift_meters": 2e-6,
+        "lod_triangles": 2276,
+        "max_screen_pixel_deviation": 0.06,
+        "name": "atlas__Urinary bladder",
+        "status": "PASS",
+        "triangle_ratio": 0.7497
+      },
+      "ta2:3576:left": {
+        "base_triangles": 1356,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1356,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Testis.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3576:right": {
+        "base_triangles": 1356,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1356,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Testis.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3631:left": {
+        "base_triangles": 360,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 360,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Seminal gland.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3631:right": {
+        "base_triangles": 360,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 360,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Seminal gland.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3637": {
+        "base_triangles": 468,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 468,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Prostate",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3668": {
+        "base_triangles": 1391,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1391,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Glans penis",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3678": {
+        "base_triangles": 1288,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 1288,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Corpus cavernosum of penis",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:3681": {
+        "base_triangles": 560,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 560,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Corpus spongiosum of penis",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:4301:left": {
+        "base_triangles": 288,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 288,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Common iliac artery.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:4301:right": {
+        "base_triangles": 576,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 576,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Common iliac artery.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:4302:left": {
+        "base_triangles": 576,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 576,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Internal iliac artery.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:4302:right": {
+        "base_triangles": 576,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 576,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Internal iliac artery.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:5050:left": {
+        "base_triangles": 576,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 576,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__External iliac vein.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:5050:right": {
+        "base_triangles": 576,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 576,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__External iliac vein.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:6522:left": {
+        "base_triangles": 4032,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 4032,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Femoral nerve.l",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      },
+      "ta2:6522:right": {
+        "base_triangles": 4032,
+        "center_shift_meters": 0.0,
+        "lod_triangles": 4032,
+        "max_screen_pixel_deviation": 0.0,
+        "name": "atlas__Femoral nerve.r",
+        "status": "PASS",
+        "triangle_ratio": 1.0
+      }
+    },
+    "triangle_reduction_percent": 12.56
+  },
+  "status": "PASS"
+}

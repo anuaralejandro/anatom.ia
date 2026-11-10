@@ -1,0 +1,32 @@
+{
+  "stage": "6-renderer-contract",
+  "result": "PASS_DESIGN_ONLY",
+  "checks": {
+    "profiles_have_schema_v1": true,
+    "backend_pair": true,
+    "downlevel_webgl2_guardrails": true,
+    "real_base_glb_26_structures": true,
+    "core_compat_geometry_unchanged": true,
+    "core_compat_no_extensions": true,
+    "metadata_actual_triangles": true,
+    "data_actual_primitives": true,
+    "catalog_26_unique_ids": true,
+    "lod_policy_complete": true,
+    "runtime_tests_not_falsely_passed": true,
+    "quality_targets_provisional": true
+  },
+  "verified_passes": [
+    "R00",
+    "R01"
+  ],
+  "not_proven": [
+    "shader_compile",
+    "webgpu_render",
+    "webgl2_render",
+    "picking",
+    "lod_generation",
+    "mobile_fps",
+    "commercial_licenses"
+  ],
+  "tool": "tools/validate_stage6_contracts.py"
+}

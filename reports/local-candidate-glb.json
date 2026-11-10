@@ -1,0 +1,55 @@
+﻿{
+  "files": [
+    {
+      "path": "C:\\Users\\datam\\Documents\\first mesh.glb",
+      "file_bytes": 129902956,
+      "glb_version": 2,
+      "asset_generator": "Khronos glTF Blender I/O v4.4.56",
+      "asset_copyright": null,
+      "scenes": 1,
+      "nodes": 2,
+      "meshes": 1,
+      "mesh_primitives": 1,
+      "triangles_nominal": 1998230,
+      "materials": 1,
+      "textures": 0,
+      "images": 0,
+      "extensions_required": [],
+      "extensions_used": [],
+      "sample_node_names": [
+        "tmpzlm_tjdu.ply",
+        "world"
+      ],
+      "sample_mesh_names": [
+        "tmpzlm_tjdu.ply"
+      ],
+      "notes": "Triangle total is nominal sum of glTF primitive index counts, not measured GPU triangles. Provenance NOT established."
+    },
+    {
+      "path": "C:\\Users\\datam\\Documents\\jace_0_improved_color.glb",
+      "file_bytes": 9992344,
+      "glb_version": 2,
+      "asset_generator": "Khronos glTF Blender I/O v4.4.56",
+      "asset_copyright": null,
+      "scenes": 1,
+      "nodes": 2,
+      "meshes": 1,
+      "mesh_primitives": 1,
+      "triangles_nominal": 92556,
+      "materials": 0,
+      "textures": 0,
+      "images": 0,
+      "extensions_required": [],
+      "extensions_used": [],
+      "sample_node_names": [
+        "Mesh_0",
+        "world"
+      ],
+      "sample_mesh_names": [
+        "Mesh_0.002"
+      ],
+      "notes": "Triangle total is nominal sum of glTF primitive index counts, not measured GPU triangles. Provenance NOT established."
+    }
+  ],
+  "errors": []
+}

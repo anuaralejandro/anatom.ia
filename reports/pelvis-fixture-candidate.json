@@ -1,0 +1,397 @@
+{
+  "status": "candidate_only_not_exported",
+  "source_repository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+  "source_commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+  "source_blend": "sources/z-anatomy-template/Z-Anatomy/Startup.blend",
+  "requested_objects": 26,
+  "found_objects": 26,
+  "missing_objects": [],
+  "mesh_objects": 18,
+  "curve_objects": 8,
+  "mesh_polygons_nominal": 17221,
+  "notes": [
+    "No fixture has been exported; this only validates name/type existence.",
+    "Anatomy IDs, coordinate checks, curve radii, bounds and licensing require inspection.",
+    "Source mesh polygons exclude tessellation of CURVE objects.",
+    "Some testis/penis structures are perineal rather than strictly intrapelvic."
+  ],
+  "objects": [
+    {
+      "source_object": "Sacrum",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 8522,
+      "collection_candidates": [
+        "1: Skeletal system",
+        "Abdomen",
+        "Axial skeleton",
+        "Back",
+        "Bony pelvis",
+        "Pelvis",
+        "Trunk",
+        "Vertebral column"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Coccyx",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 1066,
+      "collection_candidates": [
+        "1: Skeletal system",
+        "Abdomen",
+        "Axial skeleton",
+        "Back",
+        "Bony pelvis",
+        "Pelvis",
+        "Trunk",
+        "Vertebral column"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Pubic symphysis",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 52,
+      "collection_candidates": [
+        "3: Joints",
+        "Abdomen",
+        "Pubic symphysis"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Urinary bladder",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 506,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Pelvis",
+        "Trunk",
+        "Urinary system"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Prostate",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 468,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Seminal gland.l",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 360,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Seminal gland.r",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 360,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Testis.l",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 226,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Testis.r",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 226,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Glans penis",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 1391,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Corpus cavernosum of penis",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 1288,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Corpus spongiosum of penis",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 560,
+      "collection_candidates": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Sacrospinous ligament.l",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 17,
+      "collection_candidates": [
+        "3: Joints",
+        "Abdomen",
+        "Fibrous joints of pelvic girdle",
+        "Left lower limb"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Sacrospinous ligament.r",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 17,
+      "collection_candidates": [
+        "3: Joints",
+        "Abdomen",
+        "Fibrous joints of pelvic girdle",
+        "Right lower limb"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Sacrotuberous ligament.l",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 47,
+      "collection_candidates": [
+        "3: Joints",
+        "Abdomen",
+        "Left lower limb",
+        "Sacrotuberous ligament"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Sacrotuberous ligament.r",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 47,
+      "collection_candidates": [
+        "3: Joints",
+        "Abdomen",
+        "Right lower limb",
+        "Sacrotuberous ligament"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Coccygeus muscle.l",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 1034,
+      "collection_candidates": [
+        "4: Muscular system",
+        "Muscles",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Coccygeus muscle.r",
+      "source_object_type": "MESH",
+      "source_polygons_nominal": 1034,
+      "collection_candidates": [
+        "4: Muscular system",
+        "Muscles",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Common iliac artery.l",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Common iliac artery.r",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Internal iliac artery.l",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Internal iliac artery.r",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "External iliac vein.l",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Systemic veins",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "External iliac vein.r",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "5: Cardiovascular system",
+        "Systemic veins",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Femoral nerve.l",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "7: Nervous system & Sense organs",
+        "Branches of posterior part of lumbar plexus",
+        "Femoral nerve",
+        "Left lower limb",
+        "Lumbar plexus",
+        "Lumbosacral plexus",
+        "Nerves",
+        "Peripheral nervous system",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    },
+    {
+      "source_object": "Femoral nerve.r",
+      "source_object_type": "CURVE",
+      "source_polygons_nominal": null,
+      "collection_candidates": [
+        "7: Nervous system & Sense organs",
+        "Branches of posterior part of lumbar plexus",
+        "Femoral nerve",
+        "Lumbar plexus",
+        "Lumbosacral plexus",
+        "Nerves",
+        "Peripheral nervous system",
+        "Right lower limb",
+        "Trunk"
+      ],
+      "anatomy_id": null,
+      "role": "anatomy",
+      "status": "candidate_requires_anatomy_id_and_licence_audit"
+    }
+  ]
+}

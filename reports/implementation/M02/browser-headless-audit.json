@@ -1,0 +1,28 @@
+{
+  "auto_pelvis": {
+    "verified_ready": true,
+    "backend": "webgl2",
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 93394,
+    "dom_has_structures": true,
+    "dom_sample": "<!DOCTYPE html>\n<html lang=\"es\" data-atlas-probe-status=\"ready\" data-atlas-backend=\"webgl2\" data-atlas-scene=\"pelvis\"><head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>anatom.ia — M00-M02 Diagnostic Probe</title>\n  <style>\n    :root {\n      --bg-color: #12151b;\n      --text-color: #e0e4ec;\n      --panel-bg: rgba(26, 32, 44, 0.92);\n      --panel-border: #2d3748;\n      --accent-color: #3b82f6;\n      --accent-hover: #2563eb;\n      --da",
+    "stderr": "93394 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M02\\probe-auto-audit.png\n"
+  },
+  "webgl2_pelvis": {
+    "verified_ready": true,
+    "backend": "webgl2",
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 92878,
+    "dom_has_structures": true,
+    "stderr": "92878 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M01\\probe-webgl2-audit.png\n"
+  },
+  "synthetic_cube": {
+    "verified_ready": true,
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 62049,
+    "stderr": "62049 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M01\\probe-cube-audit.png\n"
+  }
+}

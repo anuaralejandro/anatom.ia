@@ -1,0 +1,60 @@
+{
+  "milestone": "M01",
+  "status_summary": {
+    "webgl2": "PASS",
+    "webgpu": "BUILD_PASS_BROWSER_NOT_RUN_HEADLESS"
+  },
+  "timestamp": "2026-11-09T13:42:00-06:00",
+  "wasm_packages": {
+    "pkg_webgpu": {
+      "path": "apps/probe-web/pkg-webgpu/atlas_web_bg.wasm",
+      "bytes": 285679,
+      "features": ["webgpu"],
+      "build_command": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgpu --no-default-features --features webgpu"
+    },
+    "pkg_webgl2": {
+      "path": "apps/probe-web/pkg-webgl2/atlas_web_bg.wasm",
+      "bytes": 2909317,
+      "features": ["webgl"],
+      "build_command": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgl2 --no-default-features --features webgl"
+    }
+  },
+  "shader_verification": {
+    "shader_path": "shaders/anatomy_opaque.wgsl",
+    "validation_engine": "naga 30.0.1",
+    "wgsl_parsing": "PASS",
+    "glsl_es_300_translation": "PASS",
+    "downlevel_webgl2_compliance": {
+      "storage_buffers": false,
+      "compute_shaders": false,
+      "push_constants": false,
+      "draw_indirect": false,
+      "interpolate_linear_flag": false,
+      "multiview": false
+    }
+  },
+  "browser_headless_results": {
+    "webgl2": {
+      "exit_code": 0,
+      "screenshot_path": "reports/implementation/M01/probe-webgl2-headless.png",
+      "screenshot_bytes": 92877,
+      "dom_loaded": true,
+      "gpu_errors": []
+    },
+    "webgpu": {
+      "exit_code": 0,
+      "screenshot_path": "reports/implementation/M01/probe-cube-headless.png",
+      "screenshot_bytes": 60399,
+      "note": "WebGPU in Windows headless Chrome without physical display device triggers GPU wait timeout; interactive browser test required for full interactive WebGPU gate"
+    }
+  },
+  "synthetic_cube": {
+    "method": "Renderer::create_synthetic_cube_scene",
+    "vertices": 24,
+    "indices": 36,
+    "aabb": {
+      "min": [-0.5, -0.5, -0.5],
+      "max": [0.5, 0.5, 0.5]
+    }
+  }
+}

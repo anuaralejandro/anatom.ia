@@ -1,0 +1,19 @@
+{
+  "attribution_required": "Z-Anatomy (CC BY-SA 4.0) — Models of Human Anatomy",
+  "commercial_release_allowed": false,
+  "legal_gate_verdict": "BLOCKED_FOR_COMMERCIAL_DISTRIBUTION",
+  "notes": [
+    "El uso de estos assets derivados es estrictamente local y para desarrollo del prototipo de investigación.",
+    "La fuente Z-Anatomy compila obras de múltiples autores y licencias de terceros, algunas con restricciones NoCommercial.",
+    "Ningún activo del atlas se distribuye comercialmente sin una auditoría legal y clínica individual por asset."
+  ],
+  "review_status": "pending_per_asset_clinical_and_license_audit",
+  "status": "NON_COMMERCIAL_LOCAL_TESTING_ONLY",
+  "upstream": {
+    "license": "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "name": "Z-Anatomy",
+    "repository": "https://github.com/Z-Anatomy/Models-of-human-anatomy",
+    "upstream_commit": "56016ea6da9de755ee4229f61fafc2b313db66ff"
+  }
+}

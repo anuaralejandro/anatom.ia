@@ -1,0 +1,16 @@
+# Upstream models, extracted work copies and heavy binaries: keep separate from own source-control.
+sources/
+*.blend1
+*.blend2
+*.glb
+*.gltf
+*.bin
+*.zip
+*.7z
+target/
+build/atlas/staging/
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.log

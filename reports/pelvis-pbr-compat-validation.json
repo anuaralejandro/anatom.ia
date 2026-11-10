@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "errors": [],
+  "source": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-baseline-uncompressed.glb",
+  "core_pbr": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-pbr-core-compat.glb",
+  "geometry_identical": true,
+  "output_bytes": 681492,
+  "output_sha256": "405da36949f511b197291f2b1274d5fcdd340bb2a31d9042ee2648f8782c5797",
+  "notes": "No WGPU/WebGL2 rendering, shader compilation, perceptual accuracy or anatomical validation performed."
+}

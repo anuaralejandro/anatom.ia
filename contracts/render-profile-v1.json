@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "status": "design_not_implemented",
+  "engine": {
+    "language": "Rust",
+    "graphics": "wgpu",
+    "sourceShader": "WGSL",
+    "target_wgpu_major": 30,
+    "lock_version_after_first_dual_backend_compile": true
+  },
+  "bundles": {
+    "webgpu": "browser-webgpu",
+    "webgl2": "browser-webgl2",
+    "selection": "choose compatible backend and retry WebGL2 after WebGPU adapter/device/pipeline failure; do not use only navigator.gpu",
+    "native": "out_of_scope"
+  },
+  "contract": {
+    "gltf_major": 2,
+    "primitiveModes": [
+      4
+    ],
+    "position": {
+      "semantic": "POSITION",
+      "type": "VEC3",
+      "gpuFormat": "float32x3"
+    },
+    "normal": {
+      "semantic": "NORMAL",
+      "type": "VEC3",
+      "gpuFormat": "float32x3"
+    },
+    "indexTypes": [
+      5123,
+      5125
+    ],
+    "alphaModes": [
+      "OPAQUE"
+    ],
+    "gltf_material": "pbrMetallicRoughness",
+    "materialExtensionsInBaseline": [],
+    "texturesRequired": false,
+    "skinningRequired": false,
+    "morphTargetsRequired": false
+  },
+  "webgl2Guardrails": {
+    "deviceLimits": "wgpu::Limits::downlevel_webgl2_defaults() when using fallback",
+    "featuresRequired": [],
+    "storageBuffers": false,
+    "computeShaders": false,
+    "pushConstants": false,
+    "gpuIndirectDraw": false,
+    "uniformBuffers": true,
+    "avoidNoperspectiveInterpolation": true
+  },
+  "shaderContracts": [
+    {
+      "name": "anatomy_opaque",
+      "vertexInputs": [
+        "POSITION",
+        "NORMAL"
+      ],
+      "uniforms": [
+        "Camera(viewProjection)",
+        "Object(model,normalMatrix)",
+        "Material(baseColor,roughness,selection)"
+      ],
+      "output": "sRGB color and depth",
+      "lighting": "1 key directional + ambient/fill, energy-aware diffuse; full GGX only after tests"
+    },
+    {
+      "name": "anatomy_highlight",
+      "vertexInputs": [
+        "POSITION",
+        "NORMAL"
+      ],
+      "uniforms": [
+        "Camera",
+        "Object",
+        "SelectionTint"
+      ],
+      "output": "selected structure overlay",
+      "lighting": "tint only, no mandatory postprocess"
+    },
+    {
+      "name": "anatomy_transparency_optional",
+      "status": "deferred",
+      "explanation": "requires back-to-front order policy, visual validation; not MVP G1"
+    }
+  ],
+  "pipeline": {
+    "passes": [
+      "opaque_depth",
+      "selection_tint",
+      "present"
+    ],
+    "depth": "Depth24Plus candidate, verify per adapter",
+    "culling": "two_sided_first_then_validate_per_material",
+    "outputFormat": "surface supported sRGB preferred; test actual browser",
+    "msaa": {
+      "low": 1,
+      "mid": 1,
+      "high": 4,
+      "all_adaptive": true
+    },
+    "onDemandRender": true
+  },
+  "loadPolicy": {
+    "idAuthoritativeInRust": true,
+    "frontEndHasGeometry": false,
+    "picking": "CPU AABB/BVH then ray triangles using current evaluated LOD",
+    "loadGenerationToken": true,
+    "lodAtomicSwap": true,
+    "assetHashesRequired": true,
+    "memoryBudgets": "quality-profiles-v1.json"
+  },
+  "fixture": {
+    "original": "reports/experimental/pelvis-baseline-uncompressed.glb",
+    "compat": "reports/experimental/pelvis-pbr-core-compat.glb",
+    "structures": 26,
+    "primitives": 27,
+    "gltfIndexedTriangles": 38605,
+    "materialCount": 10,
+    "textures": 0,
+    "status": "experimental_not_licensed_for_distribution"
+  }
+}

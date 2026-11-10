@@ -1,0 +1,51 @@
+{
+  "milestone": "M00",
+  "status": "PASS",
+  "timestamp": "2026-11-09T13:42:00-06:00",
+  "toolchain": {
+    "os": "Windows 11 Home (x86_64)",
+    "rustc": "rustc 1.97.1 (0521e1041 2026-10-18)",
+    "cargo": "cargo 1.97.1 (0521e1041 2026-10-18)",
+    "rustup_target": "wasm32-unknown-unknown",
+    "wasm_pack": "0.15.1",
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "python": "3.13.5",
+    "wgpu": "30.0.1",
+    "glam": "0.29",
+    "bytemuck": "1.21"
+  },
+  "fixtures": {
+    "pelvis_baseline_uncompressed": {
+      "path": "reports/experimental/pelvis-baseline-uncompressed.glb",
+      "bytes": 682900,
+      "sha256": "8c9a107824bc11c64551cb3452c63395af35abf1fbbf9a9c058f074d2954ca47",
+      "status": "VERIFIED"
+    },
+    "pelvis_pbr_core_compat": {
+      "path": "reports/experimental/pelvis-pbr-core-compat.glb",
+      "bytes": 681492,
+      "sha256": "405da36949f511b197291f2b1274d5fcdd340bb2a31d9042ee2648f8782c5797",
+      "status": "VERIFIED"
+    },
+    "prompt_specification": {
+      "path": "docs/PROMPT_01_ANTIGRAVITY_M00_M02.md",
+      "sha256": "b8a31d7b485befb8f5819fdfce81e2a3c297f3f7200888cca4a7f223ba703aa5",
+      "status": "VERIFIED_EXACT_MATCH"
+    }
+  },
+  "upstream_integrity": {
+    "sources_z_anatomy_upstream_modified": false,
+    "blend_files_modified": false
+  },
+  "gate_m00": {
+    "pass": true,
+    "checks": [
+      "Rust workspace crates/atlas-core and crates/atlas-web configured",
+      "rust-toolchain.toml pinned to 1.97.1 with wasm32-unknown-unknown",
+      "Cargo.lock generated and locked with wgpu 30.0.1",
+      "Baseline and Stage 6/7 Python validators pass with 0 regressions",
+      "Upstream repositories untouched"
+    ]
+  }
+}

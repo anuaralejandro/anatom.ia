@@ -1,0 +1,955 @@
+{
+  "status": "PASS",
+  "blender_version": "4.4.3",
+  "source_blend": "C:\\Users\\datam\\Documents\\anatom.ia\\sources\\z-anatomy-template\\Z-Anatomy\\Startup.blend",
+  "total_objects": 7184,
+  "object_types": {
+    "MESH": 4569,
+    "CURVE": 951,
+    "FONT": 1660,
+    "LIGHT": 3,
+    "CAMERA": 1
+  },
+  "collections_count": 1944,
+  "materials_count": 188,
+  "empty_mesh_markers_count": 1605,
+  "empty_mesh_markers_sample": [
+    "(Canal for vertebral artery).j",
+    "(External occipital crest).j",
+    "(Intermediate lacunar node).l",
+    "(Intermediate lacunar node).r",
+    "(Internal occipital crest).j",
+    "(Mandibular symphysis).j",
+    "(Medial lacunar node).l",
+    "(Medial lacunar node).r",
+    "(Middle clinoid process).j",
+    "(Pancreatic impression of spleen).j",
+    "(Posterior obturator tubercle).i",
+    "(Posterior obturator tubercle).j",
+    "(Pyramidal lobe).j",
+    "(Supra-orbital notch).j",
+    "(Third trochanter).i",
+    "(Third trochanter).j",
+    "(Vermian fossa).j",
+    "[Trochlear spine].j",
+    "Abdominal lymph nodes.j",
+    "Abdominal part of muscular system.j"
+  ],
+  "font_labels_count": 1660,
+  "font_labels_sample": [
+    "(Canal for vertebral artery).t",
+    "(External occipital crest).t",
+    "(Internal occipital crest).t",
+    "(Mandibular symphysis).t",
+    "(Middle clinoid process).t",
+    "(Pancreatic impression of spleen).t",
+    "(Posterior obturator tubercle).s",
+    "(Posterior obturator tubercle).t",
+    "(Pyramidal lobe).t",
+    "(Supra-orbital notch).t",
+    "(Third trochanter).s",
+    "(Third trochanter).t",
+    "(Trochlear spine).t",
+    "(Vermian fossa).t",
+    "Abdominal lymph nodes.g",
+    "Abdominal part of muscular system.g",
+    "Abdominopelvic cavity.g",
+    "Accessory ligaments.g",
+    "Accessory visual structures.g",
+    "Acetabular fossa.s"
+  ],
+  "fixture_inspected_count": 26,
+  "fixture_missing_count": 0,
+  "fixture_missing": [],
+  "fixture_structures": [
+    {
+      "name": "Sacrum",
+      "type": "MESH",
+      "evaluated_vertices": 5832,
+      "evaluated_polygons": 8522,
+      "materials": [
+        "Bone-5",
+        "Cartilage"
+      ],
+      "bounds_min": [
+        -0.061504,
+        0.0036,
+        0.865754
+      ],
+      "bounds_max": [
+        0.061426,
+        0.095003,
+        0.980835
+      ],
+      "bounds_center": [
+        -3.9e-05,
+        0.049302,
+        0.923294
+      ],
+      "dimensions": [
+        0.12293,
+        0.091402,
+        0.115081
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Coccyx",
+      "type": "MESH",
+      "evaluated_vertices": 589,
+      "evaluated_polygons": 1066,
+      "materials": [
+        "Bone-5",
+        "Cartilage"
+      ],
+      "bounds_min": [
+        -0.016741,
+        0.066644,
+        0.830297
+      ],
+      "bounds_max": [
+        0.016764,
+        0.086369,
+        0.861126
+      ],
+      "bounds_center": [
+        1.1e-05,
+        0.076506,
+        0.845711
+      ],
+      "dimensions": [
+        0.033505,
+        0.019725,
+        0.030829
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Pubic symphysis",
+      "type": "MESH",
+      "evaluated_vertices": 210,
+      "evaluated_polygons": 208,
+      "materials": [
+        "Cartilage"
+      ],
+      "bounds_min": [
+        -0.017158,
+        -0.05571,
+        0.834884
+      ],
+      "bounds_max": [
+        0.017158,
+        -0.029762,
+        0.854094
+      ],
+      "bounds_center": [
+        0.0,
+        -0.042736,
+        0.844489
+      ],
+      "dimensions": [
+        0.034317,
+        0.025948,
+        0.01921
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ]
+    },
+    {
+      "name": "Urinary bladder",
+      "type": "MESH",
+      "evaluated_vertices": 1520,
+      "evaluated_polygons": 1518,
+      "materials": [
+        "Organ"
+      ],
+      "bounds_min": [
+        -0.036838,
+        -0.041762,
+        0.829261
+      ],
+      "bounds_max": [
+        0.037616,
+        0.041492,
+        0.880593
+      ],
+      "bounds_center": [
+        0.000389,
+        -0.000135,
+        0.854927
+      ],
+      "dimensions": [
+        0.074454,
+        0.083254,
+        0.051332
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ]
+    },
+    {
+      "name": "Prostate",
+      "type": "MESH",
+      "evaluated_vertices": 236,
+      "evaluated_polygons": 468,
+      "materials": [
+        "Gland"
+      ],
+      "bounds_min": [
+        -0.017921,
+        -0.001056,
+        0.809004
+      ],
+      "bounds_max": [
+        0.017794,
+        0.031694,
+        0.832427
+      ],
+      "bounds_center": [
+        -6.4e-05,
+        0.015319,
+        0.820716
+      ],
+      "dimensions": [
+        0.035715,
+        0.03275,
+        0.023423
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Seminal gland.l",
+      "type": "MESH",
+      "evaluated_vertices": 182,
+      "evaluated_polygons": 360,
+      "materials": [
+        "Gland"
+      ],
+      "bounds_min": [
+        0.003069,
+        0.023559,
+        0.828263
+      ],
+      "bounds_max": [
+        0.035955,
+        0.044529,
+        0.858837
+      ],
+      "bounds_center": [
+        0.019512,
+        0.034044,
+        0.84355
+      ],
+      "dimensions": [
+        0.032886,
+        0.02097,
+        0.030574
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Seminal gland.r",
+      "type": "MESH",
+      "evaluated_vertices": 182,
+      "evaluated_polygons": 360,
+      "materials": [
+        "Gland"
+      ],
+      "bounds_min": [
+        -0.035955,
+        0.023559,
+        0.828263
+      ],
+      "bounds_max": [
+        -0.003069,
+        0.044529,
+        0.858837
+      ],
+      "bounds_center": [
+        -0.019512,
+        0.034044,
+        0.84355
+      ],
+      "dimensions": [
+        0.032886,
+        0.02097,
+        0.030574
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Testis.l",
+      "type": "MESH",
+      "evaluated_vertices": 680,
+      "evaluated_polygons": 678,
+      "materials": [
+        "Mucosa"
+      ],
+      "bounds_min": [
+        0.01015,
+        -0.067521,
+        0.726645
+      ],
+      "bounds_max": [
+        0.031226,
+        -0.044786,
+        0.756098
+      ],
+      "bounds_center": [
+        0.020688,
+        -0.056154,
+        0.741372
+      ],
+      "dimensions": [
+        0.021075,
+        0.022735,
+        0.029453
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ]
+    },
+    {
+      "name": "Testis.r",
+      "type": "MESH",
+      "evaluated_vertices": 680,
+      "evaluated_polygons": 678,
+      "materials": [
+        "Mucosa"
+      ],
+      "bounds_min": [
+        -0.031226,
+        -0.067521,
+        0.726645
+      ],
+      "bounds_max": [
+        -0.01015,
+        -0.044786,
+        0.756098
+      ],
+      "bounds_center": [
+        -0.020688,
+        -0.056154,
+        0.741372
+      ],
+      "dimensions": [
+        0.021075,
+        0.022735,
+        0.029453
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ]
+    },
+    {
+      "name": "Glans penis",
+      "type": "MESH",
+      "evaluated_vertices": 694,
+      "evaluated_polygons": 1391,
+      "materials": [
+        "Mucosa"
+      ],
+      "bounds_min": [
+        -0.015439,
+        -0.106435,
+        0.744402
+      ],
+      "bounds_max": [
+        0.01532,
+        -0.080767,
+        0.77593
+      ],
+      "bounds_center": [
+        -5.9e-05,
+        -0.093601,
+        0.760166
+      ],
+      "dimensions": [
+        0.030759,
+        0.025668,
+        0.031528
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Corpus cavernosum of penis",
+      "type": "MESH",
+      "evaluated_vertices": 646,
+      "evaluated_polygons": 1288,
+      "materials": [
+        "Mucosa"
+      ],
+      "bounds_min": [
+        -0.032537,
+        -0.101031,
+        0.745211
+      ],
+      "bounds_max": [
+        0.032759,
+        0.034486,
+        0.828309
+      ],
+      "bounds_center": [
+        0.000111,
+        -0.033272,
+        0.78676
+      ],
+      "dimensions": [
+        0.065296,
+        0.135517,
+        0.083098
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Corpus spongiosum of penis",
+      "type": "MESH",
+      "evaluated_vertices": 282,
+      "evaluated_polygons": 560,
+      "materials": [
+        "Mucosa"
+      ],
+      "bounds_min": [
+        -0.01128,
+        -0.088989,
+        0.747442
+      ],
+      "bounds_max": [
+        0.009974,
+        0.023132,
+        0.818726
+      ],
+      "bounds_center": [
+        -0.000653,
+        -0.032928,
+        0.783084
+      ],
+      "dimensions": [
+        0.021254,
+        0.112121,
+        0.071284
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Sacrospinous ligament.l",
+      "type": "MESH",
+      "evaluated_vertices": 142,
+      "evaluated_polygons": 140,
+      "materials": [
+        "Ligament"
+      ],
+      "bounds_min": [
+        0.009029,
+        0.049032,
+        0.865752
+      ],
+      "bounds_max": [
+        0.043083,
+        0.075965,
+        0.91004
+      ],
+      "bounds_center": [
+        0.026056,
+        0.062498,
+        0.887896
+      ],
+      "dimensions": [
+        0.034054,
+        0.026932,
+        0.044288
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ]
+    },
+    {
+      "name": "Sacrospinous ligament.r",
+      "type": "MESH",
+      "evaluated_vertices": 142,
+      "evaluated_polygons": 140,
+      "materials": [
+        "Ligament"
+      ],
+      "bounds_min": [
+        -0.045847,
+        0.050837,
+        0.866298
+      ],
+      "bounds_max": [
+        -0.007932,
+        0.071292,
+        0.910258
+      ],
+      "bounds_center": [
+        -0.026889,
+        0.061065,
+        0.888278
+      ],
+      "dimensions": [
+        0.037914,
+        0.020455,
+        0.04396
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ]
+    },
+    {
+      "name": "Sacrotuberous ligament.l",
+      "type": "MESH",
+      "evaluated_vertices": 330,
+      "evaluated_polygons": 328,
+      "materials": [
+        "Ligament"
+      ],
+      "bounds_min": [
+        0.011291,
+        0.051885,
+        0.810168
+      ],
+      "bounds_max": [
+        0.057729,
+        0.076437,
+        0.899587
+      ],
+      "bounds_center": [
+        0.03451,
+        0.064161,
+        0.854878
+      ],
+      "dimensions": [
+        0.046438,
+        0.024552,
+        0.089419
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ]
+    },
+    {
+      "name": "Sacrotuberous ligament.r",
+      "type": "MESH",
+      "evaluated_vertices": 330,
+      "evaluated_polygons": 328,
+      "materials": [
+        "Ligament"
+      ],
+      "bounds_min": [
+        -0.059916,
+        0.051353,
+        0.810989
+      ],
+      "bounds_max": [
+        -0.008768,
+        0.072528,
+        0.899137
+      ],
+      "bounds_center": [
+        -0.034342,
+        0.06194,
+        0.855063
+      ],
+      "dimensions": [
+        0.051148,
+        0.021175,
+        0.088148
+      ],
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ]
+    },
+    {
+      "name": "Coccygeus muscle.l",
+      "type": "MESH",
+      "evaluated_vertices": 521,
+      "evaluated_polygons": 1034,
+      "materials": [
+        "Orbicularis/Constrictor",
+        "Tendon"
+      ],
+      "bounds_min": [
+        0.002444,
+        0.048468,
+        0.836601
+      ],
+      "bounds_max": [
+        0.046748,
+        0.077387,
+        0.87761
+      ],
+      "bounds_center": [
+        0.024596,
+        0.062927,
+        0.857105
+      ],
+      "dimensions": [
+        0.044303,
+        0.028919,
+        0.041009
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Coccygeus muscle.r",
+      "type": "MESH",
+      "evaluated_vertices": 521,
+      "evaluated_polygons": 1034,
+      "materials": [
+        "Orbicularis/Constrictor",
+        "Tendon"
+      ],
+      "bounds_min": [
+        -0.046748,
+        0.048468,
+        0.836601
+      ],
+      "bounds_max": [
+        -0.002444,
+        0.077387,
+        0.87761
+      ],
+      "bounds_center": [
+        -0.024596,
+        0.062927,
+        0.857105
+      ],
+      "dimensions": [
+        0.044303,
+        0.028919,
+        0.041009
+      ],
+      "modifiers": []
+    },
+    {
+      "name": "Common iliac artery.l",
+      "type": "CURVE",
+      "evaluated_vertices": 156,
+      "evaluated_polygons": 144,
+      "materials": [
+        "Artery"
+      ],
+      "bounds_min": [
+        -0.003486,
+        -0.040423,
+        0.978799
+      ],
+      "bounds_max": [
+        0.033974,
+        -0.005654,
+        1.032506
+      ],
+      "bounds_center": [
+        0.015244,
+        -0.023038,
+        1.005653
+      ],
+      "dimensions": [
+        0.03746,
+        0.034768,
+        0.053707
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "Common iliac artery.r",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": [
+        "Artery"
+      ],
+      "bounds_min": [
+        -0.033901,
+        -0.040423,
+        0.978759
+      ],
+      "bounds_max": [
+        0.014266,
+        -0.005617,
+        1.032506
+      ],
+      "bounds_center": [
+        -0.009818,
+        -0.02302,
+        1.005632
+      ],
+      "dimensions": [
+        0.048167,
+        0.034806,
+        0.053747
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "Internal iliac artery.l",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": [
+        "Artery"
+      ],
+      "bounds_min": [
+        0.023907,
+        -0.01633,
+        0.939115
+      ],
+      "bounds_max": [
+        0.037696,
+        0.012722,
+        0.987011
+      ],
+      "bounds_center": [
+        0.030802,
+        -0.001804,
+        0.963063
+      ],
+      "dimensions": [
+        0.013789,
+        0.029051,
+        0.047896
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "Internal iliac artery.r",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": [
+        "Artery"
+      ],
+      "bounds_min": [
+        -0.037696,
+        -0.01633,
+        0.939115
+      ],
+      "bounds_max": [
+        -0.023907,
+        0.012722,
+        0.987011
+      ],
+      "bounds_center": [
+        -0.030802,
+        -0.001804,
+        0.963063
+      ],
+      "dimensions": [
+        0.013789,
+        0.029051,
+        0.047896
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "External iliac vein.l",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": [
+        "Vein"
+      ],
+      "bounds_min": [
+        0.01201,
+        -0.044883,
+        0.881499
+      ],
+      "bounds_max": [
+        0.049418,
+        0.001467,
+        0.984105
+      ],
+      "bounds_center": [
+        0.030714,
+        -0.021708,
+        0.932802
+      ],
+      "dimensions": [
+        0.037408,
+        0.04635,
+        0.102606
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "External iliac vein.r",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": [
+        "Vein"
+      ],
+      "bounds_min": [
+        -0.049418,
+        -0.044883,
+        0.881499
+      ],
+      "bounds_max": [
+        -0.01201,
+        0.001467,
+        0.984105
+      ],
+      "bounds_center": [
+        -0.030714,
+        -0.021708,
+        0.932802
+      ],
+      "dimensions": [
+        0.037408,
+        0.04635,
+        0.102606
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 1
+      }
+    },
+    {
+      "name": "Femoral nerve.l",
+      "type": "CURVE",
+      "evaluated_vertices": 2052,
+      "evaluated_polygons": 2016,
+      "materials": [
+        "Nerve-2"
+      ],
+      "bounds_min": [
+        0.011261,
+        -0.043682,
+        0.628388
+      ],
+      "bounds_max": [
+        0.088508,
+        0.029314,
+        1.100865
+      ],
+      "bounds_center": [
+        0.049884,
+        -0.007184,
+        0.864626
+      ],
+      "dimensions": [
+        0.077247,
+        0.072996,
+        0.472478
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 3
+      }
+    },
+    {
+      "name": "Femoral nerve.r",
+      "type": "CURVE",
+      "evaluated_vertices": 2052,
+      "evaluated_polygons": 2016,
+      "materials": [
+        "Nerve-2"
+      ],
+      "bounds_min": [
+        -0.088508,
+        -0.043682,
+        0.628388
+      ],
+      "bounds_max": [
+        -0.011261,
+        0.029314,
+        1.100865
+      ],
+      "bounds_center": [
+        -0.049884,
+        -0.007184,
+        0.864626
+      ],
+      "dimensions": [
+        0.077247,
+        0.072996,
+        0.472478
+      ],
+      "modifiers": [],
+      "curve_details": {
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "splines": 3
+      }
+    }
+  ],
+  "execution_seconds": 0.44
+}

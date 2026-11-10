@@ -1,0 +1,502 @@
+{
+  "source": "Z-Anatomy TA2.csv",
+  "total_ta2_rows": 7314,
+  "candidate_count": 26,
+  "status_counts": {
+    "unique_exact": 26
+  },
+  "algorithm": "exact English or Latin normalized only; no fuzzy automatic matches",
+  "notes": [
+    "A TA2 code identifies a term, not the correctness of the mesh.",
+    "Side suffix .l/.r requires separate validation of patient-oriented coordinates.",
+    "Unmatched and ambiguous terms remain intentionally unresolved."
+  ],
+  "objects": [
+    {
+      "source_object": "Sacrum",
+      "stem": "Sacrum",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "1071",
+      "candidates": [
+        {
+          "id": "1071",
+          "English": "Sacrum",
+          "Latin": "Os sacrum",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1071",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Coccyx",
+      "stem": "Coccyx",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "1092",
+      "candidates": [
+        {
+          "id": "1092",
+          "English": "Coccyx",
+          "Latin": "Os coccygis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1092",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Pubic symphysis",
+      "stem": "Pubic symphysis",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "1855",
+      "candidates": [
+        {
+          "id": "1855",
+          "English": "Pubic symphysis",
+          "Latin": "Symphysis pubica",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1855",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Urinary bladder",
+      "stem": "Urinary bladder",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "3401",
+      "candidates": [
+        {
+          "id": "3401",
+          "English": "Urinary bladder",
+          "Latin": "Vesica urinaria",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3401",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Prostate",
+      "stem": "Prostate",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "3637",
+      "candidates": [
+        {
+          "id": "3637",
+          "English": "Prostate",
+          "Latin": "Prostata",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3637",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Seminal gland.l",
+      "stem": "Seminal gland",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "3631",
+      "candidates": [
+        {
+          "id": "3631",
+          "English": "Seminal gland",
+          "Latin": "Glandula seminalis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3631:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Seminal gland.r",
+      "stem": "Seminal gland",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "3631",
+      "candidates": [
+        {
+          "id": "3631",
+          "English": "Seminal gland",
+          "Latin": "Glandula seminalis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3631:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Testis.l",
+      "stem": "Testis",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "3576",
+      "candidates": [
+        {
+          "id": "3576",
+          "English": "Testis",
+          "Latin": "Testis",
+          "matched_field": "English"
+        },
+        {
+          "id": "3576",
+          "English": "Testis",
+          "Latin": "Testis",
+          "matched_field": "Latin"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3576:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Testis.r",
+      "stem": "Testis",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "3576",
+      "candidates": [
+        {
+          "id": "3576",
+          "English": "Testis",
+          "Latin": "Testis",
+          "matched_field": "English"
+        },
+        {
+          "id": "3576",
+          "English": "Testis",
+          "Latin": "Testis",
+          "matched_field": "Latin"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3576:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Glans penis",
+      "stem": "Glans penis",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "3668",
+      "candidates": [
+        {
+          "id": "3668",
+          "English": "Glans penis",
+          "Latin": "Glans penis",
+          "matched_field": "English"
+        },
+        {
+          "id": "3668",
+          "English": "Glans penis",
+          "Latin": "Glans penis",
+          "matched_field": "Latin"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3668",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Corpus cavernosum of penis",
+      "stem": "Corpus cavernosum of penis",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "3678",
+      "candidates": [
+        {
+          "id": "3678",
+          "English": "Corpus cavernosum of penis",
+          "Latin": "Corpus cavernosum penis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3678",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Corpus spongiosum of penis",
+      "stem": "Corpus spongiosum of penis",
+      "laterality_suffix": null,
+      "status": "unique_exact",
+      "ta2_id": "3681",
+      "candidates": [
+        {
+          "id": "3681",
+          "English": "Corpus spongiosum of penis",
+          "Latin": "Corpus spongiosum penis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:3681",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Sacrospinous ligament.l",
+      "stem": "Sacrospinous ligament",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "1852",
+      "candidates": [
+        {
+          "id": "1852",
+          "English": "Sacrospinous ligament",
+          "Latin": "Ligamentum sacrospinale",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1852:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Sacrospinous ligament.r",
+      "stem": "Sacrospinous ligament",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "1852",
+      "candidates": [
+        {
+          "id": "1852",
+          "English": "Sacrospinous ligament",
+          "Latin": "Ligamentum sacrospinale",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1852:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Sacrotuberous ligament.l",
+      "stem": "Sacrotuberous ligament",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "1850",
+      "candidates": [
+        {
+          "id": "1850",
+          "English": "Sacrotuberous ligament",
+          "Latin": "Ligamentum sacrotuberale",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1850:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Sacrotuberous ligament.r",
+      "stem": "Sacrotuberous ligament",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "1850",
+      "candidates": [
+        {
+          "id": "1850",
+          "English": "Sacrotuberous ligament",
+          "Latin": "Ligamentum sacrotuberale",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:1850:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Coccygeus muscle.l",
+      "stem": "Coccygeus muscle",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "2412",
+      "candidates": [
+        {
+          "id": "2412",
+          "English": "Coccygeus muscle",
+          "Latin": "Musculus coccygeus",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:2412:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Coccygeus muscle.r",
+      "stem": "Coccygeus muscle",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "2412",
+      "candidates": [
+        {
+          "id": "2412",
+          "English": "Coccygeus muscle",
+          "Latin": "Musculus coccygeus",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:2412:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Common iliac artery.l",
+      "stem": "Common iliac artery",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "4301",
+      "candidates": [
+        {
+          "id": "4301",
+          "English": "Common iliac artery",
+          "Latin": "Arteria iliaca communis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:4301:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Common iliac artery.r",
+      "stem": "Common iliac artery",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "4301",
+      "candidates": [
+        {
+          "id": "4301",
+          "English": "Common iliac artery",
+          "Latin": "Arteria iliaca communis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:4301:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Internal iliac artery.l",
+      "stem": "Internal iliac artery",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "4302",
+      "candidates": [
+        {
+          "id": "4302",
+          "English": "Internal iliac artery",
+          "Latin": "Arteria iliaca interna",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:4302:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Internal iliac artery.r",
+      "stem": "Internal iliac artery",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "4302",
+      "candidates": [
+        {
+          "id": "4302",
+          "English": "Internal iliac artery",
+          "Latin": "Arteria iliaca interna",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:4302:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "External iliac vein.l",
+      "stem": "External iliac vein",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "5050",
+      "candidates": [
+        {
+          "id": "5050",
+          "English": "External iliac vein",
+          "Latin": "Vena iliaca externa",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:5050:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "External iliac vein.r",
+      "stem": "External iliac vein",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "5050",
+      "candidates": [
+        {
+          "id": "5050",
+          "English": "External iliac vein",
+          "Latin": "Vena iliaca externa",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:5050:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Femoral nerve.l",
+      "stem": "Femoral nerve",
+      "laterality_suffix": "left",
+      "status": "unique_exact",
+      "ta2_id": "6522",
+      "candidates": [
+        {
+          "id": "6522",
+          "English": "Femoral nerve",
+          "Latin": "Nervus femoralis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:6522:left",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    },
+    {
+      "source_object": "Femoral nerve.r",
+      "stem": "Femoral nerve",
+      "laterality_suffix": "right",
+      "status": "unique_exact",
+      "ta2_id": "6522",
+      "candidates": [
+        {
+          "id": "6522",
+          "English": "Femoral nerve",
+          "Latin": "Nervus femoralis",
+          "matched_field": "English"
+        }
+      ],
+      "anatomy_id_proposal": "ta2:6522:right",
+      "review_required": true,
+      "comment": "TA2 is terminology, not proof of mesh identity or orientation; clinician review required."
+    }
+  ]
+}

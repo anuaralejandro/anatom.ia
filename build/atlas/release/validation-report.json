@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks_count": 27,
+  "errors": [],
+  "warnings": [],
+  "files_verified": [
+    "catalog.json",
+    "pelvis-base-lod0.glb",
+    "pelvis-lod1.glb",
+    "pelvis-meshopt-lod0.glb"
+  ]
+}

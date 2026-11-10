@@ -1,0 +1,99 @@
+{
+  "runner": "Playwright Chrome Headless actual browser",
+  "tests": [
+    {
+      "backend_requested": "webgl2",
+      "scene_requested": "pelvis",
+      "ready": true,
+      "errors": [],
+      "console_errors": [
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "verified_actions": [
+        "select-list",
+        "isolate",
+        "restore",
+        "focus-button-clicked",
+        "orbit-and-wheel-dispatched"
+      ],
+      "status": "ready",
+      "backend_effective": "webgl2",
+      "scene_effective": "pelvis",
+      "structure_rows": 26,
+      "logs": "[21:51:40] Iniciando probe-web...[21:51:40] Catálogo cargado: 26 estructuras TA2.[21:51:40] Importando módulo WebGL2 WASM (pkg-webgl2)...[21:51:40] Módulo WebGL2 WASM instanciado.[21:51:40] Solicitando inicialización con WebGL2...[21:51:40] Rust event: engine.ready[21:51:40] WebGL2 inicializado exitosamente: adapter=ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Laptop GPU (0x00002860) Direct3D11 vs_5_0 ps_5_0, D3D11), backend=webgl2[21:51:40] Descargando pelvis-pbr-core-compat.glb (681 KB)...[21:51:41] GLB descargado: 681492 bytes. Parseando e inicializando en atlas-core...[21:51:41] Rust event: region.loading[21:51:41] Rust event: region.ready[21:51:41] Rust event: scene.changed[21:51:41] GLB cargado exitosamente. Región: pelvis, visible_ids: 26[21:51:41] Probe-web listo y en ejecución.",
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\audit\\pelvis-webgl2-ready.png",
+      "first_selected": "ta2:1071",
+      "after_isolate": "1/26",
+      "after_restore": "26/26",
+      "stats": "38,605"
+    },
+    {
+      "backend_requested": "auto",
+      "scene_requested": "pelvis",
+      "ready": true,
+      "errors": [],
+      "console_errors": [],
+      "verified_actions": [
+        "select-list",
+        "isolate",
+        "restore",
+        "focus-button-clicked",
+        "orbit-and-wheel-dispatched"
+      ],
+      "status": "ready",
+      "backend_effective": "webgpu",
+      "scene_effective": "pelvis",
+      "structure_rows": 26,
+      "logs": "[21:51:44] Iniciando probe-web...[21:51:44] Catálogo cargado: 26 estructuras TA2.[21:51:44] Importando módulo WebGPU WASM (pkg-webgpu)...[21:51:44] Módulo WebGPU WASM instanciado.[21:51:44] Solicitando inicialización de GPU con WebGPU...[21:51:44] Rust event: engine.ready[21:51:44] WebGPU inicializado exitosamente: adapter=, backend=webgpu[21:51:44] Descargando pelvis-pbr-core-compat.glb (681 KB)...[21:51:45] GLB descargado: 681492 bytes. Parseando e inicializando en atlas-core...[21:51:45] Rust event: region.loading[21:51:45] Rust event: region.ready[21:51:45] Rust event: scene.changed[21:51:45] GLB cargado exitosamente. Región: pelvis, visible_ids: 26[21:51:45] Probe-web listo y en ejecución.",
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\audit\\pelvis-auto-ready.png",
+      "first_selected": "ta2:1071",
+      "after_isolate": "1/26",
+      "after_restore": "26/26",
+      "stats": "38,605"
+    },
+    {
+      "backend_requested": "webgl2",
+      "scene_requested": "cube",
+      "ready": true,
+      "errors": [],
+      "console_errors": [],
+      "verified_actions": [],
+      "status": "ready",
+      "backend_effective": "webgl2",
+      "scene_effective": "cube",
+      "structure_rows": 26,
+      "logs": "[21:51:47] Iniciando probe-web...[21:51:47] Catálogo cargado: 26 estructuras TA2.[21:51:47] Importando módulo WebGL2 WASM (pkg-webgl2)...[21:51:47] Módulo WebGL2 WASM instanciado.[21:51:47] Solicitando inicialización con WebGL2...[21:51:48] Rust event: engine.ready[21:51:48] WebGL2 inicializado exitosamente: adapter=ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 Laptop GPU (0x00002860) Direct3D11 vs_5_0 ps_5_0, D3D11), backend=webgl2[21:51:48] Rust event: region.ready[21:51:48] Rust event: scene.changed[21:51:48] Cubo sintético cargado correctamente.[21:51:48] Probe-web listo y en ejecución.",
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\audit\\cube-webgl2-ready.png",
+      "stats": "12"
+    },
+    {
+      "backend_requested": "webgpu",
+      "scene_requested": "pelvis",
+      "ready": true,
+      "errors": [],
+      "console_errors": [],
+      "verified_actions": [
+        "select-list",
+        "isolate",
+        "restore",
+        "focus-button-clicked",
+        "orbit-and-wheel-dispatched"
+      ],
+      "status": "ready",
+      "backend_effective": "webgpu",
+      "scene_effective": "pelvis",
+      "structure_rows": 26,
+      "logs": "[21:51:49] Iniciando probe-web...[21:51:49] Catálogo cargado: 26 estructuras TA2.[21:51:49] Importando módulo WebGPU WASM (pkg-webgpu)...[21:51:49] Módulo WebGPU WASM instanciado.[21:51:49] Solicitando inicialización de GPU con WebGPU...[21:51:50] Rust event: engine.ready[21:51:50] WebGPU inicializado exitosamente: adapter=, backend=webgpu[21:51:50] Descargando pelvis-pbr-core-compat.glb (681 KB)...[21:51:50] GLB descargado: 681492 bytes. Parseando e inicializando en atlas-core...[21:51:50] Rust event: region.loading[21:51:50] Rust event: region.ready[21:51:50] Rust event: scene.changed[21:51:50] GLB cargado exitosamente. Región: pelvis, visible_ids: 26[21:51:50] Probe-web listo y en ejecución.",
+      "screenshot": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\audit\\pelvis-webgpu-ready.png",
+      "first_selected": "ta2:1071",
+      "after_isolate": "1/26",
+      "after_restore": "26/26",
+      "stats": "38,605"
+    }
+  ],
+  "limitations": [
+    "Headless WebGPU is not equivalent to user interactive browser on GPU",
+    "Clicks and mouse events do not validate touchscreen pinch gestures",
+    "No FPS benchmark implied by screenshots"
+  ]
+}

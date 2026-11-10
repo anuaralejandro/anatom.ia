@@ -1,0 +1,1651 @@
+{
+  "source_file": "C:\\Users\\datam\\Documents\\anatom.ia\\sources\\z-anatomy-template\\Z-Anatomy\\Startup.blend",
+  "scene_unit_system": "METRIC",
+  "scene_unit_scale": 1.0,
+  "scene_length_unit": "CENTIMETERS",
+  "file_version": "4.4.3",
+  "items": [
+    {
+      "source_object": "Sacrum",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0000002,
+      "bounds_min": [
+        -0.061504,
+        0.0036,
+        0.865754
+      ],
+      "bounds_max": [
+        0.061426,
+        0.095003,
+        0.980835
+      ],
+      "bounds_center": [
+        -3.9e-05,
+        0.049302,
+        0.923294
+      ],
+      "dimensions_source_units": [
+        0.12293,
+        0.091402,
+        0.115081
+      ],
+      "source_mesh_verts": 5832,
+      "source_mesh_polygons": 8522,
+      "evaluated_mesh_verts": 5832,
+      "evaluated_mesh_polygons": 8522,
+      "modifiers": [],
+      "materials": [
+        "Bone-5",
+        "Cartilage"
+      ],
+      "collections": [
+        "1: Skeletal system",
+        "Abdomen",
+        "Axial skeleton",
+        "Back",
+        "Bony pelvis",
+        "Pelvis",
+        "Trunk",
+        "Vertebral column"
+      ]
+    },
+    {
+      "source_object": "Coccyx",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1000.0001831,
+      "bounds_min": [
+        -0.016741,
+        0.066644,
+        0.830297
+      ],
+      "bounds_max": [
+        0.016764,
+        0.086369,
+        0.861126
+      ],
+      "bounds_center": [
+        1.1e-05,
+        0.076506,
+        0.845711
+      ],
+      "dimensions_source_units": [
+        0.033505,
+        0.019725,
+        0.030829
+      ],
+      "source_mesh_verts": 589,
+      "source_mesh_polygons": 1066,
+      "evaluated_mesh_verts": 589,
+      "evaluated_mesh_polygons": 1066,
+      "modifiers": [],
+      "materials": [
+        "Bone-5",
+        "Cartilage"
+      ],
+      "collections": [
+        "1: Skeletal system",
+        "Abdomen",
+        "Axial skeleton",
+        "Back",
+        "Bony pelvis",
+        "Pelvis",
+        "Trunk",
+        "Vertebral column"
+      ]
+    },
+    {
+      "source_object": "Pubic symphysis",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -999.9995117,
+      "bounds_min": [
+        -0.017158,
+        -0.05571,
+        0.834884
+      ],
+      "bounds_max": [
+        0.017158,
+        -0.029762,
+        0.854094
+      ],
+      "bounds_center": [
+        0.0,
+        -0.042736,
+        0.844489
+      ],
+      "dimensions_source_units": [
+        0.034317,
+        0.025948,
+        0.01921
+      ],
+      "source_mesh_verts": 54,
+      "source_mesh_polygons": 52,
+      "evaluated_mesh_verts": 210,
+      "evaluated_mesh_polygons": 208,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ],
+      "materials": [
+        "Cartilage"
+      ],
+      "collections": [
+        "3: Joints",
+        "Abdomen",
+        "Pubic symphysis"
+      ]
+    },
+    {
+      "source_object": "Urinary bladder",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999999,
+      "bounds_min": [
+        -0.036838,
+        -0.041762,
+        0.829261
+      ],
+      "bounds_max": [
+        0.037616,
+        0.041492,
+        0.880593
+      ],
+      "bounds_center": [
+        0.000389,
+        -0.000135,
+        0.854927
+      ],
+      "dimensions_source_units": [
+        0.074454,
+        0.083254,
+        0.051332
+      ],
+      "source_mesh_verts": 255,
+      "source_mesh_polygons": 506,
+      "evaluated_mesh_verts": 1520,
+      "evaluated_mesh_polygons": 1518,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ],
+      "materials": [
+        "Organ"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Pelvis",
+        "Trunk",
+        "Urinary system"
+      ]
+    },
+    {
+      "source_object": "Prostate",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999999,
+      "bounds_min": [
+        -0.017921,
+        -0.001056,
+        0.809004
+      ],
+      "bounds_max": [
+        0.017794,
+        0.031694,
+        0.832427
+      ],
+      "bounds_center": [
+        -6.4e-05,
+        0.015319,
+        0.820716
+      ],
+      "dimensions_source_units": [
+        0.035715,
+        0.03275,
+        0.023423
+      ],
+      "source_mesh_verts": 236,
+      "source_mesh_polygons": 468,
+      "evaluated_mesh_verts": 236,
+      "evaluated_mesh_polygons": 468,
+      "modifiers": [],
+      "materials": [
+        "Gland"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Seminal gland.l",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -0.9999999,
+      "bounds_min": [
+        0.003069,
+        0.023559,
+        0.828263
+      ],
+      "bounds_max": [
+        0.035955,
+        0.044529,
+        0.858837
+      ],
+      "bounds_center": [
+        0.019512,
+        0.034044,
+        0.84355
+      ],
+      "dimensions_source_units": [
+        0.032886,
+        0.02097,
+        0.030574
+      ],
+      "source_mesh_verts": 182,
+      "source_mesh_polygons": 360,
+      "evaluated_mesh_verts": 182,
+      "evaluated_mesh_polygons": 360,
+      "modifiers": [],
+      "materials": [
+        "Gland"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Seminal gland.r",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999999,
+      "bounds_min": [
+        -0.035955,
+        0.023559,
+        0.828263
+      ],
+      "bounds_max": [
+        -0.003069,
+        0.044529,
+        0.858837
+      ],
+      "bounds_center": [
+        -0.019512,
+        0.034044,
+        0.84355
+      ],
+      "dimensions_source_units": [
+        0.032886,
+        0.02097,
+        0.030574
+      ],
+      "source_mesh_verts": 182,
+      "source_mesh_polygons": 360,
+      "evaluated_mesh_verts": 182,
+      "evaluated_mesh_polygons": 360,
+      "modifiers": [],
+      "materials": [
+        "Gland"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Testis.l",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -0.9999999,
+      "bounds_min": [
+        0.01015,
+        -0.067521,
+        0.726645
+      ],
+      "bounds_max": [
+        0.031226,
+        -0.044786,
+        0.756098
+      ],
+      "bounds_center": [
+        0.020688,
+        -0.056154,
+        0.741372
+      ],
+      "dimensions_source_units": [
+        0.021075,
+        0.022735,
+        0.029453
+      ],
+      "source_mesh_verts": 115,
+      "source_mesh_polygons": 226,
+      "evaluated_mesh_verts": 680,
+      "evaluated_mesh_polygons": 678,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ],
+      "materials": [
+        "Mucosa"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Testis.r",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999999,
+      "bounds_min": [
+        -0.031226,
+        -0.067521,
+        0.726645
+      ],
+      "bounds_max": [
+        -0.01015,
+        -0.044786,
+        0.756098
+      ],
+      "bounds_center": [
+        -0.020688,
+        -0.056154,
+        0.741372
+      ],
+      "dimensions_source_units": [
+        0.021075,
+        0.022735,
+        0.029453
+      ],
+      "source_mesh_verts": 115,
+      "source_mesh_polygons": 226,
+      "evaluated_mesh_verts": 680,
+      "evaluated_mesh_polygons": 678,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        }
+      ],
+      "materials": [
+        "Mucosa"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Glans penis",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        -0.015439,
+        -0.106435,
+        0.744402
+      ],
+      "bounds_max": [
+        0.01532,
+        -0.080767,
+        0.77593
+      ],
+      "bounds_center": [
+        -5.9e-05,
+        -0.093601,
+        0.760166
+      ],
+      "dimensions_source_units": [
+        0.030759,
+        0.025668,
+        0.031528
+      ],
+      "source_mesh_verts": 694,
+      "source_mesh_polygons": 1391,
+      "evaluated_mesh_verts": 694,
+      "evaluated_mesh_polygons": 1391,
+      "modifiers": [],
+      "materials": [
+        "Mucosa"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Corpus cavernosum of penis",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        -0.032537,
+        -0.101031,
+        0.745211
+      ],
+      "bounds_max": [
+        0.032759,
+        0.034486,
+        0.828309
+      ],
+      "bounds_center": [
+        0.000111,
+        -0.033272,
+        0.78676
+      ],
+      "dimensions_source_units": [
+        0.065296,
+        0.135517,
+        0.083098
+      ],
+      "source_mesh_verts": 646,
+      "source_mesh_polygons": 1288,
+      "evaluated_mesh_verts": 646,
+      "evaluated_mesh_polygons": 1288,
+      "modifiers": [],
+      "materials": [
+        "Mucosa"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Corpus spongiosum of penis",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        -0.01128,
+        -0.088989,
+        0.747442
+      ],
+      "bounds_max": [
+        0.009974,
+        0.023132,
+        0.818726
+      ],
+      "bounds_center": [
+        -0.000653,
+        -0.032928,
+        0.783084
+      ],
+      "dimensions_source_units": [
+        0.021254,
+        0.112121,
+        0.071284
+      ],
+      "source_mesh_verts": 282,
+      "source_mesh_polygons": 560,
+      "evaluated_mesh_verts": 282,
+      "evaluated_mesh_polygons": 560,
+      "modifiers": [],
+      "materials": [
+        "Mucosa"
+      ],
+      "collections": [
+        "8: Visceral systems",
+        "Genital systems'",
+        "Pelvis",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Sacrospinous ligament.l",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -0.9999995,
+      "bounds_min": [
+        0.009029,
+        0.049032,
+        0.865752
+      ],
+      "bounds_max": [
+        0.043083,
+        0.075965,
+        0.91004
+      ],
+      "bounds_center": [
+        0.026056,
+        0.062498,
+        0.887896
+      ],
+      "dimensions_source_units": [
+        0.034054,
+        0.026932,
+        0.044288
+      ],
+      "source_mesh_verts": 19,
+      "source_mesh_polygons": 17,
+      "evaluated_mesh_verts": 142,
+      "evaluated_mesh_polygons": 140,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ],
+      "materials": [
+        "Ligament"
+      ],
+      "collections": [
+        "3: Joints",
+        "Abdomen",
+        "Fibrous joints of pelvic girdle",
+        "Left lower limb"
+      ]
+    },
+    {
+      "source_object": "Sacrospinous ligament.r",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999995,
+      "bounds_min": [
+        -0.045847,
+        0.050837,
+        0.866298
+      ],
+      "bounds_max": [
+        -0.007932,
+        0.071292,
+        0.910258
+      ],
+      "bounds_center": [
+        -0.026889,
+        0.061065,
+        0.888278
+      ],
+      "dimensions_source_units": [
+        0.037914,
+        0.020455,
+        0.04396
+      ],
+      "source_mesh_verts": 19,
+      "source_mesh_polygons": 17,
+      "evaluated_mesh_verts": 142,
+      "evaluated_mesh_polygons": 140,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ],
+      "materials": [
+        "Ligament"
+      ],
+      "collections": [
+        "3: Joints",
+        "Abdomen",
+        "Fibrous joints of pelvic girdle",
+        "Right lower limb"
+      ]
+    },
+    {
+      "source_object": "Sacrotuberous ligament.l",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -0.9999995,
+      "bounds_min": [
+        0.011291,
+        0.051885,
+        0.810168
+      ],
+      "bounds_max": [
+        0.057729,
+        0.076437,
+        0.899587
+      ],
+      "bounds_center": [
+        0.03451,
+        0.064161,
+        0.854878
+      ],
+      "dimensions_source_units": [
+        0.046438,
+        0.024552,
+        0.089419
+      ],
+      "source_mesh_verts": 36,
+      "source_mesh_polygons": 47,
+      "evaluated_mesh_verts": 330,
+      "evaluated_mesh_polygons": 328,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ],
+      "materials": [
+        "Ligament"
+      ],
+      "collections": [
+        "3: Joints",
+        "Abdomen",
+        "Left lower limb",
+        "Sacrotuberous ligament"
+      ]
+    },
+    {
+      "source_object": "Sacrotuberous ligament.r",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999995,
+      "bounds_min": [
+        -0.059916,
+        0.051353,
+        0.810989
+      ],
+      "bounds_max": [
+        -0.008768,
+        0.072528,
+        0.899137
+      ],
+      "bounds_center": [
+        -0.034342,
+        0.06194,
+        0.855063
+      ],
+      "dimensions_source_units": [
+        0.051148,
+        0.021175,
+        0.088148
+      ],
+      "source_mesh_verts": 36,
+      "source_mesh_polygons": 47,
+      "evaluated_mesh_verts": 330,
+      "evaluated_mesh_polygons": 328,
+      "modifiers": [
+        {
+          "name": "Subdivision",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "Solidify",
+          "type": "SOLIDIFY"
+        }
+      ],
+      "materials": [
+        "Ligament"
+      ],
+      "collections": [
+        "3: Joints",
+        "Abdomen",
+        "Right lower limb",
+        "Sacrotuberous ligament"
+      ]
+    },
+    {
+      "source_object": "Coccygeus muscle.l",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -1.0000006,
+      "bounds_min": [
+        0.002444,
+        0.048468,
+        0.836601
+      ],
+      "bounds_max": [
+        0.046748,
+        0.077387,
+        0.87761
+      ],
+      "bounds_center": [
+        0.024596,
+        0.062927,
+        0.857105
+      ],
+      "dimensions_source_units": [
+        0.044303,
+        0.028919,
+        0.041009
+      ],
+      "source_mesh_verts": 521,
+      "source_mesh_polygons": 1034,
+      "evaluated_mesh_verts": 521,
+      "evaluated_mesh_polygons": 1034,
+      "modifiers": [],
+      "materials": [
+        "Orbicularis/Constrictor",
+        "Tendon"
+      ],
+      "collections": [
+        "4: Muscular system",
+        "Muscles",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Coccygeus muscle.r",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0000006,
+      "bounds_min": [
+        -0.046748,
+        0.048468,
+        0.836601
+      ],
+      "bounds_max": [
+        -0.002444,
+        0.077387,
+        0.87761
+      ],
+      "bounds_center": [
+        -0.024596,
+        0.062927,
+        0.857105
+      ],
+      "dimensions_source_units": [
+        0.044303,
+        0.028919,
+        0.041009
+      ],
+      "source_mesh_verts": 521,
+      "source_mesh_polygons": 1034,
+      "evaluated_mesh_verts": 521,
+      "evaluated_mesh_polygons": 1034,
+      "modifiers": [],
+      "materials": [
+        "Orbicularis/Constrictor",
+        "Tendon"
+      ],
+      "collections": [
+        "4: Muscular system",
+        "Muscles",
+        "Trunk"
+      ]
+    },
+    {
+      "source_object": "Common iliac artery.l",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        -0.003486,
+        -0.040423,
+        0.978799
+      ],
+      "bounds_max": [
+        0.033974,
+        -0.005654,
+        1.032506
+      ],
+      "bounds_center": [
+        0.015244,
+        -0.023038,
+        1.005653
+      ],
+      "dimensions_source_units": [
+        0.03746,
+        0.034768,
+        0.053707
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 156,
+      "evaluated_mesh_polygons": 144,
+      "modifiers": [],
+      "materials": [
+        "Artery"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 2,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "Common iliac artery.r",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        -0.033901,
+        -0.040423,
+        0.978759
+      ],
+      "bounds_max": [
+        0.014266,
+        -0.005617,
+        1.032506
+      ],
+      "bounds_center": [
+        -0.009818,
+        -0.02302,
+        1.005632
+      ],
+      "dimensions_source_units": [
+        0.048167,
+        0.034806,
+        0.053747
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 300,
+      "evaluated_mesh_polygons": 288,
+      "modifiers": [],
+      "materials": [
+        "Artery"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 3,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "Internal iliac artery.l",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        0.023907,
+        -0.01633,
+        0.939115
+      ],
+      "bounds_max": [
+        0.037696,
+        0.012722,
+        0.987011
+      ],
+      "bounds_center": [
+        0.030802,
+        -0.001804,
+        0.963063
+      ],
+      "dimensions_source_units": [
+        0.013789,
+        0.029051,
+        0.047896
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 300,
+      "evaluated_mesh_polygons": 288,
+      "modifiers": [],
+      "materials": [
+        "Artery"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 3,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "Internal iliac artery.r",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -1.0,
+      "bounds_min": [
+        -0.037696,
+        -0.01633,
+        0.939115
+      ],
+      "bounds_max": [
+        -0.023907,
+        0.012722,
+        0.987011
+      ],
+      "bounds_center": [
+        -0.030802,
+        -0.001804,
+        0.963063
+      ],
+      "dimensions_source_units": [
+        0.013789,
+        0.029051,
+        0.047896
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 300,
+      "evaluated_mesh_polygons": 288,
+      "modifiers": [],
+      "materials": [
+        "Artery"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Aorta",
+        "Systemic arteries",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 3,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "External iliac vein.l",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 1.0,
+      "bounds_min": [
+        0.01201,
+        -0.044883,
+        0.881499
+      ],
+      "bounds_max": [
+        0.049418,
+        0.001467,
+        0.984105
+      ],
+      "bounds_center": [
+        0.030714,
+        -0.021708,
+        0.932802
+      ],
+      "dimensions_source_units": [
+        0.037408,
+        0.04635,
+        0.102606
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 300,
+      "evaluated_mesh_polygons": 288,
+      "modifiers": [],
+      "materials": [
+        "Vein"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Systemic veins",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 3,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "External iliac vein.r",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -1.0,
+      "bounds_min": [
+        -0.049418,
+        -0.044883,
+        0.881499
+      ],
+      "bounds_max": [
+        -0.01201,
+        0.001467,
+        0.984105
+      ],
+      "bounds_center": [
+        -0.030714,
+        -0.021708,
+        0.932802
+      ],
+      "dimensions_source_units": [
+        0.037408,
+        0.04635,
+        0.102606
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 300,
+      "evaluated_mesh_polygons": 288,
+      "modifiers": [],
+      "materials": [
+        "Vein"
+      ],
+      "collections": [
+        "5: Cardiovascular system",
+        "Systemic veins",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 1,
+        "spline_types": [
+          "BEZIER"
+        ],
+        "control_points": 3,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "Femoral nerve.l",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": -0.9999999,
+      "bounds_min": [
+        0.011261,
+        -0.043682,
+        0.628388
+      ],
+      "bounds_max": [
+        0.088508,
+        0.029314,
+        1.100865
+      ],
+      "bounds_center": [
+        0.049884,
+        -0.007184,
+        0.864626
+      ],
+      "dimensions_source_units": [
+        0.077247,
+        0.072996,
+        0.472478
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 2052,
+      "evaluated_mesh_polygons": 2016,
+      "modifiers": [],
+      "materials": [
+        "Nerve-2"
+      ],
+      "collections": [
+        "7: Nervous system & Sense organs",
+        "Branches of posterior part of lumbar plexus",
+        "Femoral nerve",
+        "Left lower limb",
+        "Lumbar plexus",
+        "Lumbosacral plexus",
+        "Nerves",
+        "Peripheral nervous system",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 3,
+        "spline_types": [
+          "BEZIER",
+          "BEZIER",
+          "BEZIER"
+        ],
+        "control_points": 17,
+        "fill_mode": "FULL"
+      }
+    },
+    {
+      "source_object": "Femoral nerve.r",
+      "type": "CURVE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "matrix_world_determinant": 0.9999999,
+      "bounds_min": [
+        -0.088508,
+        -0.043682,
+        0.628388
+      ],
+      "bounds_max": [
+        -0.011261,
+        0.029314,
+        1.100865
+      ],
+      "bounds_center": [
+        -0.049884,
+        -0.007184,
+        0.864626
+      ],
+      "dimensions_source_units": [
+        0.077247,
+        0.072996,
+        0.472478
+      ],
+      "source_mesh_verts": null,
+      "source_mesh_polygons": null,
+      "evaluated_mesh_verts": 2052,
+      "evaluated_mesh_polygons": 2016,
+      "modifiers": [],
+      "materials": [
+        "Nerve-2"
+      ],
+      "collections": [
+        "7: Nervous system & Sense organs",
+        "Branches of posterior part of lumbar plexus",
+        "Femoral nerve",
+        "Lumbar plexus",
+        "Lumbosacral plexus",
+        "Nerves",
+        "Peripheral nervous system",
+        "Right lower limb",
+        "Trunk"
+      ],
+      "curve_details": {
+        "dimensions": "3D",
+        "bevel_depth": 0.0005000000237487257,
+        "bevel_resolution": 4,
+        "resolution_u": 12,
+        "bevel_mode": "ROUND",
+        "splines": 3,
+        "spline_types": [
+          "BEZIER",
+          "BEZIER",
+          "BEZIER"
+        ],
+        "control_points": 17,
+        "fill_mode": "FULL"
+      }
+    }
+  ],
+  "female_collections": [
+    {
+      "collection": "Female external genitalia'",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Female genital system'",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Female internal genitalia'",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Intramural part of female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Membranous part of female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Mucosa of female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Muscular layer of female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    },
+    {
+      "collection": "Para-urethral glands of female urethra",
+      "direct_objects": 0,
+      "all_objects": 0,
+      "mesh_with_faces": 0
+    }
+  ],
+  "methodology": "evaluated to_mesh() in memory, world vertex coordinates; dimensions in raw Blender coordinate units, not proven meters; no source modifications"
+}

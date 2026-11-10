@@ -1,0 +1,23 @@
+{
+  "auto_pelvis": {
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 60400,
+    "dom_has_structures": true,
+    "dom_sample": "<!DOCTYPE html>\n<html lang=\"es\"><head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>anatom.ia — M00-M02 Diagnostic Probe</title>\n  <style>\n    :root {\n      --bg-color: #12151b;\n      --text-color: #e0e4ec;\n      --panel-bg: rgba(26, 32, 44, 0.92);\n      --panel-border: #2d3748;\n      --accent-color: #3b82f6;\n      --accent-hover: #2563eb;\n      --danger-color: #ef4444;\n      --success-color: #10b981;\n      --badge-bg: #374151;\n      ",
+    "stderr": "60400 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M02\\probe-auto-headless.png\n[15356:27132:1109/134155.127:ERROR:mojo\\public\\cpp\\bindings\\lib\\interface_endpoint_client.cc:652] Message 2141072940 rejected by interface blink.mojom.FrameWidgetHost\n[15356:27132:1109/134155.339:ERROR:gpu\\ipc\\client\\command_buffer_proxy_impl.cc:476] GPU state invalid after WaitForGetOffsetInRange.\n[15356:27132:1109/134155.339:ERROR:gpu\\ipc\\client\\command_buffer_proxy_impl.cc:476] GP"
+  },
+  "webgl2_pelvis": {
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 92877,
+    "dom_has_structures": true,
+    "stderr": "92877 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M01\\probe-webgl2-headless.png\n"
+  },
+  "synthetic_cube": {
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 60399,
+    "stderr": "60399 bytes written to file C:\\Users\\datam\\Documents\\anatom.ia\\reports\\implementation\\M01\\probe-cube-headless.png\n[8184:27632:1109/134158.617:ERROR:gpu\\ipc\\client\\command_buffer_proxy_impl.cc:476] GPU state invalid after WaitForGetOffsetInRange.\n[8184:27632:1109/134158.617:ERROR:gpu\\ipc\\client\\command_buffer_proxy_impl.cc:476] GPU state invalid after WaitForGetOffsetInRange.\n"
+  }
+}

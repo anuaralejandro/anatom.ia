@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "status": "DESIGN_ONLY",
+  "transport": "wasm-bindgen typed JS wrapper; lightweight events; no WebSocket or server API",
+  "ownership": {
+    "react": "presentation state (panels, theme, search query, loading UI)",
+    "rust": "scene, camera, selected ID, visibility, GPU buffers, asset scheduler",
+    "platform": "network, Cache Storage, session storage"
+  },
+  "types": {
+    "AnatomyId": "ta2:<code>[:left|:right]; concrete published catalog is authority",
+    "RegionId": "string from manifest; not arbitrary URLs",
+    "VariantId": "male-adult | female-adult, restricted to those published",
+    "RequestId": "monotonically increasing uint32 or UUID (stable per request)",
+    "SceneGeneration": "monotonically increasing int per scene-load intent",
+    "EngineError": "{code, recoverable, detail?, requestId?, sceneGeneration?}",
+    "SceneSnapshot": "{region, variant, selectedId?, sceneRevision, visibleIds, quality, backend}; immutable versioned snapshot"
+  },
+  "api": [
+    {
+      "name": "initialize",
+      "async": true,
+      "args": [
+        "HTMLCanvasElement",
+        "BootstrapOptions"
+      ],
+      "returns": "Promise<EngineCapabilities>",
+      "preconditions": "canvas present and no previous active instance",
+      "errors": [
+        "GPU_UNAVAILABLE",
+        "SHADER_UNSUPPORTED",
+        "GPU_DEVICE_LOST"
+      ]
+    },
+    {
+      "name": "loadRegion",
+      "async": true,
+      "args": [
+        "RegionId",
+        "VariantId",
+        "RequestId"
+      ],
+      "returns": "Promise<LoadResult>",
+      "preconditions": "region/variant in manifest",
+      "errors": [
+        "REGION_UNAVAILABLE",
+        "ASSET_NOT_FOUND",
+        "ASSET_CORRUPT",
+        "ASSET_UNSUPPORTED_EXTENSION",
+        "CANCELLED"
+      ]
+    },
+    {
+      "name": "selectAt",
+      "async": false,
+      "args": [
+        "xCss",
+        "yCss"
+      ],
+      "returns": "AnatomyId|null",
+      "preconditions": "scene ready, viewport metrics fresh",
+      "errors": [
+        "INVALID_COORDINATES"
+      ]
+    },
+    {
+      "name": "selectStructure",
+      "async": false,
+      "args": [
+        "AnatomyId|null"
+      ],
+      "returns": "SceneRevision",
+      "errors": [
+        "STRUCTURE_NOT_FOUND"
+      ]
+    },
+    {
+      "name": "focusStructure",
+      "async": true,
+      "args": [
+        "AnatomyId"
+      ],
+      "returns": "Promise<void>",
+      "errors": [
+        "STRUCTURE_NOT_FOUND"
+      ]
+    },
+    {
+      "name": "setVisibility",
+      "async": false,
+      "args": [
+        "AnatomyId",
+        "boolean"
+      ],
+      "returns": "SceneRevision",
+      "errors": [
+        "STRUCTURE_NOT_FOUND"
+      ]
+    },
+    {
+      "name": "isolateStructure",
+      "async": false,
+      "args": [
+        "AnatomyId"
+      ],
+      "returns": "SceneRevision",
+      "errors": [
+        "STRUCTURE_NOT_FOUND"
+      ]
+    },
+    {
+      "name": "resetVisibility",
+      "async": false,
+      "args": [],
+      "returns": "SceneRevision",
+      "errors": []
+    },
+    {
+      "name": "resetCamera",
+      "async": false,
+      "args": [],
+      "returns": "SceneRevision",
+      "errors": []
+    },
+    {
+      "name": "getSceneSnapshot",
+      "async": false,
+      "args": [],
+      "returns": "SceneSnapshot",
+      "errors": []
+    },
+    {
+      "name": "getCapabilities",
+      "async": false,
+      "args": [],
+      "returns": "EngineCapabilities",
+      "errors": []
+    },
+    {
+      "name": "dispose",
+      "async": false,
+      "args": [],
+      "returns": "void",
+      "preconditions": "idempotent, cancels jobs",
+      "errors": []
+    }
+  ],
+  "events": [
+    "engine.ready",
+    "engine.error",
+    "region.loading",
+    "region.ready",
+    "structure.selected",
+    "scene.changed",
+    "quality.changed",
+    "backend.changed",
+    "device.recovering",
+    "device.recovered"
+  ],
+  "invariants": [
+    "selectedId is AnatomyId, never node index",
+    "all async completions carry requestId and sceneGeneration",
+    "late load result cannot mutate newer generation",
+    "region.ready after base geometry is actually renderable",
+    "React must not mirror thousands of mesh transforms",
+    "wasm API does not expose GPU object handles",
+    "no force-retry loop on unrecoverable WebGPU/WebGL2 errors",
+    "when backend switch requires canvas reinitialization, old canvas is disposed and a new canvas created",
+    "events carry bounded payloads and errors redact implementation details"
+  ],
+  "errorCodes": [
+    "GPU_UNAVAILABLE",
+    "GPU_DEVICE_LOST",
+    "SHADER_UNSUPPORTED",
+    "ASSET_NOT_FOUND",
+    "ASSET_CORRUPT",
+    "ASSET_UNSUPPORTED_EXTENSION",
+    "REGION_UNAVAILABLE",
+    "STRUCTURE_NOT_FOUND",
+    "NETWORK_ERROR",
+    "MEMORY_LIMIT",
+    "INVALID_COORDINATES",
+    "CANCELLED"
+  ],
+  "designNotes": [
+    "One shared Rust core; two small WASM bundles for reproducible WebGPU/WebGL2 support in the first milestone.",
+    "Do not choose backend based only on navigator.gpu; prove adapter, device, pipeline, and surface.",
+    "Event payload structure to be generated from a canonical schema/type definition during implementation, not manually duplicated.",
+    "setOpacity is intentionally deferred until transparent-pass acceptance; it is not a promised MVP API.",
+    "SceneSnapshot.visibleIds is on-demand only, not an event field emitted every frame."
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "source_file": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-baseline-uncompressed.glb",
+  "bytes": 682900,
+  "node_count": 26,
+  "mesh_count": 26,
+  "primitives": 27,
+  "triangles_indexed_nominal": 38605,
+  "index_component_types": {
+    "5123": 27
+  },
+  "topology_modes": {
+    "4": 27
+  },
+  "attributes": {
+    "POSITION": 27,
+    "NORMAL": 27
+  },
+  "attribute_formats": {
+    "POSITION:5126:VEC3": 27,
+    "NORMAL:5126:VEC3": 27
+  },
+  "materials": [
+    {
+      "name": "Bone-5",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0.49038460850715637,
+      "roughnessFactor": 0.6730769872665405,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Cartilage",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.317307710647583,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Organ",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.5,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": []
+    },
+    {
+      "name": "Gland",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.21474356949329376,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": []
+    },
+    {
+      "name": "Mucosa",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.20192307233810425,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Ligament",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.1022409051656723,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Orbicularis/Constrictor",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0.5185555219650269,
+      "roughnessFactor": 0.4045208692550659,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Artery",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.35256409645080566,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Vein",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.35256409645080566,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    },
+    {
+      "name": "Nerve-2",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0.8974359035491943,
+      "roughnessFactor": 0.682692289352417,
+      "doubleSided": true,
+      "alphaMode": "OPAQUE",
+      "alphaCutoff": 0.5,
+      "coreTextures": [],
+      "extensions": [
+        "KHR_materials_ior",
+        "KHR_materials_specular"
+      ]
+    }
+  ],
+  "textures": 0,
+  "extensionsUsed": [
+    "KHR_materials_specular",
+    "KHR_materials_ior"
+  ],
+  "extensionsRequired": [],
+  "bufferViews": 71,
+  "accessors": 71,
+  "vertex_colors": false,
+  "skinned": false,
+  "has_morph_targets": false,
+  "notes": "Static metadata audit; no GPU rendering, shader compilation or material equivalence validated."
+}

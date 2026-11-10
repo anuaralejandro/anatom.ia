@@ -1,0 +1,228 @@
+{
+  "status": "experimental_uncompressed_source_not_licensed_for_distribution",
+  "source_commit": "56016ea6da9de755ee4229f61fafc2b313db66ff",
+  "source_blend": "sources/z-anatomy-template/Z-Anatomy/Startup.blend",
+  "object_count": 26,
+  "mesh_count": 18,
+  "curve_count": 8,
+  "total_evaluated_polygons": 25717,
+  "total_evaluated_vertices": 19479,
+  "output": "C:\\Users\\datam\\Documents\\anatom.ia\\reports\\experimental\\pelvis-baseline-uncompressed.glb",
+  "output_bytes": 682900,
+  "sha256": "8c9a107824bc11c64551cb3452c63395af35abf1fbbf9a9c058f074d2954ca47",
+  "prepare_seconds": 2.65,
+  "export_seconds": 8.377,
+  "contains_lods": false,
+  "contains_meshopt": false,
+  "glb_coordinate_target": "glTF +Y up; original Blender +Z up; +X patient left; raw -Y anterior maps to glTF +Z",
+  "records": [
+    {
+      "source": "Sacrum",
+      "atlas_id": "ta2:1071",
+      "type": "MESH",
+      "evaluated_vertices": 5832,
+      "evaluated_polygons": 8522,
+      "materials": 2
+    },
+    {
+      "source": "Coccyx",
+      "atlas_id": "ta2:1092",
+      "type": "MESH",
+      "evaluated_vertices": 589,
+      "evaluated_polygons": 1066,
+      "materials": 2
+    },
+    {
+      "source": "Pubic symphysis",
+      "atlas_id": "ta2:1855",
+      "type": "MESH",
+      "evaluated_vertices": 210,
+      "evaluated_polygons": 208,
+      "materials": 1
+    },
+    {
+      "source": "Urinary bladder",
+      "atlas_id": "ta2:3401",
+      "type": "MESH",
+      "evaluated_vertices": 1520,
+      "evaluated_polygons": 1518,
+      "materials": 1
+    },
+    {
+      "source": "Prostate",
+      "atlas_id": "ta2:3637",
+      "type": "MESH",
+      "evaluated_vertices": 236,
+      "evaluated_polygons": 468,
+      "materials": 1
+    },
+    {
+      "source": "Seminal gland.l",
+      "atlas_id": "ta2:3631:left",
+      "type": "MESH",
+      "evaluated_vertices": 182,
+      "evaluated_polygons": 360,
+      "materials": 1
+    },
+    {
+      "source": "Seminal gland.r",
+      "atlas_id": "ta2:3631:right",
+      "type": "MESH",
+      "evaluated_vertices": 182,
+      "evaluated_polygons": 360,
+      "materials": 1
+    },
+    {
+      "source": "Testis.l",
+      "atlas_id": "ta2:3576:left",
+      "type": "MESH",
+      "evaluated_vertices": 680,
+      "evaluated_polygons": 678,
+      "materials": 1
+    },
+    {
+      "source": "Testis.r",
+      "atlas_id": "ta2:3576:right",
+      "type": "MESH",
+      "evaluated_vertices": 680,
+      "evaluated_polygons": 678,
+      "materials": 1
+    },
+    {
+      "source": "Glans penis",
+      "atlas_id": "ta2:3668",
+      "type": "MESH",
+      "evaluated_vertices": 694,
+      "evaluated_polygons": 1391,
+      "materials": 1
+    },
+    {
+      "source": "Corpus cavernosum of penis",
+      "atlas_id": "ta2:3678",
+      "type": "MESH",
+      "evaluated_vertices": 646,
+      "evaluated_polygons": 1288,
+      "materials": 1
+    },
+    {
+      "source": "Corpus spongiosum of penis",
+      "atlas_id": "ta2:3681",
+      "type": "MESH",
+      "evaluated_vertices": 282,
+      "evaluated_polygons": 560,
+      "materials": 1
+    },
+    {
+      "source": "Sacrospinous ligament.l",
+      "atlas_id": "ta2:1852:left",
+      "type": "MESH",
+      "evaluated_vertices": 142,
+      "evaluated_polygons": 140,
+      "materials": 1
+    },
+    {
+      "source": "Sacrospinous ligament.r",
+      "atlas_id": "ta2:1852:right",
+      "type": "MESH",
+      "evaluated_vertices": 142,
+      "evaluated_polygons": 140,
+      "materials": 1
+    },
+    {
+      "source": "Sacrotuberous ligament.l",
+      "atlas_id": "ta2:1850:left",
+      "type": "MESH",
+      "evaluated_vertices": 330,
+      "evaluated_polygons": 328,
+      "materials": 1
+    },
+    {
+      "source": "Sacrotuberous ligament.r",
+      "atlas_id": "ta2:1850:right",
+      "type": "MESH",
+      "evaluated_vertices": 330,
+      "evaluated_polygons": 328,
+      "materials": 1
+    },
+    {
+      "source": "Coccygeus muscle.l",
+      "atlas_id": "ta2:2412:left",
+      "type": "MESH",
+      "evaluated_vertices": 521,
+      "evaluated_polygons": 1034,
+      "materials": 2
+    },
+    {
+      "source": "Coccygeus muscle.r",
+      "atlas_id": "ta2:2412:right",
+      "type": "MESH",
+      "evaluated_vertices": 521,
+      "evaluated_polygons": 1034,
+      "materials": 2
+    },
+    {
+      "source": "Common iliac artery.l",
+      "atlas_id": "ta2:4301:left",
+      "type": "CURVE",
+      "evaluated_vertices": 156,
+      "evaluated_polygons": 144,
+      "materials": 1
+    },
+    {
+      "source": "Common iliac artery.r",
+      "atlas_id": "ta2:4301:right",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": 1
+    },
+    {
+      "source": "Internal iliac artery.l",
+      "atlas_id": "ta2:4302:left",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": 1
+    },
+    {
+      "source": "Internal iliac artery.r",
+      "atlas_id": "ta2:4302:right",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": 1
+    },
+    {
+      "source": "External iliac vein.l",
+      "atlas_id": "ta2:5050:left",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": 1
+    },
+    {
+      "source": "External iliac vein.r",
+      "atlas_id": "ta2:5050:right",
+      "type": "CURVE",
+      "evaluated_vertices": 300,
+      "evaluated_polygons": 288,
+      "materials": 1
+    },
+    {
+      "source": "Femoral nerve.l",
+      "atlas_id": "ta2:6522:left",
+      "type": "CURVE",
+      "evaluated_vertices": 2052,
+      "evaluated_polygons": 2016,
+      "materials": 1
+    },
+    {
+      "source": "Femoral nerve.r",
+      "atlas_id": "ta2:6522:right",
+      "type": "CURVE",
+      "evaluated_vertices": 2052,
+      "evaluated_polygons": 2016,
+      "materials": 1
+    }
+  ]
+}

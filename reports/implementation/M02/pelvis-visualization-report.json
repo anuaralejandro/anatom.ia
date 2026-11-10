@@ -1,0 +1,67 @@
+{
+  "milestone": "M02",
+  "status": "PASS",
+  "timestamp": "2026-11-09T13:42:00-06:00",
+  "fixture_verification": {
+    "source_file": "reports/experimental/pelvis-pbr-core-compat.glb",
+    "sha256": "405da36949f511b197291f2b1274d5fcdd340bb2a31d9042ee2648f8782c5797",
+    "structures_expected": 26,
+    "structures_parsed": 26,
+    "meshes_total": 26,
+    "primitives_total": 27,
+    "triangles_total": 38605,
+    "all_atlas_ids_preserved": true
+  },
+  "interactions_verified": {
+    "camera_orbit": {
+      "verified_by_test": "test_camera_controls_and_bounds_fit",
+      "yaw_pitch_clamping": true
+    },
+    "camera_pan": {
+      "verified_by_test": "test_camera_controls_and_bounds_fit",
+      "distance_scaled": true
+    },
+    "camera_zoom": {
+      "verified_by_test": "test_camera_controls_and_bounds_fit",
+      "clamped_range": [0.05, 10.0]
+    },
+    "camera_fit_bounds": {
+      "verified_by_test": "test_camera_controls_and_bounds_fit",
+      "fov_adaptive": true
+    },
+    "camera_presets": {
+      "preset_0": "Anterior-Superior (yaw=0.0, pitch=0.25)",
+      "preset_1": "Lateral-Oblique (yaw=0.785, pitch=0.25)",
+      "preset_2": "Perineal-Inferior (yaw=0.0, pitch=-0.50)"
+    },
+    "cpu_raycasting_picking": {
+      "algorithm": "Möller–Trumbore ray-triangle + broad-phase AABB",
+      "nearest_hit_selected": true,
+      "occlusion_tested": true,
+      "hidden_structure_penetration_tested": true,
+      "verified_by_test": "test_scene_picking_and_occlusion"
+    },
+    "visibility_state": {
+      "hide_structure": true,
+      "isolate_structure": true,
+      "reset_visibility": true,
+      "verified_by_test": "test_scene_picking_and_occlusion"
+    }
+  },
+  "negative_and_safety_tests": {
+    "corrupt_glb_headers": "PASS (tested truncated bytes, wrong magic, invalid chunk size)",
+    "out_of_bounds_indices": "PASS (rejected gracefully with CorruptGlb error)",
+    "no_panics": true
+  },
+  "browser_probe": {
+    "html_shell": "apps/probe-web/index.html",
+    "script": "apps/probe-web/app.js",
+    "structures_catalog": "apps/probe-web/structures.json",
+    "headless_execution": {
+      "exit_code": 0,
+      "screenshot_path": "reports/implementation/M02/probe-auto-headless.png",
+      "screenshot_bytes": 60400,
+      "structures_rendered_count": 26
+    }
+  }
+}

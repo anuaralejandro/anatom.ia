@@ -1,0 +1,122 @@
+{
+  "milestone": "M03",
+  "title": "Atlas Builder & Pelvis Assets Pipeline",
+  "status": "COMPLETED",
+  "timestamp": "2026-11-09T16:40:00Z",
+  "environment": {
+    "os": "Windows 11 Pro x86_64",
+    "rust_version": "rustc 1.85.0",
+    "cargo_version": "cargo 1.85.0",
+    "blender_version": "Blender 4.4.3 LTS",
+    "python_version": "Python 3.11.9 (Blender embedded)",
+    "gltfpack_version": "gltfpack 0.22"
+  },
+  "gates": [
+    {
+      "gate_id": "G03_BUILDER_REPRODUCIBILITY",
+      "verdict": "PASS",
+      "evidence": "atlas-builder CLI builds and validates release packages in build/atlas/release deterministically from Blender sources and fixture contracts."
+    },
+    {
+      "gate_id": "G03_PBR_COMPAT",
+      "verdict": "PASS",
+      "evidence": "pelvis-base-lod0.glb is uncompressed Core PBR without vendor extensions, validated by atlas_core::glb::parse_glb and rendered in browser via WebGL2/WebGPU."
+    },
+    {
+      "gate_id": "G03_LOD_FIDELITY",
+      "verdict": "PASS",
+      "evidence": "pelvis-lod1.glb reduces triangles by 12.56% on candidate structures while maintaining p95 silhouette deviation of 0.01px (target <= 2.0px)."
+    },
+    {
+      "gate_id": "G03_LEGAL_CLEARANCE",
+      "verdict": "BLOCKED_FOR_COMMERCIAL_DISTRIBUTION",
+      "evidence": "commercial_release_allowed is set to false in license-report.json; local non-commercial research and testing authorized under CC BY-SA 4.0 attribution."
+    },
+    {
+      "gate_id": "G03_RUNTIME_NONREGRESSION",
+      "verdict": "PASS",
+      "evidence": "All 23 workspace cargo tests pass, wasm32 check passes, and headless browser tests render both LOD0 and LOD1 with 26 TA2 structures intact."
+    }
+  ],
+  "packages": [
+    {
+      "id": "pelvis-base-lod0",
+      "file": "build/atlas/release/pelvis-base-lod0.glb",
+      "bytes": 681500,
+      "sha256": "1510ed9a93b54c8067543b4a13e92ee713f1d75adc2687324ad29a72b76244ae",
+      "encoding": "none",
+      "structures_count": 26,
+      "primitives_count": 27,
+      "runtime_compatible": true
+    },
+    {
+      "id": "pelvis-lod1",
+      "file": "build/atlas/release/pelvis-lod1.glb",
+      "bytes": 593928,
+      "sha256": "4c1054b116b972be97ed367cb4d0a7242098c92d31e094d2127b621168346391",
+      "encoding": "none",
+      "structures_count": 26,
+      "primitives_count": 27,
+      "triangles_count": 25542,
+      "reduction_percent": 12.56,
+      "p95_silhouette_deviation_px": 0.01,
+      "runtime_compatible": true
+    },
+    {
+      "id": "pelvis-meshopt-lod0",
+      "file": "build/atlas/release/pelvis-meshopt-lod0.glb",
+      "bytes": 169924,
+      "sha256": "65c18e90e003e651b0da128e7dc7acf4700fe67964ce5b24f5bf8f070ee07a7d",
+      "encoding": "meshopt",
+      "required_extensions": [
+        "EXT_meshopt_compression",
+        "KHR_mesh_quantization"
+      ],
+      "reduction_percent": 75.07,
+      "runtime_compatible": false,
+      "notes": "Experimental package; engine does not currently bundle WebAssembly meshopt decoder."
+    }
+  ],
+  "catalog": {
+    "file": "build/atlas/release/catalog.json",
+    "bytes": 20746,
+    "sha256": "a30d2e593f58a239f21f0837d9849f116b8d86d4858e1d3dc66cebc15b961c1a",
+    "structures_count": 26,
+    "bilateral_count": 18,
+    "unpaired_count": 8,
+    "languages": ["es", "en", "la"]
+  },
+  "manifest": {
+    "file": "build/atlas/release/manifest.json",
+    "schema_version": 1,
+    "atlas_version": "0.3.0",
+    "coordinate_system": {
+      "unit": "meter",
+      "up": "+Y",
+      "anterior": "+Z",
+      "patient_left": "+X"
+    }
+  },
+  "test_summary": {
+    "cargo_workspace_tests": {
+      "passed": 23,
+      "failed": 0,
+      "ignored": 0
+    },
+    "wasm_compilation_check": "PASS",
+    "browser_headless_smoke_tests": {
+      "passed": 2,
+      "failed": 0,
+      "screenshots": [
+        "reports/implementation/M03/probe-pelvis-base-lod0.png",
+        "reports/implementation/M03/probe-pelvis-lod1.png"
+      ]
+    },
+    "contract_and_fixture_baseline_tests": {
+      "verify_pelvis_baseline": "PASS",
+      "verify_pbr_core_fixture": "PASS",
+      "validate_stage6_contracts": "PASS_DESIGN_ONLY",
+      "validate_stage7_blueprint": "PASS_DESIGN_ONLY"
+    }
+  }
+}

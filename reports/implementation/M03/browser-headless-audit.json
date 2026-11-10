@@ -1,0 +1,20 @@
+{
+  "m03_pelvis_base_lod0": {
+    "verified_ready": true,
+    "backend": "webgl2",
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 93394,
+    "dom_has_structures": true,
+    "package": "pelvis-base-lod0.glb"
+  },
+  "m03_pelvis_lod1_webgl2": {
+    "verified_ready": true,
+    "backend": "webgl2",
+    "exit_code": 0,
+    "screenshot_exists": true,
+    "screenshot_size": 92771,
+    "dom_has_structures": true,
+    "package": "pelvis-lod1.glb"
+  }
+}

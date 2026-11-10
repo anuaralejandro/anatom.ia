@@ -1,0 +1,15 @@
+{
+  "name": "anatom-ia",
+  "version": "0.1.0",
+  "description": "Atlas anatómico 3D de alta precisión para educación médica",
+  "private": true,
+  "scripts": {
+    "build:webgpu": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgpu --no-default-features --features webgpu",
+    "build:webgl2": "wasm-pack build crates/atlas-web --target web --out-dir ../../apps/probe-web/pkg-webgl2 --no-default-features --features webgl",
+    "build": "npm run build:webgpu && npm run build:webgl2",
+    "test": "cargo test --workspace",
+    "check": "cargo check --workspace && cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings",
+    "serve": "python tools/serve_probe.py",
+    "validate": "python tools/verify_pelvis_baseline.py && python tools/verify_pbr_core_fixture.py && python tools/validate_stage6_contracts.py && python tools/validate_stage7_blueprint.py"
+  }
+}

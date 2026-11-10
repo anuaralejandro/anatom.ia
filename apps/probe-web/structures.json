@@ -1,0 +1,158 @@
+[
+  {
+    "id": "ta2:1071",
+    "ta2Id": "1071",
+    "name_es": "Hueso sacro",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:1092",
+    "ta2Id": "1092",
+    "name_es": "Cóccix",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:1855",
+    "ta2Id": "1855",
+    "name_es": "Sínfisis púbica",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:3401",
+    "ta2Id": "3401",
+    "name_es": "Vejiga urinaria",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:3637",
+    "ta2Id": "3637",
+    "name_es": "Próstata",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:3631:left",
+    "ta2Id": "3631",
+    "name_es": "Glándula seminal (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:3631:right",
+    "ta2Id": "3631",
+    "name_es": "Glándula seminal (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:3576:left",
+    "ta2Id": "3576",
+    "name_es": "Testículo (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:3576:right",
+    "ta2Id": "3576",
+    "name_es": "Testículo (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:3668",
+    "ta2Id": "3668",
+    "name_es": "Glande del pene",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:3678",
+    "ta2Id": "3678",
+    "name_es": "Cuerpo cavernoso del pene",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:3681",
+    "ta2Id": "3681",
+    "name_es": "Cuerpo esponjoso del pene",
+    "side": "unpaired_or_unspecified"
+  },
+  {
+    "id": "ta2:1852:left",
+    "ta2Id": "1852",
+    "name_es": "Ligamento sacroespinoso (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:1852:right",
+    "ta2Id": "1852",
+    "name_es": "Ligamento sacroespinoso (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:1850:left",
+    "ta2Id": "1850",
+    "name_es": "Ligamento sacrotuberoso (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:1850:right",
+    "ta2Id": "1850",
+    "name_es": "Ligamento sacrotuberoso (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:2412:left",
+    "ta2Id": "2412",
+    "name_es": "Músculo coccígeo (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:2412:right",
+    "ta2Id": "2412",
+    "name_es": "Músculo coccígeo (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:4301:left",
+    "ta2Id": "4301",
+    "name_es": "Arteria ilíaca común (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:4301:right",
+    "ta2Id": "4301",
+    "name_es": "Arteria ilíaca común (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:4302:left",
+    "ta2Id": "4302",
+    "name_es": "Arteria ilíaca interna (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:4302:right",
+    "ta2Id": "4302",
+    "name_es": "Arteria ilíaca interna (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:5050:left",
+    "ta2Id": "5050",
+    "name_es": "Vena iliaca externa (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:5050:right",
+    "ta2Id": "5050",
+    "name_es": "Vena iliaca externa (der.)",
+    "side": "right"
+  },
+  {
+    "id": "ta2:6522:left",
+    "ta2Id": "6522",
+    "name_es": "Nervio femoral (izq.)",
+    "side": "left"
+  },
+  {
+    "id": "ta2:6522:right",
+    "ta2Id": "6522",
+    "name_es": "Nervio femoral (der.)",
+    "side": "right"
+  }
+]

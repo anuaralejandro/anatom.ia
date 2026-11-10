@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anatom.ia/schemas/atlas-manifest-v1.json",
+  "title": "anatom.ia atlas manifest version 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "atlasVersion",
+    "coordinateSystem",
+    "catalog",
+    "variants",
+    "regions",
+    "packages"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "atlasVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "coordinateSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "up",
+        "anterior",
+        "patientLeft"
+      ],
+      "properties": {
+        "unit": {
+          "const": "meter"
+        },
+        "up": {
+          "const": "+Y"
+        },
+        "anterior": {
+          "const": "+Z"
+        },
+        "patientLeft": {
+          "const": "+X"
+        }
+      }
+    },
+    "catalog": {
+      "$ref": "#/$defs/asset"
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "packages"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "packages": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "variant",
+          "region",
+          "system",
+          "lod",
+          "url",
+          "bytes",
+          "sha256",
+          "encoding",
+          "requiredExtensions"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "variant": {
+            "type": "string",
+            "minLength": 1
+          },
+          "region": {
+            "type": "string",
+            "minLength": 1
+          },
+          "system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lod": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "url": {
+            "$ref": "#/$defs/relativeUrl"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "encoding": {
+            "enum": [
+              "none",
+              "meshopt"
+            ]
+          },
+          "requiredExtensions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "relativeUrl": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^(?!/)(?!.*\\\\.\\\\.)(?!.*://)(?!.*\\\\\\\\)[A-Za-z0-9_./-]+$"
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "sha256",
+        "bytes"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/relativeUrl"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}
