@@ -1,0 +1,46 @@
+{
+  "results": {
+    "legacy_glb": {
+      "result": {
+        "result": "OK",
+        "nodes": 26,
+        "generation": 4,
+        "memory_generation": 4
+      },
+      "page_errors": []
+    },
+    "legacy_cube": {
+      "result": {
+        "result": "OK",
+        "nodes": 1,
+        "generation": 4,
+        "memory_generation": 4
+      },
+      "page_errors": []
+    },
+    "forged_load_plan": {
+      "result": {
+        "result": "REJECTED",
+        "error": "REGION_UNAVAILABLE"
+      },
+      "page_errors": []
+    },
+    "real_offline_reload": {
+      "result": {
+        "result": "RELOADED_OFFLINE"
+      },
+      "page_errors": []
+    },
+    "manifest_catalog_integrity": {
+      "result": {
+        "manifest_loaded": true,
+        "catalog_reference": "catalog.json",
+        "structure_list_count": 26,
+        "manifest_catalog_digest_verified_in_manager": true,
+        "app_has_separate_catalog_loader": true
+      },
+      "page_errors": []
+    }
+  },
+  "note": "Adversarial audit: results are observations, not automatically PASS."
+}

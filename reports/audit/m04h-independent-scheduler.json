@@ -1,0 +1,14 @@
+{
+  "calls404": 1,
+  "error404": "Error: HTTP 404: Not Found",
+  "coalescedAbort": [
+    {
+      "status": "rejected",
+      "error": "AbortError: Aborted"
+    },
+    {
+      "status": "resolved"
+    }
+  ],
+  "fetchCallsForShared": 1
+}

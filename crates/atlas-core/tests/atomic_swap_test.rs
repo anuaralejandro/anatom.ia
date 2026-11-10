@@ -112,3 +112,28 @@ fn test_atomic_swap_missing_selected_id_safely_drops() {
     // Since femur:left does not exist in scene_b, selection should be None
     assert_eq!(scene_b.selected_id, None);
 }
+
+#[test]
+fn test_transactional_swap_commit_rollback_lifecycle() {
+    let mut res_a = atlas_core::renderer::GpuSceneResources::empty();
+    res_a.resident_geometry_gpu_bytes = 1000;
+
+    let mut res_b = atlas_core::renderer::GpuSceneResources::empty();
+    res_b.resident_geometry_gpu_bytes = 2000;
+
+    // Simulate renderer container holding active resources
+    let mut active = Some(res_a);
+
+    // Commit Phase
+    let mut retiring = active.take();
+    active = Some(res_b);
+    assert_eq!(active.as_ref().unwrap().resident_geometry_gpu_bytes, 2000);
+    assert_eq!(retiring.as_ref().unwrap().resident_geometry_gpu_bytes, 1000);
+
+    // Rollback Phase (e.g. if first frame render fails)
+    let failed = active.take();
+    drop(failed);
+    active = retiring.take();
+    assert_eq!(active.as_ref().unwrap().resident_geometry_gpu_bytes, 1000);
+    assert!(retiring.is_none());
+}

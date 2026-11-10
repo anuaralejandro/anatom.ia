@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "timestamp": "2026-11-10T02:57:44Z",
+  "timestamp": "2026-11-10T06:24:47Z",
   "test_cases": [
     {
       "name": "cold_fetch_webgpu",
@@ -42,9 +42,9 @@
         "pass": true,
         "iterations": 20,
         "idsCount": 26,
-        "initialGpuBytes": 3272852,
-        "peakGpuBytes": 3272852,
-        "finalGpuBytes": 3218852
+        "initialGpuBytes": 5605652,
+        "peakGpuBytes": 5605652,
+        "finalGpuBytes": 5497652
       }
     },
     {
@@ -56,7 +56,7 @@
           false,
           true
         ],
-        "currentGen": 28,
+        "currentGen": 52,
         "tris": 38605
       }
     },
@@ -84,9 +84,9 @@
       "pass": true,
       "iterations": 20,
       "idsCount": 26,
-      "initialGpuBytes": 3272852,
-      "peakGpuBytes": 3272852,
-      "finalGpuBytes": 3218852
+      "initialGpuBytes": 5605652,
+      "peakGpuBytes": 5605652,
+      "finalGpuBytes": 5497652
     }
   },
   "cache_metrics": {}

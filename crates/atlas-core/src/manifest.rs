@@ -346,6 +346,21 @@ impl ManifestSnapshot {
         Ok(sorted[0])
     }
 
+    /// Reject any supplied plan that differs from the canonical, validated
+    /// manifest snapshot. The browser transport must not be an authority on
+    /// anatomical variants, package IDs, digests or paths.
+    pub fn validate_load_plan(&self, plan: &RegionLoadPlan) -> Result<(), EngineError> {
+        let expected = self.create_load_plan(&plan.region_id, &plan.variant_id, Some(plan.lod))?;
+        if expected != *plan {
+            return Err(EngineError::new(
+                ErrorCode::AssetCorrupt,
+                "Plan de carga inconsistente con el manifest validado",
+                false,
+            ));
+        }
+        Ok(())
+    }
+
     pub fn create_load_plan(
         &self,
         region_id: &str,

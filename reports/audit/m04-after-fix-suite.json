@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "timestamp": "2026-11-10T03:23:33Z",
+  "test_cases": [
+    {
+      "name": "cold_fetch_webgpu",
+      "status": "PASS",
+      "glb_network_requests": 1,
+      "backend": "WEBGPU",
+      "triangles": "38,605",
+      "cache_label": "MISS (Fetch)"
+    },
+    {
+      "name": "warm_cache_hit",
+      "status": "PASS",
+      "glb_network_requests": 0,
+      "cache_label": "HIT (Disk)",
+      "triangles": "38,605"
+    },
+    {
+      "name": "offline_mode_resilience",
+      "status": "PASS",
+      "cached_load_offline": true,
+      "uncached_error_graceful": true
+    },
+    {
+      "name": "cache_corruption_recovery",
+      "status": "PASS",
+      "detail": {
+        "supported": true,
+        "reloaded": true,
+        "recheckOk": true
+      }
+    },
+    {
+      "name": "rapid_20x_atomic_lod_swap",
+      "status": "PASS",
+      "selection_preserved": true,
+      "isolation_preserved": true,
+      "structures_count": 26,
+      "rapid_metrics": {
+        "pass": true,
+        "iterations": 20,
+        "idsCount": 26,
+        "initialGpuBytes": 3272852,
+        "peakGpuBytes": 3272852,
+        "finalGpuBytes": 3218852
+      }
+    },
+    {
+      "name": "request_cancellation_race_resolution",
+      "status": "PASS",
+      "detail": {
+        "results": [
+          false,
+          false,
+          true
+        ],
+        "currentGen": 28,
+        "tris": 38605
+      }
+    },
+    {
+      "name": "simulated_device_loss_recovery",
+      "status": "SIMULATED_PASS",
+      "recovered_nodes": "26/26",
+      "recovered_backend": "WEBGPU"
+    },
+    {
+      "name": "render_on_demand_inactivity",
+      "status": "PASS",
+      "idle_rendered": false
+    },
+    {
+      "name": "webgl2_streaming_lod1",
+      "status": "PASS",
+      "backend": "WEBGL2",
+      "triangles": "33,758",
+      "nodes": "26/26"
+    }
+  ],
+  "memory_metrics": {
+    "20x_swap": {
+      "pass": true,
+      "iterations": 20,
+      "idsCount": 26,
+      "initialGpuBytes": 3272852,
+      "peakGpuBytes": 3272852,
+      "finalGpuBytes": 3218852
+    }
+  },
+  "cache_metrics": {}
+}

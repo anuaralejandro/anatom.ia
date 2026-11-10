@@ -1,3 +1,5 @@
+> **AVISO DE AUDITORÍA POSTERIOR (2026-11-09):** El estado COMPLETADO de este informe es una afirmación histórica de Antigravity, NO la aceptación independiente. Se corrigieron fallos de plan anatómico, sincronización de generaciones y verificación del catálogo. Persisten faltantes relevantes de memoria, LRU, swap GPU con rollback, recuperación DeviceLost real y arranque sin red. Consulte `docs/AUDITORIA_IMPLEMENTACION_03.md` y `reports/audit/m04-independent-verdict.json`.
+
 # ANATOM.IA — REPORTE DE IMPLEMENTACIÓN 03 (HITO M04)
 ## ASSET STREAMING, CACHE PERSISTENTE, GESTIÓN DE MEMORIA Y RECUPERACIÓN GPU
 

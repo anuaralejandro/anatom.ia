@@ -1,0 +1,57 @@
+{
+  "milestone": "M04",
+  "dateLocal": "2026-11-09",
+  "baseCommit": "be654ca21a6f26f54dc66b2115ff7aa2b3d18c2a",
+  "verdict": "PARTIAL_PASS_CORRECTED_M04_NOT_FINAL",
+  "intendedNext": "M05 planning is possible; M05 implementation depends on M04 hardening",
+  "verified": {
+    "originalRustTests": 35,
+    "afterAuditRustTests": 36,
+    "wasmDualBuild": true,
+    "clippy": true,
+    "fmt": true,
+    "manifestReleaseValidation": true,
+    "headlessSuiteCases": 9,
+    "headlessSimulatedCases": 1,
+    "webgpu": true,
+    "webgl2": true,
+    "sourceRepoClean": true,
+    "forgedPlanBefore": "ACCEPTED",
+    "forgedPlanAfter": "REJECTED",
+    "catalogTamperBlockedBackends": [
+      "webgpu",
+      "webgl2"
+    ],
+    "legacyGenerationSync": true
+  },
+  "knownGaps": {
+    "budgetEnforcement": "NOT_IMPLEMENTED",
+    "gpuAtomicRollback": "NOT_IMPLEMENTED",
+    "physicalDeviceLoss": "NOT_RUN",
+    "offlinePageReload": "FAIL",
+    "regionReadyAfterPresentedFrame": "NOT_IMPLEMENTED",
+    "cacheLRUEviction": "NOT_IMPLEMENTED",
+    "boundedRetryAndFetchConcurrency": "NOT_IMPLEMENTED",
+    "physicalMobile": "NOT_RUN",
+    "commercialLicense": "BLOCKED"
+  },
+  "fixes": [
+    "canonical Rust load plan verification",
+    "legacy generation synchronization",
+    "catalog size/SHA validation + fail-closed UI",
+    "versioned cache key",
+    "abort prior loads on backend change + resize observer cleanup"
+  ],
+  "evidence": [
+    "docs/AUDITORIA_IMPLEMENTACION_03.md",
+    "reports/audit/m04-pre-fix-adversarial.json",
+    "reports/audit/m04-catalog-tamper.json",
+    "reports/implementation/M04/m04-streaming-suite-result.json",
+    "crates/atlas-core/tests/manifest_test.rs"
+  ],
+  "policy": {
+    "noPush": true,
+    "noM05Prompt": true,
+    "noM05UIChanges": true
+  }
+}

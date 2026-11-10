@@ -50,7 +50,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 # Verificación de compilación WebAssembly
 cargo check --target wasm32-unknown-unknown --workspace --exclude atlas-builder
 
-# Suite completa de pruebas unitarias y de integración (35 tests)
+# Suite completa de pruebas unitarias y de integración (36 tests después de la auditoría de seguridad del plan anatómico)
 cargo test --workspace
 ```
 

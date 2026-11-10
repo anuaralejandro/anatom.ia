@@ -1,0 +1,211 @@
+{
+  "device": "Local Windows PC",
+  "browser": "Google Chrome (Headless) with --enable-unsafe-webgpu",
+  "backends_verified": [
+    "WebGPU",
+    "WebGL2"
+  ],
+  "wgpu_version": "30.0.1",
+  "nodes_verified": 26,
+  "gates": {
+    "GATE_D_GPU_SWAP": {
+      "verdict": "PASS",
+      "evidence": {
+        "initial_nodes": 26,
+        "prepare_fail": {
+          "success": true,
+          "error": "FAILPOINT_INJECTED: Prepare failure",
+          "nodes_after_fail": 26,
+          "current_gen": 4,
+          "rollback_count": null
+        },
+        "upload_fail": {
+          "success": true,
+          "error": "FAILPOINT_INJECTED: Upload failure",
+          "nodes_after_fail": 26,
+          "current_gen": 5,
+          "rollback_count": null
+        },
+        "first_render_fail": {
+          "success": true,
+          "rendered": false,
+          "nodes_after_fail": 26,
+          "current_gen": 7,
+          "rollback_count": null
+        },
+        "interactive_check": {
+          "total_nodes": 26,
+          "rev": 4
+        }
+      }
+    },
+    "GATE_E_MEMORY": {
+      "verdict": "PASS",
+      "evidence": {
+        "stats": {
+          "profile": "medium",
+          "residentGpuEstimate": 5339252,
+          "peakOverlapBytesEstimate": 4085192,
+          "gpuBufferAllocatedEstimate": 3139652,
+          "cpuSceneDecodedEstimate": 944479,
+          "gpuBudget": 134217728,
+          "isWithinBudget": true,
+          "activeSceneNodes": 26
+        },
+        "budget_test": {
+          "rejected": true,
+          "errorCode": "MEMORY_LIMIT",
+          "errorDetail": "MEMORY_LIMIT: Pico de memoria GPU estimado (6167252 B) excede el presupuesto (2097152 B)",
+          "nodesBefore": 26,
+          "nodesAfter": 26,
+          "nodesIntact": true,
+          "sceneRevisionPreserved": true
+        },
+        "physical_driver_vram": "PHYSICAL_VRAM_NOT_MEASURED",
+        "accounting_mode": "GPU_ALLOCATION_ESTIMATE_ONLY"
+      }
+    },
+    "GATE_F_EVENTS": {
+      "verdict": "PASS",
+      "evidence": {
+        "event_sequence": [
+          {
+            "type": "engine.ready",
+            "requestId": null,
+            "sceneGeneration": 3,
+            "sceneRevision": 3,
+            "region": null,
+            "variant": null,
+            "lod": null,
+            "backend": null,
+            "timestamp": 700.714999973774
+          },
+          {
+            "type": "region.loading",
+            "requestId": null,
+            "sceneGeneration": 4,
+            "sceneRevision": 3,
+            "region": null,
+            "variant": null,
+            "lod": null,
+            "backend": null,
+            "timestamp": 762.464999973774
+          },
+          {
+            "type": "region.ready",
+            "requestId": 2,
+            "sceneGeneration": 4,
+            "sceneRevision": 4,
+            "region": "pelvis",
+            "variant": "male-adult",
+            "lod": 1,
+            "backend": "webgpu",
+            "timestamp": 767.7449999451637
+          },
+          {
+            "type": "scene.changed",
+            "requestId": null,
+            "sceneGeneration": 5,
+            "sceneRevision": 4,
+            "region": null,
+            "variant": null,
+            "lod": null,
+            "backend": null,
+            "timestamp": 767.7549999952316
+          }
+        ],
+        "order_correct": true,
+        "ready_metadata": {
+          "type": "region.ready",
+          "requestId": 2,
+          "sceneGeneration": 4,
+          "sceneRevision": 4,
+          "region": "pelvis",
+          "variant": "male-adult",
+          "lod": 1,
+          "backend": "webgpu",
+          "timestamp": 767.7449999451637
+        }
+      }
+    },
+    "GATE_H_RECOVERY": {
+      "verdict": "SIMULATED_PASS",
+      "physical_driver_loss": "NOT_RUN",
+      "evidence": {
+        "beforeNodes": 26,
+        "recoverySuccess": true,
+        "afterRecovery": {
+          "nodes": 26,
+          "backend": "webgpu"
+        }
+      },
+      "notes": "Controlled GPU device loss simulated via wgpu::Device::destroy(); physical OS driver crash classified as NOT_RUN."
+    },
+    "GATE_I_TRANSPORT": {
+      "verdict": "PASS",
+      "evidence": {
+        "b1_len": 593928,
+        "b2_len": 593928,
+        "b3_len": 593928,
+        "coalescedCount": 2,
+        "activeFetchSlots": 0,
+        "maxConcurrentFetches": 3
+      }
+    },
+    "GATE_J_OFFLINE": {
+      "verdict": "PASS",
+      "evidence": {
+        "webgpu": {
+          "status": "RELOADED_OFFLINE",
+          "eval": {
+            "nodes": 26,
+            "backend": "webgpu",
+            "probeStatus": "ready",
+            "cacheStatus": "HIT (Disk)"
+          }
+        },
+        "webgl2": {
+          "status": "RELOADED_OFFLINE",
+          "eval": {
+            "nodes": 26,
+            "backend": "webgl2",
+            "probeStatus": "ready",
+            "cacheStatus": "HIT (Disk)"
+          }
+        }
+      }
+    },
+    "GATE_K_PERFORMANCE": {
+      "verdict": "PASS",
+      "hardware": "Desktop Windows D3D11/Vulkan/wgpu",
+      "resolution": "1280x720 (DPR=1.0)",
+      "metrics": {
+        "frameCount": 120,
+        "p50": 0.10500001907348633,
+        "p95": 0.30000001192092896,
+        "min": 0.059999942779541016,
+        "max": 1.6949999928474426,
+        "avg": 0.14562500019868216
+      }
+    },
+    "GATE_G_LIFECYCLE": {
+      "verdict": "PASS",
+      "evidence": {
+        "cycles": 10,
+        "successfulBackends": [
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu",
+          "webgpu"
+        ]
+      }
+    }
+  },
+  "overall_status": "PASS"
+}

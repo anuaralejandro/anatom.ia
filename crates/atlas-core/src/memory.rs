@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::scene::Scene;
-use crate::types::{RequestId, SceneGeneration, SceneRevision};
+use crate::types::{EngineError, ErrorCode, RequestId, SceneGeneration, SceneRevision};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "lowercase")]
@@ -42,9 +42,13 @@ impl QualityProfile {
     }
 }
 
+/// Explicit memory accounting separating distinct allocation categories.
+/// Note: All GPU numbers represent runtime-calculated buffer allocations,
+/// NOT driver-level physical VRAM.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct MemoryStats {
+    // Legacy fields for backwards compatibility with JS probe & tests
     pub resident_gpu_bytes: usize,
     pub decoded_cpu_bytes: usize,
     pub cached_storage_bytes: usize,
@@ -55,14 +59,32 @@ pub struct MemoryStats {
     pub quality_profile: QualityProfile,
     pub gpu_budget_bytes: usize,
     pub cpu_budget_bytes: usize,
+
+    // M04-H2 Explicit Estimation Breakdown (NOT physical VRAM)
+    pub gpu_buffer_allocated_estimate: usize,
+    pub gpu_depth_render_target_estimate: usize,
+    pub resident_gpu_bytes_estimate: usize,
+    pub cpu_scene_decoded_estimate: usize,
+    pub cpu_staging_bytes_estimate: usize,
+    pub verified_blob_bytes: usize,
+    pub cache_storage_estimate: usize,
+    pub peak_overlap_bytes_estimate: usize,
+    pub memory_budget_gpu_bytes: usize,
+    pub memory_budget_cpu_bytes: usize,
+    pub is_within_budget: bool,
 }
 
 #[derive(Debug, Clone)]
 pub struct MemoryTracker {
     profile: QualityProfile,
-    resident_gpu_bytes: usize,
-    decoded_cpu_bytes: usize,
+    custom_budget: Option<MemoryBudget>,
+    gpu_buffer_allocated: usize,
+    gpu_depth_estimate: usize,
+    cpu_decoded_bytes: usize,
+    cpu_staging_bytes: usize,
+    verified_blob_bytes: usize,
     cached_storage_bytes: usize,
+    peak_overlap_bytes: usize,
     evictions_count: u32,
     generation: SceneGeneration,
     active_request_id: Option<RequestId>,
@@ -78,9 +100,14 @@ impl MemoryTracker {
     pub fn new(profile: QualityProfile) -> Self {
         Self {
             profile,
-            resident_gpu_bytes: 0,
-            decoded_cpu_bytes: 0,
+            custom_budget: None,
+            gpu_buffer_allocated: 0,
+            gpu_depth_estimate: 0,
+            cpu_decoded_bytes: 0,
+            cpu_staging_bytes: 0,
+            verified_blob_bytes: 0,
             cached_storage_bytes: 0,
+            peak_overlap_bytes: 0,
             evictions_count: 0,
             generation: 1,
             active_request_id: None,
@@ -89,22 +116,51 @@ impl MemoryTracker {
 
     pub fn set_profile(&mut self, profile: QualityProfile) {
         self.profile = profile;
+        self.custom_budget = None;
+    }
+
+    pub fn set_custom_budget(&mut self, budget: Option<MemoryBudget>) {
+        self.custom_budget = budget;
+    }
+
+    pub fn budget(&self) -> MemoryBudget {
+        self.custom_budget.unwrap_or_else(|| self.profile.budget())
     }
 
     pub fn profile(&self) -> QualityProfile {
         self.profile
     }
 
+    pub fn set_gpu_buffer_allocated(&mut self, bytes: usize) {
+        self.gpu_buffer_allocated = bytes;
+    }
+
+    pub fn set_gpu_depth_estimate(&mut self, bytes: usize) {
+        self.gpu_depth_estimate = bytes;
+    }
+
     pub fn set_resident_gpu_bytes(&mut self, bytes: usize) {
-        self.resident_gpu_bytes = bytes;
+        self.gpu_buffer_allocated = bytes;
     }
 
     pub fn set_decoded_cpu_bytes(&mut self, bytes: usize) {
-        self.decoded_cpu_bytes = bytes;
+        self.cpu_decoded_bytes = bytes;
+    }
+
+    pub fn set_cpu_staging_bytes(&mut self, bytes: usize) {
+        self.cpu_staging_bytes = bytes;
+    }
+
+    pub fn set_verified_blob_bytes(&mut self, bytes: usize) {
+        self.verified_blob_bytes = bytes;
     }
 
     pub fn set_cached_storage_bytes(&mut self, bytes: usize) {
         self.cached_storage_bytes = bytes;
+    }
+
+    pub fn set_peak_overlap_bytes(&mut self, bytes: usize) {
+        self.peak_overlap_bytes = bytes;
     }
 
     pub fn record_eviction(&mut self) {
@@ -125,16 +181,55 @@ impl MemoryTracker {
     }
 
     pub fn is_within_budget(&self) -> bool {
-        let budget = self.profile.budget();
-        self.resident_gpu_bytes <= budget.gpu_resident_budget_bytes
-            && self.decoded_cpu_bytes <= budget.cpu_decoded_budget_bytes
+        let budget = self.budget();
+        let total_gpu = self.gpu_buffer_allocated + self.gpu_depth_estimate;
+        total_gpu <= budget.gpu_resident_budget_bytes
+            && self.cpu_decoded_bytes <= budget.cpu_decoded_budget_bytes
+    }
+
+    /// Preflight check for candidate swap allocation.
+    /// Rejects before allocating resources if peak swap usage exceeds budget.
+    pub fn preflight_swap_budget(
+        &self,
+        candidate_gpu_bytes: usize,
+        candidate_cpu_bytes: usize,
+        depth_bytes: usize,
+    ) -> Result<usize, EngineError> {
+        let budget = self.budget();
+        let peak_gpu = self.gpu_buffer_allocated + candidate_gpu_bytes + depth_bytes;
+        let peak_cpu = self.cpu_decoded_bytes + candidate_cpu_bytes;
+
+        if peak_gpu > budget.gpu_resident_budget_bytes {
+            return Err(EngineError::new(
+                ErrorCode::MemoryLimit,
+                format!(
+                    "MEMORY_LIMIT: Pico de memoria GPU estimado ({} B) excede el presupuesto ({} B)",
+                    peak_gpu, budget.gpu_resident_budget_bytes
+                ),
+                true,
+            ));
+        }
+
+        if peak_cpu > budget.cpu_decoded_budget_bytes {
+            return Err(EngineError::new(
+                ErrorCode::MemoryLimit,
+                format!(
+                    "MEMORY_LIMIT: Pico de memoria CPU estimado ({} B) excede el presupuesto ({} B)",
+                    peak_cpu, budget.cpu_decoded_budget_bytes
+                ),
+                true,
+            ));
+        }
+
+        Ok(peak_gpu)
     }
 
     pub fn snapshot(&self, scene_revision: SceneRevision) -> MemoryStats {
-        let budget = self.profile.budget();
+        let budget = self.budget();
+        let total_gpu_resident = self.gpu_buffer_allocated + self.gpu_depth_estimate;
         MemoryStats {
-            resident_gpu_bytes: self.resident_gpu_bytes,
-            decoded_cpu_bytes: self.decoded_cpu_bytes,
+            resident_gpu_bytes: total_gpu_resident,
+            decoded_cpu_bytes: self.cpu_decoded_bytes,
             cached_storage_bytes: self.cached_storage_bytes,
             evictions_count: self.evictions_count,
             current_generation: self.generation,
@@ -143,6 +238,18 @@ impl MemoryTracker {
             quality_profile: self.profile,
             gpu_budget_bytes: budget.gpu_resident_budget_bytes,
             cpu_budget_bytes: budget.cpu_decoded_budget_bytes,
+
+            gpu_buffer_allocated_estimate: self.gpu_buffer_allocated,
+            gpu_depth_render_target_estimate: self.gpu_depth_estimate,
+            resident_gpu_bytes_estimate: total_gpu_resident,
+            cpu_scene_decoded_estimate: self.cpu_decoded_bytes,
+            cpu_staging_bytes_estimate: self.cpu_staging_bytes,
+            verified_blob_bytes: self.verified_blob_bytes,
+            cache_storage_estimate: self.cached_storage_bytes,
+            peak_overlap_bytes_estimate: self.peak_overlap_bytes,
+            memory_budget_gpu_bytes: budget.gpu_resident_budget_bytes,
+            memory_budget_cpu_bytes: budget.cpu_decoded_budget_bytes,
+            is_within_budget: self.is_within_budget(),
         }
     }
 }
@@ -172,6 +279,22 @@ pub fn calculate_scene_cpu_bytes(scene: &Scene) -> usize {
         total += node.children.len() * std::mem::size_of::<usize>();
         total += std::mem::size_of_val(node);
     }
+    total
+}
+
+pub fn calculate_scene_gpu_bytes(scene: &Scene) -> usize {
+    let mut total = 0;
+    // Material uniforms
+    total += scene.materials.len().max(1) * 256;
+    // Mesh primitives (vertex + index buffers)
+    for mesh in &scene.meshes {
+        for prim in &mesh.primitives {
+            total += prim.vertices.len() * std::mem::size_of::<crate::scene::Vertex>();
+            total += prim.indices.len() * std::mem::size_of::<u32>();
+        }
+    }
+    // Node object uniforms
+    total += scene.nodes.len() * 256;
     total
 }
 

@@ -100,3 +100,64 @@ fn test_calculate_scene_memory() {
         (3 * std::mem::size_of::<atlas_core::scene::Vertex>()) + (3 * 4) + 256
     );
 }
+
+#[test]
+fn test_preflight_swap_budget_enforcement() {
+    let mut tracker = MemoryTracker::new(QualityProfile::Low);
+    tracker.set_resident_gpu_bytes(10 * 1024 * 1024);
+    tracker.set_decoded_cpu_bytes(5 * 1024 * 1024);
+
+    // Normal swap fits easily within Low budget (64 MiB GPU, 48 MiB CPU)
+    let res = tracker.preflight_swap_budget(5 * 1024 * 1024, 4 * 1024 * 1024, 2 * 1024 * 1024);
+    assert!(res.is_ok());
+
+    // Excessive GPU swap allocation exceeds 64 MiB
+    let res_gpu_excess =
+        tracker.preflight_swap_budget(60 * 1024 * 1024, 4 * 1024 * 1024, 2 * 1024 * 1024);
+    assert!(res_gpu_excess.is_err());
+    let err = res_gpu_excess.unwrap_err();
+    assert_eq!(err.code, atlas_core::types::ErrorCode::MemoryLimit);
+    assert!(err.recoverable);
+
+    // Excessive CPU allocation exceeds 48 MiB
+    let res_cpu_excess =
+        tracker.preflight_swap_budget(5 * 1024 * 1024, 45 * 1024 * 1024, 2 * 1024 * 1024);
+    assert!(res_cpu_excess.is_err());
+    let err = res_cpu_excess.unwrap_err();
+    assert_eq!(err.code, atlas_core::types::ErrorCode::MemoryLimit);
+}
+
+#[test]
+fn test_custom_test_budget() {
+    let mut tracker = MemoryTracker::new(QualityProfile::Medium);
+    tracker.set_resident_gpu_bytes(2 * 1024 * 1024);
+    tracker.set_decoded_cpu_bytes(2 * 1024 * 1024);
+
+    // Default Medium allows 128 MB GPU
+    assert!(
+        tracker
+            .preflight_swap_budget(2 * 1024 * 1024, 2 * 1024 * 1024, 1024 * 1024)
+            .is_ok()
+    );
+
+    // Set artificial tight budget (e.g. 3 MB GPU, 3 MB CPU)
+    tracker.set_custom_budget(Some(atlas_core::memory::MemoryBudget {
+        gpu_resident_budget_bytes: 3 * 1024 * 1024,
+        cpu_decoded_budget_bytes: 3 * 1024 * 1024,
+        concurrent_fetches: 2,
+    }));
+
+    // Now 2MB active + 2MB candidate + 1MB depth = 5MB > 3MB budget -> rejected!
+    let res = tracker.preflight_swap_budget(2 * 1024 * 1024, 2 * 1024 * 1024, 1024 * 1024);
+    assert!(res.is_err());
+    let err = res.unwrap_err();
+    assert_eq!(err.code, atlas_core::types::ErrorCode::MemoryLimit);
+
+    // Resetting quality profile clears custom budget
+    tracker.set_profile(QualityProfile::High);
+    assert!(
+        tracker
+            .preflight_swap_budget(2 * 1024 * 1024, 2 * 1024 * 1024, 1024 * 1024)
+            .is_ok()
+    );
+}

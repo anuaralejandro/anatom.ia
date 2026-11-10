@@ -5,7 +5,7 @@ use wgpu::util::DeviceExt;
 use crate::camera::Camera;
 use crate::scene::{Material, Scene, Vertex};
 use crate::shader::SHADER_SOURCE;
-use crate::types::EngineCapabilities;
+use crate::types::{EngineCapabilities, EngineError, ErrorCode};
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Pod, Zeroable)]
@@ -60,6 +60,62 @@ pub struct GpuMaterial {
     pub bind_group: wgpu::BindGroup,
 }
 
+/// Self-contained GPU resources for an anatomical scene.
+/// Can be prepared, swapped, committed, rolled back or destroyed atomically.
+pub struct GpuSceneResources {
+    pub meshes: Vec<GpuMesh>,
+    pub nodes: Vec<GpuNode>,
+    pub materials: Vec<GpuMaterial>,
+    pub resident_geometry_gpu_bytes: usize,
+}
+
+impl GpuSceneResources {
+    pub fn empty() -> Self {
+        Self {
+            meshes: Vec::new(),
+            nodes: Vec::new(),
+            materials: Vec::new(),
+            resident_geometry_gpu_bytes: 0,
+        }
+    }
+
+    /// Explicitly destroys all GPU buffers to prevent VRAM accumulation.
+    pub fn destroy(&mut self) {
+        for mesh in &self.meshes {
+            for prim in &mesh.primitives {
+                prim.vertex_buffer.destroy();
+                prim.index_buffer.destroy();
+            }
+        }
+        for node in &self.nodes {
+            node.object_buffer.destroy();
+        }
+        for mat in &self.materials {
+            mat.uniform_buffer.destroy();
+        }
+        self.meshes.clear();
+        self.nodes.clear();
+        self.materials.clear();
+        self.resident_geometry_gpu_bytes = 0;
+    }
+}
+
+impl Drop for GpuSceneResources {
+    fn drop(&mut self) {
+        self.destroy();
+    }
+}
+
+/// Controlled failpoints for testing transactional rollback behavior.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum TestFailpoint {
+    #[default]
+    None,
+    PrepareFail,
+    UploadFail,
+    FirstRenderFail,
+}
+
 pub struct Renderer {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
@@ -72,9 +128,10 @@ pub struct Renderer {
     pub camera_buffer: wgpu::Buffer,
     pub camera_bind_group: wgpu::BindGroup,
 
-    pub gpu_meshes: Vec<GpuMesh>,
-    pub gpu_nodes: Vec<GpuNode>,
-    pub gpu_materials: Vec<GpuMaterial>,
+    // Active scene resources currently bound for rendering
+    pub active_scene_resources: Option<GpuSceneResources>,
+    // Staged/retiring resources preserved during transactional swap for rollback
+    pub retiring_scene_resources: Option<GpuSceneResources>,
 
     pub depth_texture_view: wgpu::TextureView,
     pub depth_format: wgpu::TextureFormat,
@@ -86,6 +143,8 @@ pub struct Renderer {
 
     pub capabilities: EngineCapabilities,
     pub resident_gpu_bytes: usize,
+
+    pub test_failpoint: TestFailpoint,
 }
 
 impl Renderer {
@@ -241,9 +300,8 @@ impl Renderer {
             material_bind_group_layout,
             camera_buffer,
             camera_bind_group,
-            gpu_meshes: Vec::new(),
-            gpu_nodes: Vec::new(),
-            gpu_materials: Vec::new(),
+            active_scene_resources: None,
+            retiring_scene_resources: None,
             depth_texture_view,
             depth_format,
             surface_format,
@@ -257,7 +315,12 @@ impl Renderer {
             },
             capabilities,
             resident_gpu_bytes: 0,
+            test_failpoint: TestFailpoint::None,
         }
+    }
+
+    pub fn set_test_failpoint(&mut self, fp: TestFailpoint) {
+        self.test_failpoint = fp;
     }
 
     fn create_depth_texture(
@@ -291,6 +354,7 @@ impl Renderer {
             self.height = height;
             self.depth_texture_view =
                 Self::create_depth_texture(&self.device, width, height, self.depth_format);
+            self.update_resident_bytes();
         }
     }
 
@@ -300,30 +364,43 @@ impl Renderer {
 
     /// Releases GPU vertex, index, object, and material buffers explicitly.
     pub fn destroy_gpu_resources(&mut self) {
-        for mesh in &self.gpu_meshes {
-            for prim in &mesh.primitives {
-                prim.vertex_buffer.destroy();
-                prim.index_buffer.destroy();
-            }
+        if let Some(mut active) = self.active_scene_resources.take() {
+            active.destroy();
         }
-        for node in &self.gpu_nodes {
-            node.object_buffer.destroy();
+        if let Some(mut retiring) = self.retiring_scene_resources.take() {
+            retiring.destroy();
         }
-        for mat in &self.gpu_materials {
-            mat.uniform_buffer.destroy();
-        }
-        self.gpu_meshes.clear();
-        self.gpu_nodes.clear();
-        self.gpu_materials.clear();
         self.resident_gpu_bytes = 0;
     }
 
-    pub fn upload_scene(&mut self, scene: &Scene) {
-        self.destroy_gpu_resources();
+    fn update_resident_bytes(&mut self) {
+        let geom_bytes = self
+            .active_scene_resources
+            .as_ref()
+            .map(|r| r.resident_geometry_gpu_bytes)
+            .unwrap_or(0);
+        let depth_bytes = (self.width as usize) * (self.height as usize) * 4;
+        let camera_bytes = std::mem::size_of::<CameraUniform>();
+        self.resident_gpu_bytes = geom_bytes + depth_bytes + camera_bytes;
+    }
 
+    /// Phase 1 of Transactional Swap: Prepares candidate GPU resources
+    /// WITHOUT modifying active scene or destroying existing resources.
+    pub fn prepare_scene(&self, scene: &Scene) -> Result<GpuSceneResources, EngineError> {
+        if self.test_failpoint == TestFailpoint::PrepareFail {
+            return Err(EngineError::new(
+                ErrorCode::GpuUnavailable,
+                "FAILPOINT_INJECTED: Prepare failure",
+                true,
+            ));
+        }
+
+        let mut gpu_materials = Vec::new();
+        let mut gpu_meshes = Vec::new();
+        let mut gpu_nodes = Vec::new();
         let mut gpu_bytes = 0usize;
 
-        // 1. Upload materials
+        // 1. Prepare materials
         for mat in &scene.materials {
             let uniform = MaterialUniform {
                 base_color: mat.base_color,
@@ -352,14 +429,14 @@ impl Renderer {
                 }],
             });
 
-            self.gpu_materials.push(GpuMaterial {
+            gpu_materials.push(GpuMaterial {
                 uniform_buffer,
                 bind_group,
             });
         }
 
-        // If no materials, create default
-        if self.gpu_materials.is_empty() {
+        // If no materials, create default material
+        if gpu_materials.is_empty() {
             let default_mat = Material::default();
             let uniform = MaterialUniform {
                 base_color: default_mat.base_color,
@@ -384,18 +461,30 @@ impl Renderer {
                     resource: uniform_buffer.as_entire_binding(),
                 }],
             });
-            self.gpu_materials.push(GpuMaterial {
+            gpu_materials.push(GpuMaterial {
                 uniform_buffer,
                 bind_group,
             });
         }
 
-        // 2. Upload meshes
+        // 2. Prepare meshes
         for mesh in &scene.meshes {
             let mut gpu_prims = Vec::new();
             for prim in &mesh.primitives {
                 let vertex_bytes = prim.vertices.len() * std::mem::size_of::<Vertex>();
                 let index_bytes = prim.indices.len() * std::mem::size_of::<u32>();
+
+                // Validate primitive bounds and index sanity
+                let vcount = prim.vertices.len() as u32;
+                for &idx in &prim.indices {
+                    if idx >= vcount {
+                        return Err(EngineError::new(
+                            ErrorCode::AssetCorrupt,
+                            format!("Index {} out of bounds for {} vertices", idx, vcount),
+                            false,
+                        ));
+                    }
+                }
 
                 let vertex_buffer =
                     self.device
@@ -422,12 +511,31 @@ impl Renderer {
                     material_index: prim.material_index.unwrap_or(0),
                 });
             }
-            self.gpu_meshes.push(GpuMesh {
+            gpu_meshes.push(GpuMesh {
                 primitives: gpu_prims,
             });
         }
 
-        // 3. Upload nodes
+        // Check failpoint before uploading nodes
+        if self.test_failpoint == TestFailpoint::UploadFail {
+            // Clean up resources allocated during this preparation call
+            for mut mesh in gpu_meshes {
+                for prim in mesh.primitives.drain(..) {
+                    prim.vertex_buffer.destroy();
+                    prim.index_buffer.destroy();
+                }
+            }
+            for mat in gpu_materials {
+                mat.uniform_buffer.destroy();
+            }
+            return Err(EngineError::new(
+                ErrorCode::GpuUnavailable,
+                "FAILPOINT_INJECTED: Upload failure",
+                true,
+            ));
+        }
+
+        // 3. Prepare nodes
         for node in &scene.nodes {
             let n_mat = Scene::normal_matrix_for(&node.world_transform);
             let uniform = ObjectUniform {
@@ -460,18 +568,62 @@ impl Renderer {
                 }],
             });
 
-            self.gpu_nodes.push(GpuNode {
+            gpu_nodes.push(GpuNode {
                 object_buffer,
                 object_bind_group,
                 mesh_index: node.mesh_index,
             });
         }
 
-        // Camera uniform buffer and depth texture overhead
-        gpu_bytes += std::mem::size_of::<CameraUniform>();
-        gpu_bytes += (self.width as usize) * (self.height as usize) * 4;
+        Ok(GpuSceneResources {
+            meshes: gpu_meshes,
+            nodes: gpu_nodes,
+            materials: gpu_materials,
+            resident_geometry_gpu_bytes: gpu_bytes,
+        })
+    }
 
-        self.resident_gpu_bytes = gpu_bytes;
+    /// Phase 2 of Transactional Swap: Commit staged candidate resources.
+    /// Preserves existing active resources in `retiring_scene_resources`
+    /// for rollback if first frame render fails.
+    pub fn commit_scene(&mut self, staged: GpuSceneResources) {
+        let old_active = self.active_scene_resources.take();
+        // If there was an unfinalized retiring resource, destroy it first
+        if let Some(mut old_retiring) = self.retiring_scene_resources.take() {
+            old_retiring.destroy();
+        }
+        self.retiring_scene_resources = old_active;
+        self.active_scene_resources = Some(staged);
+        self.update_resident_bytes();
+    }
+
+    /// Rollback: restores previous scene resources if first render fails.
+    pub fn rollback_scene(&mut self) {
+        if let Some(mut failed_active) = self.active_scene_resources.take() {
+            failed_active.destroy();
+        }
+        self.active_scene_resources = self.retiring_scene_resources.take();
+        self.update_resident_bytes();
+    }
+
+    /// Finalize commit: Destroys retiring resources after successful frame presentation.
+    /// Returns number of evicted GPU bytes.
+    pub fn finalize_commit(&mut self) -> usize {
+        if let Some(mut retiring) = self.retiring_scene_resources.take() {
+            let bytes = retiring.resident_geometry_gpu_bytes;
+            retiring.destroy();
+            bytes
+        } else {
+            0
+        }
+    }
+
+    /// Backwards compatible upload helper: prepares, commits, and finalizes.
+    pub fn upload_scene(&mut self, scene: &Scene) {
+        if let Ok(staged) = self.prepare_scene(scene) {
+            self.commit_scene(staged);
+            self.finalize_commit();
+        }
     }
 
     /// Uploads a synthetic colored cube for M01 gate validation
@@ -560,6 +712,15 @@ impl Renderer {
         camera: &Camera,
         scene: &Scene,
     ) -> Result<(), String> {
+        if self.test_failpoint == TestFailpoint::FirstRenderFail {
+            return Err("FAILPOINT_INJECTED: First render failure".into());
+        }
+
+        let res = match self.active_scene_resources.as_ref() {
+            Some(r) => r,
+            None => return Ok(()),
+        };
+
         // 1. Update camera uniform
         let camera_uniform = CameraUniform {
             view_proj: camera.view_projection_matrix().to_cols_array(),
@@ -574,7 +735,7 @@ impl Renderer {
 
         // 2. Update object uniforms (selection status and transform)
         for (i, node) in scene.nodes.iter().enumerate() {
-            if i >= self.gpu_nodes.len() {
+            if i >= res.nodes.len() {
                 break;
             }
             let is_sel = if let (Some(sel), Some(aid)) = (&scene.selected_id, &node.anatomy_id) {
@@ -596,7 +757,7 @@ impl Renderer {
             };
 
             self.queue.write_buffer(
-                &self.gpu_nodes[i].object_buffer,
+                &res.nodes[i].object_buffer,
                 0,
                 bytemuck::cast_slice(&[obj_uniform]),
             );
@@ -641,7 +802,7 @@ impl Renderer {
                 if !node.visible {
                     continue;
                 }
-                let gpu_node = match self.gpu_nodes.get(node_idx) {
+                let gpu_node = match res.nodes.get(node_idx) {
                     Some(gn) => gn,
                     None => continue,
                 };
@@ -649,7 +810,7 @@ impl Renderer {
                     Some(mi) => mi,
                     None => continue,
                 };
-                let gpu_mesh = match self.gpu_meshes.get(mesh_idx) {
+                let gpu_mesh = match res.meshes.get(mesh_idx) {
                     Some(gm) => gm,
                     None => continue,
                 };
@@ -659,8 +820,8 @@ impl Renderer {
                 for prim in &gpu_mesh.primitives {
                     let mat_idx = prim
                         .material_index
-                        .min(self.gpu_materials.len().saturating_sub(1));
-                    if let Some(gpu_mat) = self.gpu_materials.get(mat_idx) {
+                        .min(res.materials.len().saturating_sub(1));
+                    if let Some(gpu_mat) = res.materials.get(mat_idx) {
                         render_pass.set_bind_group(2, &gpu_mat.bind_group, &[]);
                     }
 

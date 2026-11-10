@@ -1,12 +1,16 @@
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use atlas_core::camera::Camera;
 use atlas_core::glb::parse_glb;
 use atlas_core::manifest::{ManifestSnapshot, RegionLoadPlan};
-use atlas_core::memory::{MemoryTracker, QualityProfile, calculate_scene_cpu_bytes};
+use atlas_core::memory::{
+    MemoryTracker, QualityProfile, calculate_scene_cpu_bytes, calculate_scene_gpu_bytes,
+};
 use atlas_core::picking::pick_scene;
-use atlas_core::renderer::Renderer;
+use atlas_core::renderer::{Renderer, TestFailpoint};
 use atlas_core::scene::Scene;
 #[allow(unused_imports)]
 use atlas_core::types::{
@@ -16,6 +20,26 @@ use atlas_core::types::{
 use wasm_bindgen::prelude::*;
 #[allow(unused_imports)]
 use web_sys::{HtmlCanvasElement, Window};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EngineLifecycleState {
+    Healthy,
+    SuspectedLoss,
+    Recovering,
+    Recovered,
+    Failed,
+}
+
+#[derive(Clone, Debug)]
+struct PendingReadyEvent {
+    request_id: u32,
+    scene_generation: u32,
+    scene_revision: u32,
+    region: String,
+    variant: String,
+    lod: u32,
+    backend: String,
+}
 
 struct EngineInner {
     canvas: HtmlCanvasElement,
@@ -31,6 +55,12 @@ struct EngineInner {
     event_callback: Option<js_sys::Function>,
     memory_tracker: MemoryTracker,
     manifest: Option<ManifestSnapshot>,
+
+    // M04-H Transactional & Lifecycle State
+    rollback_scene: Option<Scene>,
+    pending_ready_event: Option<PendingReadyEvent>,
+    loss_flag: Arc<AtomicBool>,
+    lifecycle_state: EngineLifecycleState,
 }
 
 #[wasm_bindgen]
@@ -87,6 +117,81 @@ impl AtlasEngine {
                 log::warn!("Anatomy event callback failed: {:?}", error);
             }
         }
+    }
+
+    fn emit_ready_event(inner: &EngineInner, ev: &PendingReadyEvent) {
+        if let Some(callback) = &inner.event_callback {
+            let event = js_sys::Object::new();
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("type"),
+                &JsValue::from_str("region.ready"),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("requestId"),
+                &JsValue::from_f64(ev.request_id as f64),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("sceneGeneration"),
+                &JsValue::from_f64(ev.scene_generation as f64),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("sceneRevision"),
+                &JsValue::from_f64(ev.scene_revision as f64),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("region"),
+                &JsValue::from_str(&ev.region),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("variant"),
+                &JsValue::from_str(&ev.variant),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("lod"),
+                &JsValue::from_f64(ev.lod as f64),
+            );
+            let _ = js_sys::Reflect::set(
+                &event,
+                &JsValue::from_str("backend"),
+                &JsValue::from_str(&ev.backend),
+            );
+            if let Err(error) = callback.call1(&JsValue::NULL, &event) {
+                log::warn!("region.ready event callback failed: {:?}", error);
+            }
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn setTestFailpoint(&self, name: &str) {
+        self.with_inner_mut(|inner| {
+            let fp = match name {
+                "prepare_fail" => TestFailpoint::PrepareFail,
+                "upload_fail" => TestFailpoint::UploadFail,
+                "first_render_fail" => TestFailpoint::FirstRenderFail,
+                _ => TestFailpoint::None,
+            };
+            inner.renderer.set_test_failpoint(fp);
+        });
+    }
+
+    #[wasm_bindgen]
+    pub fn setTestMemoryBudget(&self, gpu_resident_bytes: usize, cpu_decoded_bytes: usize) {
+        self.with_inner_mut(|inner| {
+            inner
+                .memory_tracker
+                .set_custom_budget(Some(atlas_core::memory::MemoryBudget {
+                    gpu_resident_budget_bytes: gpu_resident_bytes,
+                    cpu_decoded_budget_bytes: cpu_decoded_bytes,
+                    concurrent_fetches: 2,
+                }));
+        });
     }
 
     #[wasm_bindgen]
@@ -236,6 +341,13 @@ impl AtlasEngine {
                     )
                 })?;
 
+            let loss_flag = Arc::new(AtomicBool::new(false));
+            let loss_flag_clone = loss_flag.clone();
+            device.set_device_lost_callback(Box::new(move |reason, msg| {
+                log::warn!("wgpu Device Lost: reason={:?}, message={}", reason, msg);
+                loss_flag_clone.store(true, Ordering::SeqCst);
+            }));
+
             let surface_caps = surface.get_capabilities(&adapter);
             let surface_format = surface_caps
                 .formats
@@ -304,6 +416,10 @@ impl AtlasEngine {
                 event_callback: None,
                 memory_tracker,
                 manifest: None,
+                rollback_scene: None,
+                pending_ready_event: None,
+                loss_flag,
+                lifecycle_state: EngineLifecycleState::Healthy,
             })
         }
     }
@@ -468,6 +584,19 @@ impl AtlasEngine {
             .as_mut()
             .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
 
+        // Validate the JS-supplied plan against the same immutable manifest
+        // that Rust used to select the asset.
+        let authoritative_manifest = inner
+            .manifest
+            .as_ref()
+            .ok_or_else(|| JsValue::from_str("Missing manifest for verified package load"))?;
+        authoritative_manifest
+            .validate_load_plan(&plan)
+            .map_err(|e| {
+                serde_wasm_bindgen::to_value(&e)
+                    .unwrap_or_else(|_| JsValue::from_str(&e.to_string()))
+            })?;
+
         Self::emit_event(inner, "region.loading", None);
 
         let mut new_scene = match parse_glb(bytes) {
@@ -487,8 +616,39 @@ impl AtlasEngine {
         // Atomic state transfer: preserve selection, visibility, and revision
         new_scene.transfer_state_from(&inner.scene);
 
-        // Upload to GPU (explicitly frees old buffers)
-        inner.renderer.upload_scene(&new_scene);
+        // Preflight budget check
+        let candidate_cpu = calculate_scene_cpu_bytes(&new_scene);
+        let candidate_gpu = calculate_scene_gpu_bytes(&new_scene);
+        let depth_bytes = (inner.renderer.width as usize) * (inner.renderer.height as usize) * 4;
+        if let Err(mem_err) =
+            inner
+                .memory_tracker
+                .preflight_swap_budget(candidate_gpu, candidate_cpu, depth_bytes)
+        {
+            Self::emit_event(inner, "engine.error", None);
+            let mut err = mem_err;
+            err.request_id = Some(request_id);
+            err.scene_generation = Some(generation);
+            return Err(serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+        }
+
+        // Transactional GPU Swap - Phase 1: Prepare candidate resources
+        let staged = match inner.renderer.prepare_scene(&new_scene) {
+            Ok(staged) => staged,
+            Err(e) => {
+                Self::emit_event(inner, "engine.error", None);
+                let mut err = e;
+                err.request_id = Some(request_id);
+                err.scene_generation = Some(generation);
+                return Err(serde_wasm_bindgen::to_value(&err)
+                    .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+            }
+        };
+
+        // Transactional GPU Swap - Phase 2: Commit staged resources, retain retiring for rollback
+        inner.rollback_scene = Some(inner.scene.clone());
+        inner.renderer.commit_scene(staged);
 
         if !same_region {
             inner
@@ -502,16 +662,34 @@ impl AtlasEngine {
         inner.current_lod = Some(plan.lod);
 
         // Update memory tracker
-        let cpu_bytes = calculate_scene_cpu_bytes(&inner.scene);
-        inner.memory_tracker.set_decoded_cpu_bytes(cpu_bytes);
+        inner.memory_tracker.set_decoded_cpu_bytes(candidate_cpu);
         inner
             .memory_tracker
             .set_resident_gpu_bytes(inner.renderer.resident_gpu_bytes);
+        inner.memory_tracker.set_gpu_depth_estimate(depth_bytes);
+        inner
+            .memory_tracker
+            .set_peak_overlap_bytes(inner.renderer.resident_gpu_bytes + candidate_gpu);
+
+        // Stage pending ready event - will only be emitted AFTER the first frame is presented!
+        inner.pending_ready_event = Some(PendingReadyEvent {
+            request_id,
+            scene_generation: generation,
+            scene_revision: inner.scene.revision,
+            region: plan.region_id.clone(),
+            variant: plan.variant_id.clone(),
+            lod: plan.lod,
+            backend: inner.renderer.capabilities.backend.clone(),
+        });
 
         inner.needs_render = true;
 
-        Self::emit_event(inner, "region.ready", None);
-        Self::emit_event(inner, "scene.changed", None);
+        // Synchronize generation token
+        {
+            let mut gen_borrow = self.instance_generation.borrow_mut();
+            *gen_borrow = gen_borrow.wrapping_add(1).max(1);
+        }
+        inner.memory_tracker.next_generation(Some(request_id));
 
         let snapshot = self.snapshot_internal(inner);
         serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
@@ -551,7 +729,13 @@ impl AtlasEngine {
         Self::emit_event(inner, "region.ready", None);
         Self::emit_event(inner, "scene.changed", None);
 
-        let _ = self.nextGeneration(None);
+        // Already holding an inner mutable borrow; do not use nextGeneration()
+        // since it cannot update the tracker through another mutable borrow.
+        {
+            let mut generation = self.instance_generation.borrow_mut();
+            *generation = generation.wrapping_add(1).max(1);
+        }
+        inner.memory_tracker.next_generation(None);
 
         let snapshot = self.snapshot_internal(inner);
         serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
@@ -581,7 +765,13 @@ impl AtlasEngine {
         Self::emit_event(inner, "region.ready", None);
         Self::emit_event(inner, "scene.changed", None);
 
-        let _ = self.nextGeneration(None);
+        // Already holding an inner mutable borrow; do not use nextGeneration()
+        // since it cannot update the tracker through another mutable borrow.
+        {
+            let mut generation = self.instance_generation.borrow_mut();
+            *generation = generation.wrapping_add(1).max(1);
+        }
+        inner.memory_tracker.next_generation(None);
         let snapshot = self.snapshot_internal(inner);
         serde_wasm_bindgen::to_value(&snapshot).map_err(|e| JsValue::from_str(&e.to_string()))
     }
@@ -615,11 +805,33 @@ impl AtlasEngine {
             }
         };
 
+        let budget = profile.budget();
+        let total_gpu = inner.renderer.resident_gpu_bytes;
+        let total_cpu = calculate_scene_cpu_bytes(&inner.scene);
+
+        if total_gpu > budget.gpu_resident_budget_bytes
+            || total_cpu > budget.cpu_decoded_budget_bytes
+        {
+            let err = EngineError::new(
+                ErrorCode::MemoryLimit,
+                format!(
+                    "MEMORY_LIMIT: La escena activa excede el presupuesto del perfil {:?} (GPU: {} B / {} B, CPU: {} B / {} B)",
+                    profile,
+                    total_gpu,
+                    budget.gpu_resident_budget_bytes,
+                    total_cpu,
+                    budget.cpu_decoded_budget_bytes,
+                ),
+                true,
+            );
+            return Err(serde_wasm_bindgen::to_value(&err)
+                .unwrap_or_else(|_| JsValue::from_str(&err.to_string())));
+        }
+
         inner.memory_tracker.set_profile(profile);
         Self::emit_event(inner, "quality.changed", None);
 
-        serde_wasm_bindgen::to_value(&profile.budget())
-            .map_err(|e| JsValue::from_str(&e.to_string()))
+        serde_wasm_bindgen::to_value(&budget).map_err(|e| JsValue::from_str(&e.to_string()))
     }
 
     #[wasm_bindgen]
@@ -630,6 +842,8 @@ impl AtlasEngine {
             .ok_or_else(|| JsValue::from_str("Engine not initialized"))?;
 
         log::warn!("AtlasEngine: SIMULATING GPU DEVICE LOSS...");
+        inner.loss_flag.store(true, Ordering::SeqCst);
+        inner.lifecycle_state = EngineLifecycleState::SuspectedLoss;
         inner.renderer.destroy_gpu_resources();
         Self::emit_event(inner, "device.recovering", None);
         Ok(())
@@ -842,6 +1056,14 @@ impl AtlasEngine {
             None => return false,
         };
 
+        // Check device loss detected via callback or simulation
+        if inner.loss_flag.load(Ordering::SeqCst) {
+            log::warn!("renderFrame: Device loss detected, halting frame submission");
+            inner.lifecycle_state = EngineLifecycleState::SuspectedLoss;
+            Self::emit_event(inner, "device.recovering", None);
+            return false;
+        }
+
         if !inner.needs_render {
             return false;
         }
@@ -874,7 +1096,7 @@ impl AtlasEngine {
                 return false;
             }
             wgpu::CurrentSurfaceTexture::Occluded => {
-                // Window minimized/occluded, skip frame
+                // Window minimized/occluded, skip frame without clearing needs_render
                 return false;
             }
             other => {
@@ -888,10 +1110,39 @@ impl AtlasEngine {
             .create_view(&wgpu::TextureViewDescriptor::default());
 
         let res = inner.renderer.render(&view, &inner.camera, &inner.scene);
-        inner.renderer.queue.present(output);
+        if res.is_ok() {
+            inner.renderer.queue.present(output);
+            inner.needs_render = false;
 
-        inner.needs_render = false;
-        res.is_ok()
+            // Finalize transactional commit
+            let evicted = inner.renderer.finalize_commit();
+            if evicted > 0 {
+                inner.memory_tracker.record_eviction();
+            }
+            inner.rollback_scene = None;
+
+            // Emit region.ready AFTER first frame is successfully presented!
+            if let Some(ready_ev) = inner.pending_ready_event.take() {
+                Self::emit_ready_event(inner, &ready_ev);
+                Self::emit_event(inner, "scene.changed", None);
+            }
+
+            true
+        } else {
+            log::error!(
+                "renderFrame failed, initiating transactional rollback: {:?}",
+                res
+            );
+            // Rollback GPU resources and CPU scene
+            inner.renderer.rollback_scene();
+            if let Some(prev_scene) = inner.rollback_scene.take() {
+                inner.scene = prev_scene;
+            }
+            inner.pending_ready_event = None;
+            Self::emit_event(inner, "region.failed", None);
+            Self::emit_event(inner, "engine.error", None);
+            false
+        }
     }
 
     #[wasm_bindgen]

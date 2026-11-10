@@ -191,3 +191,39 @@ fn test_verify_sha256_and_size() {
     let err_size = verify_size(99999, data.len()).expect_err("Wrong size must fail");
     assert_eq!(err_size.code, ErrorCode::AssetCorrupt);
 }
+
+#[test]
+fn test_resolved_load_plan_rejects_forged_variant_and_hash() {
+    let manifest_json = serde_json::json!({
+        "schemaVersion":1,
+        "atlasVersion":"0.3.0",
+        "coordinateSystem":{"unit":"meter","up":"+Y","anterior":"+Z","patientLeft":"+X"},
+        "variants":["male-adult"],
+        "regions":[{"id":"pelvis","packages":["pelvis-base"]}],
+        "catalog":{"url":"catalog.json","sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","bytes":100},
+        "packages":[{"id":"pelvis-base","variant":"male-adult","region":"pelvis",
+            "system":"pelvis","lod":0,"url":"pelvis-base.glb","bytes":100,
+            "sha256":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            "encoding":"none","requiredExtensions":[]}]
+    }).to_string();
+    let manifest = ManifestSnapshot::parse_json(&manifest_json).unwrap();
+    let canonical = manifest
+        .create_load_plan("pelvis", "male-adult", Some(0))
+        .unwrap();
+    assert!(manifest.validate_load_plan(&canonical).is_ok());
+
+    let mut variant_forgery = canonical.clone();
+    variant_forgery.variant_id = "female-adult".into();
+    let err = manifest.validate_load_plan(&variant_forgery).unwrap_err();
+    assert_eq!(err.code, ErrorCode::RegionUnavailable);
+
+    let mut hash_forgery = canonical.clone();
+    hash_forgery.expected_package_sha256 = "0".repeat(64);
+    let err = manifest.validate_load_plan(&hash_forgery).unwrap_err();
+    assert_eq!(err.code, ErrorCode::AssetCorrupt);
+
+    let mut url_forgery = canonical.clone();
+    url_forgery.package_url = "alternate.glb".into();
+    let err = manifest.validate_load_plan(&url_forgery).unwrap_err();
+    assert_eq!(err.code, ErrorCode::AssetCorrupt);
+}

@@ -1,6 +1,21 @@
 // apps/probe-web/app.js
 // anatom.ia — Diagnostic Probe Shell (M00-M04: Asset Streaming, Cache, Memory, Device Recovery)
 
+import { AssetStreamManager } from './asset-stream-manager.js';
+
+// Register Service Worker for Offline App Shell (M04-H6)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+      .then((reg) => {
+        log(`ServiceWorker registrado (scope: ${reg.scope})`);
+      })
+      .catch((err) => {
+        log(`Aviso: fallo al registrar ServiceWorker: ${err}`, 'warn');
+      });
+  });
+}
+
 const state = {
   engine: null,
   activeBackend: null,
@@ -98,225 +113,70 @@ function hideLoading() {
 }
 
 // ============================================================================
-// M04: ASSET STREAM MANAGER (CacheStorage + Web Crypto SHA-256 + Atomic Swap)
+// M04-H5: ASSET STREAM MANAGER (Bounded Transport Scheduler, CacheStorage & Coalescing)
 // ============================================================================
-class AssetStreamManager {
-  constructor() {
-    this.manifest = null;
-    this.cacheName = 'anatomia-atlas-v0.3.0';
-    this.cacheAvailable = typeof window !== 'undefined' && 'caches' in window;
-    this.activeAbortController = null;
-    this.currentRequestId = 0;
-    this.simulatedOffline = false;
-    this.stats = {
-      cacheHits: 0,
-      cacheMisses: 0,
-      bytesDownloaded: 0,
-      lastDigestVerificationMs: 0,
-    };
+const streamManager = new AssetStreamManager({
+  logger: log,
+});
+window.streamManager = streamManager;
+
+// Adapter wrapper for existing probe UI calls
+streamManager._origInitManifest = streamManager.initManifest;
+streamManager.initManifest = async function(manifestUrl = './manifest.json') {
+  // Verifies catalog sha256 digest against manifest
+  return await this._origInitManifest(manifestUrl, state.engine, (catalog) => {
+    state.structures = catalog.structures.map(item => ({
+      id: item.id,
+      name_es: item.labels?.['es-MX'] || item.labels?.en || item.id,
+      ta2Id: item.ta2Id || item.id,
+      side: item.side || 'unspecified',
+    }));
+    renderStructureList(state.structures);
+    if (el.structureCountBadge) {
+      el.structureCountBadge.textContent = state.structures.length + ' / ' + state.structures.length;
+    }
+  });
+};
+
+streamManager._origLoadRegion = streamManager.loadRegion;
+streamManager.loadRegion = async function(regionId = 'pelvis', variantId = 'male-adult', preferredLod = 0) {
+  if (el.lodSelect) {
+    el.lodSelect.value = String(preferredLod);
   }
 
-  async getCache() {
-    if (!this.cacheAvailable) return null;
-    try {
-      return await window.caches.open(this.cacheName);
-    } catch (e) {
-      log(`CacheStorage no disponible o restringido: ${e}`, 'warn');
-      return null;
-    }
-  }
-
-  async computeSha256(arrayBuffer) {
-    const t0 = performance.now();
-    const hashBuffer = await window.crypto.subtle.digest('SHA-256', arrayBuffer);
-    this.stats.lastDigestVerificationMs = performance.now() - t0;
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  async initManifest(manifestUrl = './manifest.json') {
-    log(`Cargando manifest desde ${manifestUrl}...`);
-    try {
-      const resp = await fetch(manifestUrl);
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
-      const manifestText = await resp.text();
-      this.manifest = JSON.parse(manifestText);
-
-      if (state.engine) {
-        const summary = state.engine.loadManifest(manifestText);
-        log(`Manifest registrado en Rust: version=${summary.atlasVersion}, packages=${summary.packagesCount}, regions=${summary.regionsCount}`);
-      }
-      return this.manifest;
-    } catch (err) {
-      log(`Fallo al cargar manifest: ${err?.detail || err?.message || err}`, 'warn');
-      return null;
-    }
-  }
-
-  async loadRegion(regionId = 'pelvis', variantId = 'male-adult', preferredLod = 0) {
-    if (!state.engine) {
-      throw new Error('AtlasEngine no está inicializado.');
-    }
-
-    // Cancel any previous in-flight load request
-    if (this.activeAbortController) {
-      this.activeAbortController.abort();
-    }
-    this.activeAbortController = new AbortController();
-    const signal = this.activeAbortController.signal;
-
-    const requestId = ++this.currentRequestId;
-    const expectedGeneration = state.engine.nextGeneration(requestId);
-    state.currentLod = preferredLod;
-    if (el.lodSelect) {
-      el.lodSelect.value = String(preferredLod);
-    }
-
-    log(`Iniciando streaming de región '${regionId}' (variante '${variantId}', LOD ${preferredLod}, req=${requestId}, gen=${expectedGeneration})...`);
-    showLoading(`Cargando ${regionId} LOD${preferredLod}...`);
-
-    let plan;
-    try {
-      plan = state.engine.createLoadPlan(regionId, variantId, preferredLod);
-    } catch (planErr) {
-      hideLoading();
-      showError(`Error creando plan de carga: ${planErr?.detail || planErr?.message || planErr}`);
-      return false;
-    }
-
-    const cacheKey = `https://atlas.local/assets/v0.3.0/${plan.package_id}?sha=${plan.expected_package_sha256}`;
-    let buffer = null;
-    let fromCache = false;
-
-    // 1. Check local CacheStorage
-    const cache = await this.getCache();
-    if (cache) {
-      try {
-        const matched = await cache.match(cacheKey);
-        if (matched) {
-          log(`Cache HIT en disco para ${plan.package_id}. Verificando digest SHA-256...`);
-          const candidateBuffer = await matched.arrayBuffer();
-          const digest = await this.computeSha256(candidateBuffer);
-
-          if (digest.toLowerCase() === plan.expected_package_sha256.toLowerCase()) {
-            buffer = candidateBuffer;
-            fromCache = true;
-            this.stats.cacheHits++;
-            if (el.statCache) el.statCache.textContent = 'HIT (Disk)';
-            log(`Digest de caché verificado en ${this.stats.lastDigestVerificationMs.toFixed(1)}ms. Cero peticiones de red.`);
-          } else {
-            log(`Digest de caché corrupto detectado en ${plan.package_id}! Purgando entrada del cache...`, 'warn');
-            await cache.delete(cacheKey);
-          }
-        }
-      } catch (cacheErr) {
-        log(`Error leyendo de CacheStorage: ${cacheErr}`, 'warn');
-      }
-    }
-
-    // 2. Fetch if Cache Miss or corrupt
-    if (!buffer) {
-      if (this.simulatedOffline) {
-        hideLoading();
-        const offlineErr = 'Modo sin conexión activado: el paquete no se encuentra en caché persistente (NETWORK_ERROR).';
-        showError(offlineErr);
-        if (el.statCache) el.statCache.textContent = 'OFFLINE (Miss)';
-        return false;
-      }
-
-      log(`Cache MISS. Descargando paquete ${plan.package_id} (${plan.package_url})...`);
-      if (el.statCache) el.statCache.textContent = 'MISS (Fetch)';
-
-      try {
-        const fetchResp = await fetch(plan.package_url, { signal });
-        if (!fetchResp.ok) {
-          throw new Error(`HTTP ${fetchResp.status}: ${fetchResp.statusText}`);
-        }
-        buffer = await fetchResp.arrayBuffer();
-        this.stats.cacheMisses++;
-        this.stats.bytesDownloaded += buffer.byteLength;
-        if (el.statDownloaded) {
-          el.statDownloaded.textContent = `${(this.stats.bytesDownloaded / 1024).toFixed(0)} KB`;
-        }
-
-        log(`Paquete descargado (${buffer.byteLength} bytes). Verificando integridad SHA-256...`);
-        const digest = await this.computeSha256(buffer);
-        if (digest.toLowerCase() !== plan.expected_package_sha256.toLowerCase()) {
-          throw new Error(`ASSET_CORRUPT: SHA-256 calculado '${digest}' no coincide con el manifest '${plan.expected_package_sha256}'`);
-        }
-
-        // Store in CacheStorage if passes integrity
-        if (cache) {
-          try {
-            await cache.put(cacheKey, new Response(buffer.slice(0), {
-              headers: { 'Content-Type': 'model/gltf-binary' }
-            }));
-            log(`Paquete ${plan.package_id} almacenado en caché persistente.`);
-          } catch (putErr) {
-            log(`Fallo al escribir en CacheStorage (cuota o política): ${putErr}`, 'warn');
-          }
-        }
-      } catch (netErr) {
-        hideLoading();
-        if (signal.aborted) {
-          log(`Petición ${requestId} abortada exitosamente.`);
-          return false;
-        }
-        showError(`Error de red/integridad: ${netErr.message || netErr}`);
-        return false;
-      }
-    }
-
-    // 3. Generational safety check before touching GPU
-    if (signal.aborted || state.engine.currentGeneration() !== expectedGeneration) {
-      log(`Carga de ${plan.package_id} descartada por generación obsoleta (gen ${expectedGeneration} vs actual ${state.engine.currentGeneration()}).`, 'warn');
-      hideLoading();
-      return false;
-    }
-
-    // 4. Atomic Swap into WASM Engine
-    try {
-      const bytes = new Uint8Array(buffer);
-      const snapshot = state.engine.applyPackageBytes(bytes, plan, requestId, expectedGeneration);
-
+  return await this._origLoadRegion(state.engine, regionId, variantId, preferredLod, {
+    onStart: () => {
+      showLoading(`Cargando ${regionId} LOD${preferredLod}...`);
+      if (el.statCache) el.statCache.textContent = 'Buscando...';
+    },
+    onSuccess: ({ plan, snapshot, preferredLod: lod }) => {
       state.sceneLoaded = true;
-      state.activeScene = (preferredLod === 1) ? 'pelvis-lod1' : 'pelvis';
+      state.currentLod = lod;
+      state.activeScene = (lod === 1) ? 'pelvis-lod1' : 'pelvis';
       document.documentElement.dataset.atlasScene = state.activeScene;
-      el.sceneSelect.value = state.activeScene;
-
-      log(`Región aplicada exitosamente: ${snapshot.region} (rev ${snapshot.scene_revision}, visible ${snapshot.visible_ids.length}, backend ${snapshot.backend})`);
+      if (el.sceneSelect) el.sceneSelect.value = state.activeScene;
+      if (el.statCache) {
+        el.statCache.textContent = streamManager.stats.cacheHits > 0 ? 'HIT (Disk)' : 'MISS (Fetch)';
+      }
+      if (el.statDownloaded) {
+        el.statDownloaded.textContent = `${(streamManager.stats.bytesDownloaded / 1024).toFixed(0)} KB`;
+      }
       updateStats();
       scheduleRender();
       hideLoading();
-      return true;
-    } catch (applyErr) {
+    },
+    onError: (errStr) => {
       hideLoading();
-      showError(`Error aplicando paquete en GPU: ${applyErr?.detail || applyErr?.message || applyErr}`);
-      return false;
-    }
-  }
-
-  async purgeCache() {
-    if (!this.cacheAvailable) return false;
-    const cache = await this.getCache();
-    if (cache) {
-      const keys = await cache.keys();
-      for (const k of keys) {
-        await cache.delete(k);
-      }
-      log(`Caché purgado (${keys.length} entradas eliminadas).`);
-      return true;
-    }
-    return false;
-  }
-}
-
-const streamManager = new AssetStreamManager();
+      showError(errStr);
+    },
+  });
+};
 
 // ============================================================================
 // ENGINE INITIALIZATION & CANVAS LIFECYCLE
 // ============================================================================
 let pointerListenerController = null;
+let activeResizeObserver = null;
 
 function resetCanvas() {
   pointerListenerController?.abort();
@@ -365,6 +225,9 @@ async function bootstrapEngine(backendReq) {
   state.requestedBackend = backendReq;
   el.backendSelect.value = backendReq;
 
+  streamManager.activeAbortController?.abort();
+  activeResizeObserver?.disconnect();
+  activeResizeObserver = null;
   if (state.engine) {
     try {
       state.engine.dispose();
@@ -470,6 +333,7 @@ async function bootstrapEngine(backendReq) {
     }
   });
   resizeObserver.observe(el.viewportContainer);
+  activeResizeObserver = resizeObserver;
 
   // Reload manifest into newly instantiated engine
   if (streamManager.manifest) {
@@ -1038,7 +902,11 @@ async function main() {
 
   const success = await bootstrapEngine(requestedBackend);
   if (success) {
-    await streamManager.initManifest('./manifest.json');
+    const verifiedManifest = await streamManager.initManifest('./manifest.json');
+    if (!verifiedManifest && initialScene !== 'cube') {
+      showError('No se verificó manifest/catálogo: carga anatómica bloqueada.');
+      return;
+    }
     if (initialScene === 'cube') {
       await loadScene('cube');
     } else {
